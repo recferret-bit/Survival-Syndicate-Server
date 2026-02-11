@@ -459,13 +459,101 @@ NATS — наша основная "нервная система" для аси
 
 ## Часть 22: Мониторинг и Health Checks
 
-### 16.1. Три столпа наблюдаемости (Observability)
+### 22.1. Архитектура портов (обязательно для всех сервисов)
+
+Каждый микросервис **обязан** предоставлять два HTTP-сервера на разных портах:
+
+| Порт | Назначение | Доступ |
+|------|------------|--------|
+| **APP_PORT** (3001-3010) | Основной API сервиса | Через API Gateway |
+| **MANAGEMENT_PORT** (9001-9010) | Health + Metrics | Только внутренняя сеть k8s |
+
+**Пример конфигурации:**
+```yaml
+# config/player-service.yaml
+service:
+  name: player-service
+  appPort: 3002          # Основной API
+  managementPort: 9002   # Health + Metrics
+```
+
+**Реализация:**
+```typescript
+// src/main.ts
+import express from 'express';
+import { register } from 'prom-client';
+
+const appServer = express();
+const managementServer = express();
+
+// Основной API (порт 3002)
+appServer.use('/api/v1', apiRoutes);
+appServer.listen(process.env.APP_PORT || 3002);
+
+// Management (порт 9002)
+managementServer.get('/ping', (req, res) => res.send('pong'));
+managementServer.get('/health', healthCheckHandler);
+managementServer.get('/metrics', async (req, res) => {
+  res.set('Content-Type', register.contentType);
+  res.end(await register.metrics());
+});
+managementServer.listen(process.env.MANAGEMENT_PORT || 9002);
+```
+
+**Таблица портов сервисов:**
+
+| Сервис | APP_PORT | MANAGEMENT_PORT |
+|--------|----------|-----------------|
+| Auth Service | 3001 | 9001 |
+| Player Service | 3002 | 9002 |
+| Building Service | 3004 | 9004 |
+| Combat Progress Service | 3005 | 9005 |
+| Wallet Service | 3006 | 9006 |
+| Matchmaking Service | 3007 | 9007 |
+| Collector Service | 3008 | 9008 |
+| Payment Service | 3009 | 9009 |
+| Scheduler Service | 3010 | 9010 |
+
+**Kubernetes Probes:**
+```yaml
+# deployment.yaml
+livenessProbe:
+  httpGet:
+    path: /ping
+    port: 9002        # Management port!
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+readinessProbe:
+  httpGet:
+    path: /health
+    port: 9002        # Management port!
+  initialDelaySeconds: 10
+  periodSeconds: 5
+```
+
+**Prometheus scrape config:**
+```yaml
+# prometheus.yml
+scrape_configs:
+  - job_name: 'microservices'
+    kubernetes_sd_configs:
+      - role: pod
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_port]
+        target_label: __address__
+        replacement: ${1}:9002  # Management port
+```
+
+---
+
+### 22.2. Три столпа наблюдаемости (Observability)
 
 -   **Логи (Logs):** Что произошло? (Конкретные события)
 -   **Метрики (Metrics):** Как система себя чувствует? (CPU, RAM, RPS)
 -   **Трейсы (Traces):** Где была проблема? (Путь запроса через сервисы)
 
-### 16.2. Централизованное Логирование (ELK / Loki)
+### 22.3. Централизованное Логирование (ELK / Loki)
 
 -   Сервисы пишут JSON-логи в `stdout` — **никогда** в файлы.
 -   Агент (Fluentd/Logstash) собирает `stdout` из всех контейнеров.
@@ -475,14 +563,14 @@ NATS — наша основная "нервная система" для аси
     logger.info({ message: 'Player connected', match_id: '...', user_id: '...' });
     ```
 
-### 16.3. Метрики (Prometheus + Grafana)
+### 22.4. Метрики (Prometheus + Grafana)
 
 -   Каждый сервис предоставляет эндпоинт `/metrics` через библиотеку `prom-client`.
 -   Prometheus периодически опрашивает все `/metrics` и сохраняет в time-series БД.
 -   Grafana визуализирует метрики в виде дашбордов.
 -   **Alertmanager** отправляет алерты (Telegram, Slack) при выходе метрик за пределы нормы.
 
-### 16.4. Health Checks: Разделение `/ping` и `/health`
+### 22.5. Health Checks: Разделение `/ping` и `/health`
 
 1.  **`GET /ping`**
     -   Легковесная проверка: сервис запущен и отвечает.
