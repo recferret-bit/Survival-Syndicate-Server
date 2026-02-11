@@ -28,6 +28,10 @@
 | 17 | [17_apiReference.md](./architecture/17_apiReference.md) | **API Reference — полный список HTTP API** |
 | 18 | [18_localDevelopmentGuide.md](./architecture/18_localDevelopmentGuide.md) | **Local Development Guide — Docker Compose + K8s** |
 | 19 | [19_natsBestPractices.md](./architecture/19_natsBestPractices.md) | **NATS Best Practices — паттерны + JetStream в NestJS** |
+| 20 | [20_projectStructure.md](./architecture/20_projectStructure.md) | **Project Structure — NestJS Monorepo Workspaces** |
+| 21 | [21_authAndAuthorization.md](./architecture/21_authAndAuthorization.md) | **Auth & Authorization — JWT, Refresh, Guards** |
+| 22 | [22_errorHandling.md](./architecture/22_errorHandling.md) | **Error Handling — RFC 7807 Problem Details** |
+| 23 | [23_databaseMigrations.md](./architecture/23_databaseMigrations.md) | **Database Migrations — Prisma ORM** |
 
 ---
 
