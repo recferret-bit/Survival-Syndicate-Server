@@ -27,6 +27,7 @@
 | 16 | [16_schedulerService.md](./architecture/16_schedulerService.md) | Scheduler Service — cron-задачи (Bull) |
 | 17 | [17_apiReference.md](./architecture/17_apiReference.md) | **API Reference — полный список HTTP API** |
 | 18 | [18_localDevelopmentGuide.md](./architecture/18_localDevelopmentGuide.md) | **Local Development Guide — Docker Compose + K8s** |
+| 19 | [19_natsBestPractices.md](./architecture/19_natsBestPractices.md) | **NATS Best Practices — паттерны + JetStream в NestJS** |
 
 ---
 
