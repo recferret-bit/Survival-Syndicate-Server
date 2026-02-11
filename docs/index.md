@@ -22,6 +22,7 @@
 | 11 | [11_serverMonitoringAndLogging.md](./architecture/11_serverMonitoringAndLogging.md) | Мониторинг и логирование |
 | 12 | [12_databaseSchema.md](./architecture/12_databaseSchema.md) | Схема базы данных PostgreSQL |
 | 13 | [13_buildingService.md](./architecture/13_buildingService.md) | Building Service — API зданий |
+| 14 | [14_combatProgressService.md](./architecture/14_combatProgressService.md) | Combat Progress Service — боевая прогрессия |
 
 ---
 
