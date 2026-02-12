@@ -2,13 +2,21 @@
 
 ## 1. Обзор
 
-**Combat Progress Service** — микросервис, отвечающий за боевую прогрессию: трофеи с врагов, достижения и разблокировку оружия/скиллов в боевой пул.
+**Combat Progress Service** — микросервис, отвечающий за боевую прогрессию: Player Level (XP), достижения и разблокировку оружия/скиллов в боевой пул через **3-стримовый Battle Pass**.
+
+### Battle Pass: 3 стрима
+| Стрим | Контент | Условия разблокировки |
+|-------|---------|----------------------|
+| 🔴 Оружие | Melee, Pistols, SMG, Shotguns, Rifles | XP Level + Achievements |
+| 🔵 Пассивки | Статы, защита, усиления | XP Level + Achievements |
+| 🟠 Активки | Способности с кулдауном | XP Level + Achievements |
 
 ### Зона ответственности
-- Сбор и хранение трофеев с врагов
-- Отслеживание прогресса достижений
-- Разблокировка оружия и скиллов в боевой пул
-- Расчёт текущего пула для матча
+- **Player Level (XP):** Начисление и хранение опыта
+- **Достижения:** Отслеживание прогресса боевых целей
+- **Battle Pass разблокировки:** Проверка условий (Level + Achievement)
+- **Боевой пул:** Расчёт доступных предметов для матча
+- **Трофеи (legacy):** Опциональный альтернативный путь разблокировки
 
 ### Не входит в ответственность
 - Социальная прогрессия (здания) → **Building Service**
@@ -54,6 +62,20 @@ Authorization: Bearer <jwt>
 **Response 200:**
 ```json
 {
+  "playerLevel": {
+    "level": 8,
+    "currentXP": 12500,
+    "xpToNextLevel": 3000,
+    "totalXP": 11250
+  },
+  "battlePass": {
+    "weaponsUnlocked": 6,
+    "weaponsTotal": 15,
+    "passivesUnlocked": 5,
+    "passivesTotal": 15,
+    "activesUnlocked": 6,
+    "activesTotal": 15
+  },
   "trophies": [
     {
       "trophyId": "trophy_guard_badge",
@@ -148,7 +170,87 @@ Authorization: Bearer <jwt>
 }
 ```
 
-### 3.3. Получить достижения
+### 3.3. Получить Player Level и XP
+
+```http
+GET /api/v1/characters/{characterId}/combat/level
+Authorization: Bearer <jwt>
+```
+
+**Response 200:**
+```json
+{
+  "level": 8,
+  "currentXP": 12500,
+  "xpToNextLevel": 3000,
+  "totalXP": 11250,
+  "xpHistory": [
+    {
+      "source": "heist_completed",
+      "amount": 450,
+      "matchId": "uuid-match",
+      "timestamp": "2026-02-12T10:30:00Z"
+    },
+    {
+      "source": "achievement_completed",
+      "amount": 500,
+      "achievementId": "ach_kills_100",
+      "timestamp": "2026-02-12T09:15:00Z"
+    }
+  ]
+}
+```
+
+### 3.4. Получить Battle Pass прогресс
+
+```http
+GET /api/v1/characters/{characterId}/combat/battlepass
+Authorization: Bearer <jwt>
+```
+
+**Response 200:**
+```json
+{
+  "playerLevel": 8,
+  "streams": {
+    "weapons": {
+      "unlocked": ["pistol_persuader", "melee_stinger", "revolver", "shotgun_sawed", "smg_tommy"],
+      "available": ["melee_silencer"],
+      "locked": ["shotgun_grinder", "pistol_scalpel", "..."]
+    },
+    "passives": {
+      "unlocked": ["perk_tough", "perk_fast", "perk_aim", "perk_pickpocket"],
+      "available": ["perk_pistol_master"],
+      "locked": ["perk_regen", "..."]
+    },
+    "actives": {
+      "unlocked": ["skill_dash", "skill_medkit", "skill_smoke", "skill_grenade"],
+      "available": ["skill_battlecry"],
+      "locked": ["skill_molotov", "..."]
+    }
+  },
+  "nextUnlocks": [
+    {
+      "stream": "weapons",
+      "itemId": "melee_silencer",
+      "name": "Молчун",
+      "levelRequired": 6,
+      "levelMet": true,
+      "achievementRequired": "ach_melee_50",
+      "achievementMet": false,
+      "achievementProgress": 32,
+      "achievementTarget": 50
+    }
+  ]
+}
+```
+
+**Статусы предметов:**
+- `unlocked` — условия выполнены, предмет в пуле
+- `available` — уровень достигнут, но нужно достижение (или наоборот)
+- `locked` — не хватает уровня
+
+### 3.5. Получить достижения
 
 ```http
 GET /api/v1/characters/{characterId}/combat/achievements
@@ -343,7 +445,7 @@ interface TrophiesEarnedEvent {
 }
 // Topic: match.event.trophies_earned
 
-// Статистика матча (для достижений)
+// Статистика матча (для достижений + XP)
 interface MatchStatsEvent {
   characterId: string;
   matchId: string;
@@ -358,6 +460,7 @@ interface MatchStatsEvent {
     survivalTime: number;
   };
   matchResult: 'victory' | 'defeat' | 'abandoned';
+  heistRank: 'C' | 'B' | 'A' | 'S';  // Для XP множителя
   wasNoAlarm: boolean;
   wasCoop: boolean;
   timestamp: string;
@@ -368,7 +471,35 @@ interface MatchStatsEvent {
 ### 4.2. Публикуемые события
 
 ```typescript
-// Трофей добавлен
+// XP получен
+interface XPEarnedEvent {
+  characterId: string;
+  source: 'heist_completed' | 'achievement' | 'daily_quest' | 'weekly_quest';
+  amount: number;
+  multiplier: number;  // 1.0 for C-rank, up to 3.0 for S-rank
+  newTotalXP: number;
+  newLevel: number;
+  leveledUp: boolean;
+  timestamp: string;
+}
+// Topic: combat.event.xp_earned
+
+// Level Up
+interface LevelUpEvent {
+  characterId: string;
+  oldLevel: number;
+  newLevel: number;
+  unlocksAvailable: Array<{
+    stream: 'weapons' | 'passives' | 'actives';
+    itemId: string;
+    name: string;
+    needsAchievement: boolean;
+  }>;
+  timestamp: string;
+}
+// Topic: combat.event.level_up
+
+// Трофей добавлен (legacy)
 interface TrophyAddedEvent {
   characterId: string;
   trophyId: string;
