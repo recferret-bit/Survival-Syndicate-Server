@@ -53,42 +53,51 @@ class GameSimulation implements IGameSimulation {
   public readonly instanceId: string;
   public state: IGameState;
   
-  private inputQueue: Map<string, PlayerInput[]>;
+  // Буферы для Lag Compensation и предсказаний
+  private inputBuffer: RingBuffer<PlayerInputWithTimestamp>;
+  private stateBuffer: RingBuffer<WorldStateWithTimestamp>;
   
   // Подсистемы
-  private physicsSystem: PhysicsSystem;
-  private combatSystem: CombatSystem;
-  private aiSystem: AISystem;
-  private spawnSystem: SpawnSystem;
+  // ...
   
-  private gameLoop: GameLoop; // Использует "Подход 2" с самокоррекцией
+  private gameLoop: GameLoop;
 
   constructor(matchId: string, players: Player[]) {
     // ...инициализация
+    this.inputBuffer = new RingBuffer(128); // Храним последние ~2 секунды ввода
+    this.stateBuffer = new RingBuffer(64); // Храним последние ~1 секунду состояний
   }
 
-  public start(): void {
-    this.gameLoop.start();
+  public addPlayerInput(playerId: string, input: PlayerInput): void {
+    // Добавляем ввод в буфер с серверной временной меткой
+    this.inputBuffer.add({ ...input, receivedAt: Date.now() });
   }
   
   public update(deltaTime: number): void {
-    // 1. Обработать ввод
+    // 1. Обработать ввод из буфера
     this.processInputs();
     
-    // 2. Обновить AI
-    this.aiSystem.update(this.state, deltaTime);
-    
-    // 3. Физика и движение
-    this.physicsSystem.update(this.state, deltaTime);
-    
-    // 4. Логика боя
-    this.combatSystem.update(this.state, deltaTime);
-    
-    // 5. Спавн
-    this.spawnSystem.update(this.state, deltaTime);
+    // ... (обновление подсистем) ...
 
-    // 6. Сгенерировать и отправить WorldState
-    this.publishWorldState();
+    // 6. Сгенерировать WorldState
+    const newWorldState = this.generateWorldState();
+
+    // 7. Сохранить состояние в буфер
+    this.stateBuffer.add({ ...newWorldState, timestamp: Date.now() });
+
+    // 8. Отправить WorldState клиентам
+    this.publishWorldState(newWorldState);
+  }
+
+  /**
+   * "Отматывает" мир назад для точной проверки, например, выстрела.
+   * @param timestamp - Временная метка события на клиенте.
+   */
+  private rewindAndCheck(timestamp: number): IGameState {
+    // 1. Найти два ближайших состояния в stateBuffer, между которыми находится timestamp.
+    // 2. Интерполировать между ними, чтобы получить точное состояние мира на этот момент.
+    // 3. Вернуть "отмотанное" состояние для дальнейших проверок (например, hit detection).
+    return {} as IGameState;
   }
   
   // ...другие методы
@@ -96,13 +105,15 @@ class GameSimulation implements IGameSimulation {
 ```
 
 **Ключевые компоненты:**
--   **`inputQueue`**: Очередь, куда складываются `PlayerInput` от игроков для обработки в следующем тике.
+-   **`inputBuffer`**: Кольцевой буфер для `PlayerInput`. Каждый `input` сохраняется с серверной временной меткой `receivedAt` для анализа задержек.
+-   **`stateBuffer`**: Кольцевой буфер, хранящий последние N состояний мира (`WorldState`) вместе с их серверными временными метками. Это позволяет "отматывать" время.
 -   **`GameLoop`**: Объект, реализующий логику таймера с самокоррекцией (см. `25_game_loop_best_practices.md`). Он вызывает `update()` этого класса.
 -   **Подсистемы (`Systems`):** Каждый отвечает за свой аспект игры:
     -   `PhysicsSystem`: Движение, коллизии.
-    -   `CombatSystem`: Логика выстрелов, урона.
+    -   `CombatSystem`: Логика выстрелов, урона. При проверке попадания вызывает `rewindAndCheck()` для компенсации лага.
     -   `AISystem`: Поведение врагов.
     -   `SpawnSystem`: Логика появления новых врагов (волны).
+-   **`rewindAndCheck(timestamp)`**: Ключевой метод для **Lag Compensation**. Когда сервер обрабатывает выстрел, он смотрит на `clientTimestamp` этого выстрела, находит соответствующее прошлое состояние мира в `stateBuffer` и производит проверку попадания в "прошлом".
 
 ---
 
