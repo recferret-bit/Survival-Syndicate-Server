@@ -35,7 +35,8 @@
 -   **Request Body:**
     ```json
     {
-      "gameMode": "string"
+      "gameMode": "string",
+      "characterId": "string"
     }
     ```
 -   **Response (200 OK):**
