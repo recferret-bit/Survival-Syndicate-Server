@@ -1,0 +1,166 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../prisma/balance/generated"
+}
+
+enum CurrencyType {
+  fiat
+  bonus
+  crypto
+}
+
+enum OperationType {
+  add
+  subtract
+}
+
+enum OperationStatus {
+  hold
+  refund
+  completed
+  failed
+  pending
+}
+
+enum LedgerReason {
+  payments_deposit
+  payments_withdrawal
+  payments_refund
+  admin_correction
+  games_bet
+  games_win
+  games_refund
+  bonus_activation
+  bonus_wager
+  bonus_free_spin
+  bonus_claim
+  bonus_deactivation
+}
+
+// Ledger tables (insert-only, per currency type)
+// Fiat balance ledger - insert-only operation log
+model FiatBalanceLedger {
+  id              String            @id @default(uuid()) @db.Uuid
+  userId          BigInt            @db.BigInt @map("user_id")
+  operationId     String            @map("operation_id")
+  currencyType    CurrencyType      @default(fiat) @map("currency_type")
+  amount          BigInt            @db.BigInt
+  operationType   OperationType     @map("operation_type")
+  operationStatus OperationStatus   @map("operation_status")
+  reason          LedgerReason      @map("reason")
+  createdAt       DateTime          @default(now()) @map("created_at")
+
+  @@unique([userId, operationId])
+  @@index([userId])
+  @@index([operationId])
+  @@index([createdAt])
+  @@map("fiat_balance_ledger")
+}
+
+// Bonus balance ledger - insert-only operation log
+model BonusBalanceLedger {
+  id            String            @id @default(uuid()) @db.Uuid
+  userId        BigInt            @db.BigInt @map("user_id")
+  operationId   String            @map("operation_id")
+  currencyType  CurrencyType      @default(bonus) @map("currency_type")
+  amount        BigInt            @db.BigInt
+  operationType OperationType     @map("operation_type")
+  operationStatus OperationStatus @map("operation_status")
+  reason        LedgerReason      @map("reason")
+  createdAt     DateTime          @default(now()) @map("created_at")
+
+  @@unique([userId, operationId])
+  @@index([userId])
+  @@index([operationId])
+  @@index([createdAt])
+  @@map("bonus_balance_ledger")
+}
+
+// Crypto balance ledger - insert-only operation log
+model CryptoBalanceLedger {
+  id              String            @id @default(uuid()) @db.Uuid
+  userId          BigInt            @db.BigInt @map("user_id")
+  operationId     String            @map("operation_id")
+  currencyType    CurrencyType      @default(crypto) @map("currency_type")
+  amount          BigInt            @db.BigInt
+  operationType   OperationType     @map("operation_type")
+  operationStatus OperationStatus @map("operation_status")
+  reason          LedgerReason      @map("reason")
+  createdAt       DateTime          @default(now()) @map("created_at")
+
+  @@unique([userId, operationId])
+  @@index([userId])
+  @@index([operationId])
+  @@index([createdAt])
+  @@map("crypto_balance_ledger")
+}
+
+// Resulting balance tables (per currency per user)
+// Fiat balance result - calculated balance per user
+model FiatBalanceResult {
+  id               String     @id @default(uuid()) @db.Uuid
+  userId           BigInt     @db.BigInt @unique @map("user_id")
+  balance          BigInt     @db.BigInt
+  currencyIsoCode  String     @map("currency_iso_code")
+  lastCalculatedAt DateTime  @default(now()) @map("last_calculated_at")
+  lastLedgerId     String?    @map("last_ledger_id") @db.Uuid
+
+  userBalance UserBalance?
+
+  @@index([userId])
+  @@index([currencyIsoCode])
+  @@map("fiat_balance_result")
+}
+
+// Bonus balance result - calculated balance per user
+model BonusBalanceResult {
+  id               String    @id @default(uuid()) @db.Uuid
+  userId           BigInt    @db.BigInt @unique @map("user_id")
+  balance          BigInt    @db.BigInt
+  currencyIsoCode  String    @map("currency_iso_code")
+  lastCalculatedAt DateTime  @default(now()) @map("last_calculated_at")
+  lastLedgerId     String?   @map("last_ledger_id") @db.Uuid
+
+  userBalance UserBalance?
+
+  @@index([userId])
+  @@index([currencyIsoCode])
+  @@map("bonus_balance_result")
+}
+
+// Crypto balance result - calculated balance per user
+model CryptoBalanceResult {
+  id               String    @id @default(uuid()) @db.Uuid
+  userId           BigInt    @db.BigInt @unique @map("user_id")
+  balance          BigInt    @db.BigInt
+  currencyIsoCode  String    @map("currency_iso_code")
+  lastCalculatedAt DateTime  @default(now()) @map("last_calculated_at")
+  lastLedgerId     String?   @map("last_ledger_id") @db.Uuid
+
+  userBalance UserBalance?
+
+  @@index([userId])
+  @@index([currencyIsoCode])
+  @@map("crypto_balance_result")
+}
+
+// Main balance table - aggregates all currency balances per user
+model UserBalance {
+  id              String    @id @default(uuid()) @db.Uuid
+  userId          BigInt    @db.BigInt @unique @map("user_id")
+  fiatBalanceId   String    @unique @map("fiat_balance_id") @db.Uuid
+  bonusBalanceId  String    @unique @map("bonus_balance_id") @db.Uuid
+  cryptoBalanceId String    @unique @map("crypto_balance_id") @db.Uuid
+
+  fiatBalance   FiatBalanceResult   @relation(fields: [fiatBalanceId], references: [id])
+  bonusBalance  BonusBalanceResult  @relation(fields: [bonusBalanceId], references: [id])
+  cryptoBalance CryptoBalanceResult @relation(fields: [cryptoBalanceId], references: [id])
+
+  @@index([userId])
+  @@map("user_balance")
+}
+

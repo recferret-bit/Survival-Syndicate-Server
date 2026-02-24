@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true
+  },
+  "monorepo": true,
+  "root": "apps",
+  "projects": {
+    "lib-affise": {
+      "type": "library",
+      "root": "libs/lib-affise",
+      "entryFile": "index",
+      "sourceRoot": "libs/lib-affise/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/lib-affise/tsconfig.lib.json"
+      }
+    },
+    "lib-balance": {
+      "type": "library",
+      "root": "libs/lib-balance",
+      "entryFile": "index",
+      "sourceRoot": "libs/lib-balance/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/lib-balance/tsconfig.lib.json"
+      }
+    },
+    "lib-bonus": {
+      "type": "library",
+      "root": "libs/lib-bonus",
+      "entryFile": "index",
+      "sourceRoot": "libs/lib-bonus/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/lib-bonus/tsconfig.lib.json"
+      }
+    },
+    "lib-dengage": {
+      "type": "library",
+      "root": "libs/lib-dengage",
+      "entryFile": "index",
+      "sourceRoot": "libs/lib-dengage/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/lib-dengage/tsconfig.lib.json"
+      }
+    },
+    "lib-exchange-rate": {
+      "type": "library",
+      "root": "libs/lib-exchange-rate",
+      "entryFile": "index",
+      "sourceRoot": "libs/lib-exchange-rate/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/lib-exchange-rate/tsconfig.lib.json"
+      }
+    },
+    "lib-games": {
+      "type": "library",
+      "root": "libs/lib-games",
+      "entryFile": "index",
+      "sourceRoot": "libs/lib-games/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/lib-games/tsconfig.lib.json"
+      }
+    },
+    "lib-payments": {
+      "type": "library",
+      "root": "libs/lib-payments",
+      "entryFile": "index",
+      "sourceRoot": "libs/lib-payments/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/lib-payments/tsconfig.lib.json"
+      }
+    },
+    "shared": {
+      "type": "library",
+      "root": "libs/shared",
+      "entryFile": "index",
+      "sourceRoot": "libs/shared/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/shared/tsconfig.lib.json"
+      }
+    },
+    "balance": {
+      "type": "application",
+      "root": "apps/balance",
+      "entryFile": "main",
+      "sourceRoot": "apps/balance/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/balance/tsconfig.app.json"
+      }
+    },
+    "bonus": {
+      "type": "application",
+      "root": "apps/bonus",
+      "entryFile": "main",
+      "sourceRoot": "apps/bonus/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/bonus/tsconfig.app.json"
+      }
+    },
+    "cron": {
+      "type": "application",
+      "root": "apps/cron",
+      "entryFile": "main",
+      "sourceRoot": "apps/cron/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/cron/tsconfig.app.json"
+      }
+    },
+    "games": {
+      "type": "application",
+      "root": "apps/games",
+      "entryFile": "main",
+      "sourceRoot": "apps/games/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/games/tsconfig.app.json"
+      }
+    },
+    "payments": {
+      "type": "application",
+      "root": "apps/payments",
+      "entryFile": "main",
+      "sourceRoot": "apps/payments/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/payments/tsconfig.app.json"
+      }
+    },
+    "swagger-aggregator": {
+      "type": "application",
+      "root": "apps/swagger-aggregator",
+      "entryFile": "main",
+      "sourceRoot": "apps/swagger-aggregator/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/swagger-aggregator/tsconfig.app.json"
+      }
+    },
+    "test-game-provider": {
+      "type": "application",
+      "root": "apps/test-game-provider",
+      "entryFile": "main",
+      "sourceRoot": "apps/test-game-provider/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/test-game-provider/tsconfig.app.json"
+      }
+    },
+    "test-payment-provider": {
+      "type": "application",
+      "root": "apps/test-payment-provider",
+      "entryFile": "main",
+      "sourceRoot": "apps/test-payment-provider/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/test-payment-provider/tsconfig.app.json"
+      }
+    },
+    "users": {
+      "type": "application",
+      "root": "apps/users",
+      "entryFile": "main",
+      "sourceRoot": "apps/users/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/users/tsconfig.app.json"
+      }
+    },
+    "currency-rate": {
+      "type": "application",
+      "root": "apps/currency-rate",
+      "entryFile": "main",
+      "sourceRoot": "apps/currency-rate/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/currency-rate/tsconfig.app.json"
+      }
+    },
+    "lib-currency-rate": {
+      "type": "library",
+      "root": "libs/lib-currency-rate",
+      "entryFile": "index",
+      "sourceRoot": "libs/lib-currency-rate/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/lib-currency-rate/tsconfig.lib.json"
+      }
+    }
+  }
+}

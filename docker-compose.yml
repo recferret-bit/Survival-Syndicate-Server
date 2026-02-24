@@ -1,0 +1,147 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Cluster Node 1 - Primary/Coordinator
+  # Handles: users_db, balance_db, currency_rate_db (user IDs % 3 == 0)
+  postgres-1:
+    image: postgres:15-alpine
+    container_name: postgres-1
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_1_data:/var/lib/postgresql/data
+      - ./docker/postgres/init-node-1.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - casino-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # PostgreSQL Cluster Node 2
+  # Handles: payments_db, test_payment_provider_db (user IDs % 3 == 1)
+  postgres-2:
+    image: postgres:15-alpine
+    container_name: postgres-2
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_2_data:/var/lib/postgresql/data
+      - ./docker/postgres/init-node-2.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - casino-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # PostgreSQL Cluster Node 3
+  # Handles: games_db, test_game_provider_db, bonus_db (user IDs % 3 == 2)
+  postgres-3:
+    image: postgres:15-alpine
+    container_name: postgres-3
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_3_data:/var/lib/postgresql/data
+      - ./docker/postgres/init-node-3.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - casino-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # PgBouncer - Connection Pooling for Local Development
+  # In dev, points to individual postgres nodes (not Citus)
+  pgbouncer:
+    build:
+      context: ./docker/pgbouncer
+      dockerfile: Dockerfile.dev
+    container_name: pgbouncer
+    ports:
+      - "6432:6432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - postgres-1
+      - postgres-2
+      - postgres-3
+    networks:
+      - casino-network
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "localhost", "-p", "6432", "-U", "postgres", "-d", "users_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - casino-network
+
+  nats-1:
+    image: nats:alpine
+    container_name: nats-1
+    command: "-js -name nats-1 -cluster_name casino-cluster -cluster nats://0.0.0.0:6222 -routes nats://nats-2:6222,nats://nats-3:6222 -http_port 8222"
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    networks:
+      - casino-network
+
+  nats-2:
+    image: nats:alpine
+    container_name: nats-2
+    command: "-js -name nats-2 -cluster_name casino-cluster -cluster nats://0.0.0.0:6222 -routes nats://nats-1:6222,nats://nats-3:6222 -http_port 8222"
+    ports:
+      - "4223:4222"
+      - "8223:8222"
+    networks:
+      - casino-network
+    depends_on:
+      - nats-1
+
+  nats-3:
+    image: nats:alpine
+    container_name: nats-3
+    command: "-js -name nats-3 -cluster_name casino-cluster -cluster nats://0.0.0.0:6222 -routes nats://nats-1:6222,nats://nats-2:6222 -http_port 8222"
+    ports:
+      - "4224:4222"
+      - "8224:8222"
+    networks:
+      - casino-network
+    depends_on:
+      - nats-1
+      - nats-2
+
+networks:
+  casino-network:
+    driver: bridge
+
+volumes:
+  postgres_1_data:
+    driver: local
+  postgres_2_data:
+    driver: local
+  postgres_3_data:
+    driver: local
+

@@ -1,0 +1,6 @@
+{
+  "name": "@casino/balance",
+  "version": "1.0.18",
+  "private": true,
+  "description": "Balance microservice for casino platform"
+}

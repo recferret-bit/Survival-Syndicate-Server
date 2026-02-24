@@ -1,0 +1,80 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../prisma/users/generated"
+}
+
+enum BanReason {
+  fraud
+  terms_violation
+  suspicious_activity
+  manual
+  other
+}
+
+enum AdminStatus {
+  active
+  inactive
+}
+
+// User account
+model User {
+  id              BigInt     @id @default(autoincrement()) @db.BigInt
+  email           String?    @unique
+  phone           String?    @unique
+  passwordHash    String     @map("password_hash")
+  bearerTokenHash String?    @map("bearer_token_hash")
+  name            String?
+  isTest          Boolean    @default(false) @map("is_test")
+  banned          Boolean    @default(false)
+  banReason       BanReason? @map("ban_reason")
+  banComment      String?    @map("ban_comment")
+  banTime         DateTime?  @map("ban_time")
+  country         String?
+  languageIsoCode String     @map("language_iso_code")
+  currencyIsoCode String     @map("currency_iso_code")
+  birthday        DateTime?
+  createdAt       DateTime   @default(now()) @map("created_at")
+  updatedAt       DateTime   @updatedAt @map("updated_at")
+
+  tracking Tracking?
+
+  @@map("user")
+}
+
+// User tracking (IP, UTM, analytics)
+model Tracking {
+  id          Int      @id @default(autoincrement())
+  userId      BigInt   @db.BigInt @unique @map("user_id")
+  firstIp     String   @map("first_ip")
+  lastIp      String   @map("last_ip")
+  gaClientId  String?  @map("ga_client_id")
+  yaClientId  String?  @map("ya_client_id")
+  clickId     String?  @map("click_id")
+  utmMedium   String?  @map("utm_medium")
+  utmSource   String?  @map("utm_source")
+  utmCampaign String?  @map("utm_campaign")
+  pid         String?
+  sub1        String?
+  sub2        String?
+  sub3        String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("tracking")
+}
+
+// Admin user for API access
+model Admin {
+  id        BigInt      @id @default(autoincrement()) @db.BigInt
+  email     String      @unique
+  apiKey    String      @unique @map("api_key")
+  status    AdminStatus @default(active)
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime    @updatedAt @map("updated_at")
+
+  @@map("admin")
+}

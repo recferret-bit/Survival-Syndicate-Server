@@ -1,0 +1,6 @@
+{
+  "name": "@casino/users",
+  "version": "1.0.46",
+  "private": true,
+  "description": "Users microservice for casino platform"
+}

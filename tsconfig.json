@@ -1,0 +1,172 @@
+{
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "resolvePackageJsonExports": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "target": "ES2023",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@app/balance": [
+        "apps/balance/src"
+      ],
+      "@app/balance/*": [
+        "apps/balance/src/*"
+      ],
+      "@app/bonus": [
+        "apps/bonus/src"
+      ],
+      "@app/bonus/*": [
+        "apps/bonus/src/*"
+      ],
+      "@app/cron": [
+        "apps/cron/src"
+      ],
+      "@app/cron/*": [
+        "apps/cron/src/*"
+      ],
+      "@app/games": [
+        "apps/games/src"
+      ],
+      "@app/games/*": [
+        "apps/games/src/*"
+      ],
+      "@app/payments": [
+        "apps/payments/src"
+      ],
+      "@app/payments/*": [
+        "apps/payments/src/*"
+      ],
+      "@app/swagger-aggregator": [
+        "apps/swagger-aggregator/src"
+      ],
+      "@app/swagger-aggregator/*": [
+        "apps/swagger-aggregator/src/*"
+      ],
+      "@app/test-game-provider": [
+        "apps/test-game-provider/src"
+      ],
+      "@app/test-game-provider/*": [
+        "apps/test-game-provider/src/*"
+      ],
+      "@app/test-payment-provider": [
+        "apps/test-payment-provider/src"
+      ],
+      "@app/test-payment-provider/*": [
+        "apps/test-payment-provider/src/*"
+      ],
+      "@app/users": [
+        "apps/users/src"
+      ],
+      "@app/users/*": [
+        "apps/users/src/*"
+      ],
+      "@app/currency-rate": [
+        "apps/currency-rate/src"
+      ],
+      "@app/currency-rate/*": [
+        "apps/currency-rate/src/*"
+      ],
+      "@lib/lib-affise": [
+        "libs/lib-affise/src"
+      ],
+      "@lib/lib-affise/*": [
+        "libs/lib-affise/src/*"
+      ],
+      "@lib/lib-balance": [
+        "libs/lib-balance/src"
+      ],
+      "@lib/lib-balance/*": [
+        "libs/lib-balance/src/*"
+      ],
+      "@lib/lib-bonus": [
+        "libs/lib-bonus/src"
+      ],
+      "@lib/lib-bonus/*": [
+        "libs/lib-bonus/src/*"
+      ],
+      "@lib/lib-dengage": [
+        "libs/lib-dengage/src"
+      ],
+      "@lib/lib-dengage/*": [
+        "libs/lib-dengage/src/*"
+      ],
+      "@lib/lib-exchange-rate": [
+        "libs/lib-exchange-rate/src"
+      ],
+      "@lib/lib-exchange-rate/*": [
+        "libs/lib-exchange-rate/src/*"
+      ],
+      "@lib/lib-games": [
+        "libs/lib-games/src"
+      ],
+      "@lib/lib-games/*": [
+        "libs/lib-games/src/*"
+      ],
+      "@lib/lib-payments": [
+        "libs/lib-payments/src"
+      ],
+      "@lib/lib-payments/*": [
+        "libs/lib-payments/src/*"
+      ],
+      "@lib/lib-users": [
+        "libs/lib-users/src"
+      ],
+      "@lib/lib-users/*": [
+        "libs/lib-users/src/*"
+      ],
+      "@lib/lib-currency-rate": [
+        "libs/lib-currency-rate/src"
+      ],
+      "@lib/lib-currency-rate/*": [
+        "libs/lib-currency-rate/src/*"
+      ],
+      "@lib/shared": [
+        "libs/shared/src"
+      ],
+      "@lib/shared/*": [
+        "libs/shared/src/*"
+      ],
+      "@prisma/balance": [
+        "prisma/balance/generated"
+      ],
+      "@prisma/currency-rate": [
+        "prisma/currency-rate/generated"
+      ],
+      "@prisma/bonus": [
+        "prisma/bonus/generated"
+      ],
+      "@prisma/games": [
+        "prisma/games/generated"
+      ],
+      "@prisma/payments": [
+        "prisma/payments/generated"
+      ],
+      "@prisma/test-game-provider": [
+        "prisma/test-game-provider/generated"
+      ],
+      "@prisma/test-payment-provider": [
+        "prisma/test-payment-provider/generated"
+      ],
+      "@prisma/users": [
+        "prisma/users/generated"
+      ]
+    }
+  }
+}
