@@ -8,67 +8,76 @@
   "monorepo": true,
   "root": "apps",
   "projects": {
-    "lib-affise": {
-      "type": "library",
-      "root": "libs/lib-affise",
-      "entryFile": "index",
-      "sourceRoot": "libs/lib-affise/src",
+    "api-gateway": {
+      "type": "application",
+      "root": "apps/api-gateway",
+      "entryFile": "main",
+      "sourceRoot": "apps/api-gateway/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/lib-affise/tsconfig.lib.json"
+        "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
       }
     },
-    "lib-balance": {
-      "type": "library",
-      "root": "libs/lib-balance",
-      "entryFile": "index",
-      "sourceRoot": "libs/lib-balance/src",
+    "auth-service": {
+      "type": "application",
+      "root": "apps/auth-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/auth-service/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/lib-balance/tsconfig.lib.json"
+        "tsConfigPath": "apps/auth-service/tsconfig.app.json"
       }
     },
-    "lib-bonus": {
-      "type": "library",
-      "root": "libs/lib-bonus",
-      "entryFile": "index",
-      "sourceRoot": "libs/lib-bonus/src",
+    "player-service": {
+      "type": "application",
+      "root": "apps/player-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/player-service/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/lib-bonus/tsconfig.lib.json"
+        "tsConfigPath": "apps/player-service/tsconfig.app.json"
       }
     },
-    "lib-dengage": {
-      "type": "library",
-      "root": "libs/lib-dengage",
-      "entryFile": "index",
-      "sourceRoot": "libs/lib-dengage/src",
+    "building-service": {
+      "type": "application",
+      "root": "apps/building-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/building-service/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/lib-dengage/tsconfig.lib.json"
+        "tsConfigPath": "apps/building-service/tsconfig.app.json"
       }
     },
-    "lib-exchange-rate": {
-      "type": "library",
-      "root": "libs/lib-exchange-rate",
-      "entryFile": "index",
-      "sourceRoot": "libs/lib-exchange-rate/src",
+    "combat-progress-service": {
+      "type": "application",
+      "root": "apps/combat-progress-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/combat-progress-service/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/lib-exchange-rate/tsconfig.lib.json"
+        "tsConfigPath": "apps/combat-progress-service/tsconfig.app.json"
       }
     },
-    "lib-games": {
-      "type": "library",
-      "root": "libs/lib-games",
-      "entryFile": "index",
-      "sourceRoot": "libs/lib-games/src",
+    "scheduler-service": {
+      "type": "application",
+      "root": "apps/scheduler-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/scheduler-service/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/lib-games/tsconfig.lib.json"
+        "tsConfigPath": "apps/scheduler-service/tsconfig.app.json"
       }
     },
-    "lib-payments": {
-      "type": "library",
-      "root": "libs/lib-payments",
-      "entryFile": "index",
-      "sourceRoot": "libs/lib-payments/src",
+    "game-server": {
+      "type": "application",
+      "root": "apps/game-server",
+      "entryFile": "main",
+      "sourceRoot": "apps/game-server/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/lib-payments/tsconfig.lib.json"
+        "tsConfigPath": "apps/game-server/tsconfig.app.json"
+      }
+    },
+    "analytics-service": {
+      "type": "application",
+      "root": "apps/analytics-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/analytics-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/analytics-service/tsconfig.app.json"
       }
     },
     "shared": {
@@ -80,103 +89,49 @@
         "tsConfigPath": "libs/shared/tsconfig.lib.json"
       }
     },
-    "balance": {
-      "type": "application",
-      "root": "apps/balance",
-      "entryFile": "main",
-      "sourceRoot": "apps/balance/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/balance/tsconfig.app.json"
-      }
-    },
-    "bonus": {
-      "type": "application",
-      "root": "apps/bonus",
-      "entryFile": "main",
-      "sourceRoot": "apps/bonus/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/bonus/tsconfig.app.json"
-      }
-    },
-    "cron": {
-      "type": "application",
-      "root": "apps/cron",
-      "entryFile": "main",
-      "sourceRoot": "apps/cron/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/cron/tsconfig.app.json"
-      }
-    },
-    "games": {
-      "type": "application",
-      "root": "apps/games",
-      "entryFile": "main",
-      "sourceRoot": "apps/games/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/games/tsconfig.app.json"
-      }
-    },
-    "payments": {
-      "type": "application",
-      "root": "apps/payments",
-      "entryFile": "main",
-      "sourceRoot": "apps/payments/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/payments/tsconfig.app.json"
-      }
-    },
-    "swagger-aggregator": {
-      "type": "application",
-      "root": "apps/swagger-aggregator",
-      "entryFile": "main",
-      "sourceRoot": "apps/swagger-aggregator/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/swagger-aggregator/tsconfig.app.json"
-      }
-    },
-    "test-game-provider": {
-      "type": "application",
-      "root": "apps/test-game-provider",
-      "entryFile": "main",
-      "sourceRoot": "apps/test-game-provider/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/test-game-provider/tsconfig.app.json"
-      }
-    },
-    "test-payment-provider": {
-      "type": "application",
-      "root": "apps/test-payment-provider",
-      "entryFile": "main",
-      "sourceRoot": "apps/test-payment-provider/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/test-payment-provider/tsconfig.app.json"
-      }
-    },
-    "users": {
-      "type": "application",
-      "root": "apps/users",
-      "entryFile": "main",
-      "sourceRoot": "apps/users/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/users/tsconfig.app.json"
-      }
-    },
-    "currency-rate": {
-      "type": "application",
-      "root": "apps/currency-rate",
-      "entryFile": "main",
-      "sourceRoot": "apps/currency-rate/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/currency-rate/tsconfig.app.json"
-      }
-    },
-    "lib-currency-rate": {
+    "lib-player": {
       "type": "library",
-      "root": "libs/lib-currency-rate",
+      "root": "libs/lib-player",
       "entryFile": "index",
-      "sourceRoot": "libs/lib-currency-rate/src",
+      "sourceRoot": "libs/lib-player/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/lib-currency-rate/tsconfig.lib.json"
+        "tsConfigPath": "libs/lib-player/tsconfig.lib.json"
+      }
+    },
+    "lib-building": {
+      "type": "library",
+      "root": "libs/lib-building",
+      "entryFile": "index",
+      "sourceRoot": "libs/lib-building/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/lib-building/tsconfig.lib.json"
+      }
+    },
+    "lib-game-server": {
+      "type": "library",
+      "root": "libs/lib-game-server",
+      "entryFile": "index",
+      "sourceRoot": "libs/lib-game-server/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/lib-game-server/tsconfig.lib.json"
+      }
+    },
+    "lib-combat-progress": {
+      "type": "library",
+      "root": "libs/lib-combat-progress",
+      "entryFile": "index",
+      "sourceRoot": "libs/lib-combat-progress/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/lib-combat-progress/tsconfig.lib.json"
+      }
+    },
+    "lib-analytics": {
+      "type": "library",
+      "root": "libs/lib-analytics",
+      "entryFile": "index",
+      "sourceRoot": "libs/lib-analytics/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/lib-analytics/tsconfig.lib.json"
       }
     }
   }

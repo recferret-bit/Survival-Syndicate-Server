@@ -23,119 +23,53 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@app/balance": [
-        "apps/balance/src"
+      "@app/api-gateway": [
+        "apps/api-gateway/src"
       ],
-      "@app/balance/*": [
-        "apps/balance/src/*"
+      "@app/api-gateway/*": [
+        "apps/api-gateway/src/*"
       ],
-      "@app/bonus": [
-        "apps/bonus/src"
+      "@app/auth-service": [
+        "apps/auth-service/src"
       ],
-      "@app/bonus/*": [
-        "apps/bonus/src/*"
+      "@app/auth-service/*": [
+        "apps/auth-service/src/*"
       ],
-      "@app/cron": [
-        "apps/cron/src"
+      "@app/player-service": [
+        "apps/player-service/src"
       ],
-      "@app/cron/*": [
-        "apps/cron/src/*"
+      "@app/player-service/*": [
+        "apps/player-service/src/*"
       ],
-      "@app/games": [
-        "apps/games/src"
+      "@app/building-service": [
+        "apps/building-service/src"
       ],
-      "@app/games/*": [
-        "apps/games/src/*"
+      "@app/building-service/*": [
+        "apps/building-service/src/*"
       ],
-      "@app/payments": [
-        "apps/payments/src"
+      "@app/combat-progress-service": [
+        "apps/combat-progress-service/src"
       ],
-      "@app/payments/*": [
-        "apps/payments/src/*"
+      "@app/combat-progress-service/*": [
+        "apps/combat-progress-service/src/*"
       ],
-      "@app/swagger-aggregator": [
-        "apps/swagger-aggregator/src"
+      "@app/scheduler-service": [
+        "apps/scheduler-service/src"
       ],
-      "@app/swagger-aggregator/*": [
-        "apps/swagger-aggregator/src/*"
+      "@app/scheduler-service/*": [
+        "apps/scheduler-service/src/*"
       ],
-      "@app/test-game-provider": [
-        "apps/test-game-provider/src"
+      "@app/game-server": [
+        "apps/game-server/src"
       ],
-      "@app/test-game-provider/*": [
-        "apps/test-game-provider/src/*"
+      "@app/game-server/*": [
+        "apps/game-server/src/*"
       ],
-      "@app/test-payment-provider": [
-        "apps/test-payment-provider/src"
+      "@app/analytics-service": [
+        "apps/analytics-service/src"
       ],
-      "@app/test-payment-provider/*": [
-        "apps/test-payment-provider/src/*"
-      ],
-      "@app/users": [
-        "apps/users/src"
-      ],
-      "@app/users/*": [
-        "apps/users/src/*"
-      ],
-      "@app/currency-rate": [
-        "apps/currency-rate/src"
-      ],
-      "@app/currency-rate/*": [
-        "apps/currency-rate/src/*"
-      ],
-      "@lib/lib-affise": [
-        "libs/lib-affise/src"
-      ],
-      "@lib/lib-affise/*": [
-        "libs/lib-affise/src/*"
-      ],
-      "@lib/lib-balance": [
-        "libs/lib-balance/src"
-      ],
-      "@lib/lib-balance/*": [
-        "libs/lib-balance/src/*"
-      ],
-      "@lib/lib-bonus": [
-        "libs/lib-bonus/src"
-      ],
-      "@lib/lib-bonus/*": [
-        "libs/lib-bonus/src/*"
-      ],
-      "@lib/lib-dengage": [
-        "libs/lib-dengage/src"
-      ],
-      "@lib/lib-dengage/*": [
-        "libs/lib-dengage/src/*"
-      ],
-      "@lib/lib-exchange-rate": [
-        "libs/lib-exchange-rate/src"
-      ],
-      "@lib/lib-exchange-rate/*": [
-        "libs/lib-exchange-rate/src/*"
-      ],
-      "@lib/lib-games": [
-        "libs/lib-games/src"
-      ],
-      "@lib/lib-games/*": [
-        "libs/lib-games/src/*"
-      ],
-      "@lib/lib-payments": [
-        "libs/lib-payments/src"
-      ],
-      "@lib/lib-payments/*": [
-        "libs/lib-payments/src/*"
-      ],
-      "@lib/lib-users": [
-        "libs/lib-users/src"
-      ],
-      "@lib/lib-users/*": [
-        "libs/lib-users/src/*"
-      ],
-      "@lib/lib-currency-rate": [
-        "libs/lib-currency-rate/src"
-      ],
-      "@lib/lib-currency-rate/*": [
-        "libs/lib-currency-rate/src/*"
+      "@app/analytics-service/*": [
+        "apps/analytics-service/src/*"
       ],
       "@lib/shared": [
         "libs/shared/src"
@@ -143,29 +77,41 @@
       "@lib/shared/*": [
         "libs/shared/src/*"
       ],
-      "@prisma/balance": [
-        "prisma/balance/generated"
+      "@lib/lib-player": [
+        "libs/lib-player/src"
       ],
-      "@prisma/currency-rate": [
-        "prisma/currency-rate/generated"
+      "@lib/lib-player/*": [
+        "libs/lib-player/src/*"
       ],
-      "@prisma/bonus": [
-        "prisma/bonus/generated"
+      "@lib/lib-building": [
+        "libs/lib-building/src"
       ],
-      "@prisma/games": [
-        "prisma/games/generated"
+      "@lib/lib-building/*": [
+        "libs/lib-building/src/*"
       ],
-      "@prisma/payments": [
-        "prisma/payments/generated"
+      "@lib/lib-game-server": [
+        "libs/lib-game-server/src"
       ],
-      "@prisma/test-game-provider": [
-        "prisma/test-game-provider/generated"
+      "@lib/lib-game-server/*": [
+        "libs/lib-game-server/src/*"
       ],
-      "@prisma/test-payment-provider": [
-        "prisma/test-payment-provider/generated"
+      "@lib/lib-combat-progress": [
+        "libs/lib-combat-progress/src"
       ],
-      "@prisma/users": [
-        "prisma/users/generated"
+      "@lib/lib-combat-progress/*": [
+        "libs/lib-combat-progress/src/*"
+      ],
+      "@lib/lib-analytics": [
+        "libs/lib-analytics/src"
+      ],
+      "@lib/lib-analytics/*": [
+        "libs/lib-analytics/src/*"
+      ],
+      "@prisma/meta": [
+        "prisma/meta/generated"
+      ],
+      "@prisma/catalog": [
+        "prisma/catalog/generated"
       ]
     }
   }

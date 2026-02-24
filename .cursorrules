@@ -1,18 +1,24 @@
-# Cursor Rules for Casino Project
+# Cursor Rules for Survival Syndicate Server
 
 ## Project Context
 
-NestJS microservices monorepo with Clean Architecture. 8 independent services communicating via NATS, each with PostgreSQL database.
+Survival Syndicate — online multiplayer survival game server. NestJS monorepo with 8 microservices communicating via NATS. The server runs deterministic game simulations at a fixed tick rate and manages meta-game progression.
 
 **Services:**
-- `users` (3000), `balance` (3001), `payments` (3002), `games` (3004), `bonus` (3006), `cron`
-- Test: `test-payment-provider` (3003), `test-game-provider` (3005)
+- `api-gateway` — HTTP entry point, routing, Swagger
+- `auth-service` — JWT authentication, refresh tokens, guards
+- `player-service` — Player accounts, characters (CRUD), friends, bans
+- `building-service` — Buildings, upgrades, bonuses, content unlocks, passive income
+- `combat-progress-service` — Player Level (XP), Battle Pass, achievements, trophies, combat pool
+- `scheduler-service` — Cron/Bull: passive income, daily/weekly resets, leaderboards
+- `game-server` — Real-time gameplay simulation (WebSocket, GameLoop, physics, lag compensation)
+- `analytics-service` — Event collection, ClickHouse
 
-**Tech Stack:** NestJS, Prisma, NATS (3-node cluster), Redis, PostgreSQL
+**Tech Stack:** NestJS 11, TypeScript 5.7, Prisma 7, NATS, Redis, PostgreSQL 15, WebSocket, ClickHouse
 
 ## Per-App Documentation
 
-Read `apps/{service}/FEATURES.md` when working in that app. Read `libs/LIBS.md` when using shared libraries.
+Read `apps/{service}/FEATURES.md` when working in that app. Read `libs/LIBS.md` when using shared libraries. Read `docs/architecture/` for full system design (37 documents).
 
 ## Clean Architecture - STRICT ENFORCEMENT
 
@@ -33,7 +39,8 @@ apps/{service}/src/
 │   └── external/
 └── presentation/
     ├── http/            # Controllers + DTOs
-    └── nats/            # Message handlers
+    ├── nats/            # Message handlers
+    └── websocket/       # WebSocket handlers (game-server only)
 ```
 
 **CRITICAL RULES:**
@@ -43,58 +50,30 @@ apps/{service}/src/
 - Handlers: Thin orchestrators (<50 lines)
 - CQRS: Commands for writes, Queries for reads
 
-**Example Domain Entity (CORRECT):**
-```typescript
-// ✅ domain/entities/user/user.ts
-import BigNumber from 'bignumber.js'; // Only pure TypeScript/JS libraries
-
-export class User {
-  constructor(private props: UserProps) {}
-  
-  get balance(): BigNumber {
-    return this.props.balance;
-  }
-  
-  // Business logic methods here
-  canAffordPurchase(amount: BigNumber): boolean {
-    return this.props.balance.isGreaterThanOrEqualTo(amount);
-  }
-}
-```
-
-**Example Domain Entity (WRONG):**
-```typescript
-// ❌ NEVER import framework code in domain
-import { Injectable } from '@nestjs/common'; // ❌
-import { PrismaClient } from '@prisma/users'; // ❌
-
-export class User {
-  // Domain entities should not have decorators
-}
-```
-
 ## Path Aliases - USE THESE
 
 ```typescript
 // Applications
-@app/users/*
-@app/balance/*
-@app/payments/*
-@app/games/*
-@app/bonus/*
+@app/api-gateway/*
+@app/auth-service/*
+@app/player-service/*
+@app/building-service/*
+@app/combat-progress-service/*
+@app/scheduler-service/*
+@app/game-server/*
+@app/analytics-service/*
 
 // Libraries
-@lib/shared/*              // Common utilities
-@lib/lib-balance/*         // Balance service contracts
-@lib/lib-games/*
-@lib/lib-payments/*
-@lib/lib-bonus/*
+@lib/shared/*              // Common utilities, auth, health, NATS client
+@lib/lib-player/*          // Player service contracts
+@lib/lib-building/*        // Building service contracts
+@lib/lib-game-server/*     // Game server contracts
+@lib/lib-combat-progress/* // Combat progress contracts
+@lib/lib-analytics/*       // Analytics service contracts
 
-// Prisma clients (service-specific)
-@prisma/users
-@prisma/balance
-@prisma/payments
-@prisma/games
+// Prisma clients
+@prisma/meta               // Player data, buildings, trophies, wallet
+@prisma/catalog            // Static game config (building levels, weapon stats)
 ```
 
 ## NATS Communication - NEVER HARDCODE SUBJECTS
@@ -103,19 +82,19 @@ export class User {
 
 ```typescript
 // ✅ CORRECT: Use publisher from library
-import { BalancePublisher } from '@lib/lib-balance';
-
-const response = await balancePublisher.createUserBalance(request);
+import { PlayerPublisher } from '@lib/lib-player';
+const response = await playerPublisher.getCharacter(request);
 
 // ❌ WRONG: Hardcoded subject
-const response = await natsClient.send('balance.create-user-balance.v1', data);
+const response = await natsClient.send('player.get-character.v1', data);
 ```
 
 **Communication Libraries:**
-- `@lib/lib-balance` - BalancePublisher, BalanceSubjects
-- `@lib/lib-games` - GamesPublisher, GamesSubjects  
-- `@lib/lib-payments` - PaymentsPublisher, PaymentsSubjects
-- `@lib/lib-bonus` - BonusPublisher, BonusSubjects
+- `@lib/lib-player` — PlayerPublisher, PlayerSubjects
+- `@lib/lib-building` — BuildingPublisher, BuildingSubjects
+- `@lib/lib-game-server` — GameServerPublisher, GameServerSubjects
+- `@lib/lib-combat-progress` — CombatProgressPublisher, CombatProgressSubjects
+- `@lib/lib-analytics` — AnalyticsPublisher, AnalyticsSubjects
 
 **Pattern:**
 - Request-Reply: Publishers (synchronous)
@@ -123,1205 +102,170 @@ const response = await natsClient.send('balance.create-user-balance.v1', data);
 
 ### NATS Publisher Response Validation - MANDATORY
 
-**CRITICAL: Every NATS publisher method in `/libs/lib-*/src/publishers` MUST validate responses.**
+Every NATS publisher method in `/libs/lib-*/src/publishers` MUST:
+1. Check if response exists: `if (!response) { throw ... }`
+2. Validate response with Zod: `ResponseSchema.parse(response)`
+3. Include error logging with context
+4. Use try-catch around Zod validation
 
-**Required Pattern for ALL Publisher Methods:**
+## Game Server Architecture
 
+The `game-server` service is unique — it runs real-time gameplay simulations:
+
+### Core Components
+- **GameLoop**: Fixed tick rate (30 FPS), deterministic simulation
+- **InputBuffer**: `Map<playerId, RingBuffer<PlayerInput>>` — last N inputs per player
+- **StateBuffer**: `RingBuffer<WorldState>` — last N world states for lag compensation
+- **PhysicsSystem**: Deterministic physics (movement, collisions)
+- **LagCompensationSystem**: "Rewinds" world state for hit detection
+- **CombatSystem**: Authoritative weapon fire, ammo, damage
+- **AISystem**: Enemy behavior
+- **SpawnSystem**: Wave-based enemy spawning
+
+### Key Interfaces
 ```typescript
-import { Logger } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
-import { RequestSchema, ResponseSchema } from '../schemas';
+interface PlayerInput {
+  sequence_id: number;
+  client_time: number;
+  ping: number;
+  joystick_vector: { x: number; y: number };
+  actions: Action[];
+  states: { is_firing: boolean };
+}
 
-@Injectable()
-export class SomePublisher {
-  private readonly logger = new Logger(SomePublisher.name);
-  
-  constructor(@Inject('NATS_CLIENT') private readonly client: ClientProxy) {}
-  
-  async someMethod(dto: Request): Promise<Response> {
-    // Step 1: Validate request (optional but recommended)
-    RequestSchema.parse(dto);
-    
-    // Step 2: Send request and get response
-    const response = await this.client
-      .send<Response>(SomeSubject, dto)
-      .toPromise();
-    
-    // Step 3: ✅ MANDATORY - Check if response exists
-    if (!response) {
-      this.logger.error(
-        `Received undefined response from service`,
-        { dto },
-      );
-      throw new Error(
-        'Service did not return a valid response. The service may be unavailable or the request timed out.',
-      );
-    }
-    
-    // Step 4: ✅ MANDATORY - Validate response with Zod
-    try {
-      return ResponseSchema.parse(response);
-    } catch (error) {
-      this.logger.error(
-        `Invalid response format from service`,
-        { response, error },
-      );
-      throw new Error(
-        `Service returned an invalid response format: ${error.message}`,
-      );
-    }
-  }
+interface WorldState {
+  server_time: number;
+  entities: Map<entityId, EntityState>;
 }
 ```
 
-**Why This is Critical:**
-1. **Service Unavailability**: NATS `.toPromise()` returns `undefined` if no handler responds
-2. **Timeout Scenarios**: Network issues or overloaded services
-3. **Type Safety**: Response might not match expected schema
-4. **Debugging**: Proper error logging helps trace inter-service issues
-5. **Error Handling**: Calling service gets clear error messages
+### Game Server Communication
+- **WebSocket**: Receives `PlayerInput`, sends `WorldState`
+- **NATS subscriptions**: `gameplay.start_simulation`, `player.input.{matchId}.*`
+- **NATS publications**: `gameplay.world_state.{matchId}`
 
-**What to Check:**
-- ✅ Response existence check: `if (!response) { throw ... }`
-- ✅ Zod validation: `ResponseSchema.parse(response)`
-- ✅ Error logging with context
-- ✅ Descriptive error messages
-- ✅ Try-catch around Zod validation
+## Database Architecture
 
-**Bad Example (NEVER do this):**
+Two shared PostgreSQL databases:
+- **Postgres_Meta** — Player data, buildings, trophies, achievements, wallet
+- **Postgres_Catalog** — Static game config (building levels, weapon stats, enemy types)
 
+```bash
+# Generate Prisma clients
+npm run prisma:generate
+
+# Run migrations (dev)
+npm run prisma:migrate:dev
+
+# Prisma Studio
+npm run prisma:studio:meta
+npm run prisma:studio:catalog
+```
+
+## HTTP Controllers, DTOs, and Use Cases
+
+### Controller Pattern
 ```typescript
-// ❌ WRONG: No validation, no error checking
-async createUser(dto: Request): Promise<Response> {
-  const response = await this.client
-    .send<Response>(Subject, dto)
-    .toPromise();
-  
-  return response;  // ❌ What if response is undefined?
-}
-
-// ❌ WRONG: No Zod validation
-async createUser(dto: Request): Promise<Response> {
-  const response = await this.client
-    .send<Response>(Subject, dto)
-    .toPromise();
-  
-  if (!response) throw new Error('No response');
-  return response;  // ❌ Response format not validated
-}
-```
-
-**Reference Implementation:**
-- `libs/lib-balance/src/publishers/balance.publisher.ts`
-- All methods in this file follow the correct pattern
-
-## Database Per Service - NEVER CROSS-ACCESS
-
-**Each service owns its database exclusively:**
-- users_db → Users service ONLY
-- balance_db → Balance service ONLY
-- payments_db → Payments service ONLY
-
-**Rules:**
-- NEVER access another service's database directly
-- NEVER import another service's Prisma client
-- Use NATS communication for cross-service data access
-- Each service has separate Prisma schema: `prisma/{service}/schema.prisma`
-
-## BigNumber vs BigInt Usage - CRITICAL RULE
-
-**NEVER use `bigint` type in application or domain code. ALWAYS use `BigNumber` from `bignumber.js`.**
-
-### Why
-- `BigNumber` provides safe decimal arithmetic for financial calculations
-- `bigint` is ONLY for Prisma database mapping at the infrastructure layer
-- Using `bigint` in domain code leads to precision loss and calculation errors
-
-### Core Principles
-
-1. **Domain entities, DTOs, application layer**: ALWAYS use `BigNumber`
-2. **Repository ports (abstract classes)**: ALWAYS use `BigNumber`
-3. **Prisma mappers**: Use conversion utility functions ONLY
-4. **Prisma schemas and generated types**: `bigint` (database mapping only)
-
-### Correct Usage
-
-```typescript
-// ✅ CORRECT: Domain entities use BigNumber
-import BigNumber from 'bignumber.js';
-
-interface UserProps {
-  id: BigNumber;
-  balance: BigNumber;
-}
-
-class User {
-  get balance(): BigNumber {
-    return this.props.balance;
-  }
-  
-  updateBalance(newBalance: BigNumber): User {
-    return new User({ ...this.props, balance: newBalance });
-  }
-}
-```
-
-### Utility Functions for Conversions
-
-```typescript
-// ✅ CORRECT: Use utility functions from @lib/shared
-import { bigIntToBigNumber, bigNumberToBigInt } from '@lib/shared';
-
-// In Prisma mappers: Prisma → Domain
-static toDomain(entity: PrismaUser): User {
-  return new User({
-    id: bigIntToBigNumber(entity.id),
-    balance: bigIntToBigNumber(entity.balance)
-  });
-}
-
-// In Prisma mappers: Domain → Prisma
-static toPrisma(user: User): Prisma.UserUncheckedCreateInput {
-  return {
-    id: bigNumberToBigInt(user.id),
-    balance: bigNumberToBigInt(user.balance)
-  };
-}
-
-// In repositories: Convert BigNumber for Prisma queries
-async findById(userId: BigNumber): Promise<User | null> {
-  const userIdBigint = bigNumberToBigInt(userId);
-  const entity = await this.prisma.user.findUnique({
-    where: { id: userIdBigint }
-  });
-  return entity ? UserMapper.toDomain(entity) : null;
-}
-```
-
-### String to BigNumber Conversion
-
-```typescript
-// ✅ CORRECT: Use stringToBigNumber for string inputs
-import { stringToBigNumber } from '@lib/shared';
-
-const userId = stringToBigNumber(request.userId);
-const amount = stringToBigNumber(request.amount);
-```
-
-### BigNumber Comparisons
-
-```typescript
-// ✅ CORRECT: Use BigNumber methods
-if (betAmount.isGreaterThanOrEqualTo(minBet) && 
-    betAmount.isLessThanOrEqualTo(maxBet)) {
-  // valid
-}
-
-if (balance.isEqualTo(targetBalance)) {
-  // equal
-}
-
-// ❌ WRONG: Direct comparison
-if (betAmount >= minBet) { } // Don't do this
-if (balance === targetBalance) { } // Don't do this
-```
-
-### What NOT to Do
-
-```typescript
-// ❌ WRONG: Using bigint in domain entities
-interface UserProps {
-  id: bigint;        // ❌ Never
-  balance: bigint;   // ❌ Never
-}
-
-// ❌ WRONG: Using BigInt() constructor
-const userId = BigInt(request.userId);  // ❌ Use stringToBigNumber()
-
-// ❌ WRONG: Manual conversion with .toString()
-new BigNumber(entity.balance.toString())  // ❌ Use bigIntToBigNumber()
-BigInt(data.balance.toString())  // ❌ Use bigNumberToBigInt()
-
-// ❌ WRONG: Using bigint in repository port interfaces
-abstract class UserPortRepository {
-  abstract findById(userId: bigint): Promise<User>;  // ❌ Use BigNumber
-}
-
-// ❌ WRONG: Using bigint in use case handlers
-async execute(command: CreateUserCommand) {
-  const userId = BigInt(command.userId);  // ❌ Use stringToBigNumber()
-}
-```
-
-### Checklist for Code Review
-
-When writing or reviewing code, verify:
-
-- [ ] All domain entities use `BigNumber` (not `bigint`)
-- [ ] All repository port methods use `BigNumber` parameters (not `bigint`)
-- [ ] Prisma mappers use `bigIntToBigNumber()` and `bigNumberToBigInt()`
-- [ ] No `BigInt()` constructor calls in application/domain code
-- [ ] No manual `.toString()` conversions
-- [ ] String inputs converted with `stringToBigNumber()`
-- [ ] BigNumber comparisons use methods (`.isEqualTo()`, `.isGreaterThan()`, etc.)
-
-### String-Based DTOs for Financial Data and User IDs
-
-**ALWAYS use `string` type for user IDs and amounts in HTTP DTOs.**
-
-**CRITICAL: userId Best Practice**
-- In Prisma database: `userId` is stored as `bigint` (BIGINT column)
-- In HTTP requests/controllers: `userId` is validated as `string` in DTOs
-- In domain/application logic: `userId` is converted to `BigNumber` using `stringToBigNumber()`
-- Never use `number` type for `userId` in DTOs or requests
-
-```typescript
-// ✅ CORRECT: DTOs use strings for IDs and amounts
-import { z } from 'zod';
-
-export const PaymentRequestSchema = z.object({
-  userId: z.string().regex(/^\d+$/, 'User ID must be a positive integer string'),
-  amount: z.string().regex(/^\d+$/, 'Amount must be a positive integer string'),
-});
-
-// Handler: Convert strings to BigNumber
-import { stringToBigNumber } from '@lib/shared';
-const userId = stringToBigNumber(request.userId);  // ✅ string → BigNumber
-const amount = stringToBigNumber(request.amount);  // ✅ string → BigNumber
-
-// ❌ WRONG: Using number in DTOs
-export const PaymentRequestSchema = z.object({
-  userId: z.number().int().positive(),  // ❌ Precision loss for IDs > 2^53
-  amount: z.number().int().positive(),  // ❌ Precision loss
-});
-```
-
-**Why Strings?**
-- JavaScript `Number.MAX_SAFE_INTEGER = 2^53 - 1` (9,007,199,254,740,991)
-- Large numbers lose precision in JSON: `9007199254740993` → `9007199254740992`
-- Strings preserve exact values during HTTP transport
-
-**Complete Data Flow for userId and amounts:**
-```
-HTTP/JSON → userId: "12345", amount: "10000" (string)
-    ↓
-Zod Validation → validated strings
-    ↓
-Handler → stringToBigNumber(userId), stringToBigNumber(amount)
-    ↓
-Domain → BigNumber (safe arithmetic, business logic)
-    ↓
-Mapper → bigNumberToBigInt(userId), bigNumberToBigInt(amount)
-    ↓
-Prisma → bigint (database storage)
-    ↓
-Database → BIGINT column (users.id, transactions.amount, etc.)
-```
-
-### Reference
-See `docs/BIGNUMBER_BEST_PRACTICES.md` for complete documentation.
-
-## Testing Quality Standards - MANDATORY
-
-**Core Philosophy: QUALITY OVER QUANTITY**
-
-Tests must validate **business logic and real-world scenarios**, NOT just achieve coverage numbers.
-
-### Critical Testing Principles
-
-**✅ DO - Focus on Business Value:**
-- Test business rules and invariants (validation, state transitions, calculations)
-- Test edge cases and error conditions (zero, negative, maximum values)
-- Test real-world scenarios (concurrent updates, multi-step flows)
-- Test complex calculations (wagering, conversions, commissions)
-- Test error handling and rollback scenarios
-- Write descriptive test names explaining the business rule
-
-**❌ DON'T - Avoid Superficial Tests:**
-- DON'T test simple getters/setters that just return properties
-- DON'T test obvious property assignments (`user.getName() === 'John'`)
-- DON'T test framework behavior (DI, class instantiation)
-- DON'T write redundant tests for coverage numbers
-- DON'T test trivial constructors with no validation
-- DON'T test DTOs with no logic (just property bags)
-
-### Examples: Good vs Bad Tests
-
-```typescript
-// ❌ BAD: Testing property assignment (no business value)
-it('should set user name', () => {
-  const user = new User({ name: 'John' });
-  expect(user.getName()).toBe('John');  // ❌ Worthless
-});
-
-// ✅ GOOD: Testing business logic
-it('should prevent withdrawal when balance is insufficient', () => {
-  const user = new User({ balance: new BigNumber(100) });
-  expect(() => user.withdraw(new BigNumber(200)))
-    .toThrow('Insufficient balance');
-});
-
-// ✅ GOOD: Testing real-world scenario
-it('should handle concurrent balance updates correctly', async () => {
-  const userId = new BigNumber(1);
-  await Promise.all([
-    repository.increment(userId, Currency.USD, new BigNumber(100)),
-    repository.increment(userId, Currency.USD, new BigNumber(200)),
-  ]);
-  const balance = await repository.findByUserIdAndCurrency(userId, Currency.USD);
-  expect(balance.getAmount()).toEqual(new BigNumber(300));
-});
-```
-
-### What NOT to Test
-
-**SKIP tests for:**
-1. Simple DTOs with no logic (just property bags)
-2. Trivial getters that return properties
-3. Framework behavior (NestJS DI, TypeScript classes)
-4. Constants and enums
-5. Simple mappers with no transformation logic
-
-```typescript
-// ❌ DON'T TEST: Simple DTO
-export class CreateUserDto {
-  email: string;
-  password: string;
-}
-
-// ❌ DON'T TEST: Framework behavior
-it('should inject dependencies', () => {
-  const handler = new Handler(dep1, dep2);
-  expect(handler).toBeDefined();
-});
-```
-
-### Coverage Goals (Quality First)
-
-- Domain: 100% business logic (skip trivial getters)
-- Application: 90%+ use case orchestration
-- Infrastructure: 70%+ critical paths
-- Presentation: 80%+ controllers
-
-**Remember:** Coverage is NOT quality. 70% coverage of real scenarios beats 100% coverage of trivial assertions.
-
-### Test Review Checklist
-
-When reviewing tests, ask:
-1. **Does this test verify business logic?** If it only tests property assignment, reject it.
-2. **Would this test catch a real bug?** If it's testing implementation details, it's brittle.
-3. **Is this test redundant?** If another test covers this, remove it.
-4. **Does this test validate a real-world scenario?** If it's contrived for coverage, reject it.
-5. **Is the test name descriptive?** Good: "should prevent withdrawal when balance is insufficient", Bad: "should test withdraw method"
-
-**Every test should answer: "What business value does this verify?"**
-
-**See:** `docs/TESTING_QUALITY_STANDARDS.md` for comprehensive testing guidelines.
-
-## Currency and Language - STRICT ENFORCEMENT
-
-**CRITICAL RULE: Absolute ban on currency/language strings, custom enums, and constants.**
-
-**ONLY allowed sources:**
-- `@lib/shared/currency` - Currency enum, CurrencyService, conversion utilities
-- `@lib/shared/language` - Language class and related utilities
-
-**Any other usage is FORBIDDEN.**
-
-### Currency - MANDATORY Pattern
-
-```typescript
-// ✅ CORRECT: ONLY import from shared library
-import { Currency } from '@lib/shared/currency';
-// Also available:
-import { CurrencyService, getCurrencySymbol } from '@lib/shared/currency';
-
-// DTOs - Use z.nativeEnum()
-export const PaymentSchema = z.object({
-  currency: z.nativeEnum(Currency),  // ✅ ONLY this
-});
-
-// Domain entities
-interface PaymentProps {
-  currency: Currency;  // ✅ ONLY this type
-}
-
-// Comparisons
-if (payment.currency === Currency.USD) {  // ✅
-  // ...
-}
-
-// Get currency details
-const symbol = getCurrencySymbol(Currency.USD);  // ✅
-```
-
-### Currency Decimals for Provider APIs - MANDATORY
-
-```typescript
-// ✅ CORRECT: Resolve decimals from shared currency metadata
-import { bigNumberToDecimal, getCurrencyVelueByStringCode } from '@lib/shared';
-
-const decimals = getCurrencyVelueByStringCode(currencyCode).getDecimals();
-const amount = bigNumberToDecimal(amountInSmallestUnit, decimals);
-
-// ❌ WRONG: Hardcoded precision for provider payloads
-const amount = Number(balance).toFixed(2); // ❌ NEVER
-const amount = bigNumberToDecimal(value); // ❌ Avoid relying on default decimals
-```
-
-**Rules:**
-- For ALL provider API request/response amount formatting, use currency decimals from `@lib/shared`
-- NEVER hardcode `2` decimals for provider integrations
-- Follow balance handling approach: `getCurrencyVelueByStringCode(...).getDecimals()`
-
-### What is FORBIDDEN for Currency
-
-```typescript
-// ❌ FORBIDDEN: Raw strings
-if (payment.currency === 'USD') { }  // ❌ NEVER
-if (payment.currency === 'usd') { }  // ❌ NEVER
-const curr = 'USD';  // ❌ NEVER
-
-// ❌ FORBIDDEN: Custom enums
-enum MyCurrency { USD = 'usd' }  // ❌ NEVER create your own
-
-// ❌ FORBIDDEN: String literal types
-type Currency = 'USD' | 'EUR';  // ❌ NEVER redefine
-type CurrencyCode = 'usd' | 'eur';  // ❌ NEVER
-
-// ❌ FORBIDDEN: Constants
-const CURRENCY_USD = 'usd';  // ❌ NEVER
-const USD = 'USD';  // ❌ NEVER
-const CURRENCIES = ['USD', 'EUR'];  // ❌ NEVER
-
-// ❌ FORBIDDEN: Object literals
-const currencies = { USD: 'usd', EUR: 'eur' };  // ❌ NEVER
-
-// ❌ FORBIDDEN: Hardcoded in validation
-z.string().refine(v => ['USD', 'EUR'].includes(v));  // ❌ NEVER
-z.enum(['USD', 'EUR', 'BDT']);  // ❌ NEVER (use z.nativeEnum(Currency))
-
-// ❌ FORBIDDEN: Any string representing currency
-const paymentCurrency = 'USD';  // ❌ Use Currency.USD
-```
-
-### Language - MANDATORY Pattern
-
-```typescript
-// ✅ CORRECT: ONLY import from shared library
-import { Language } from '@lib/shared/language';
-import { Languages, getLanguageByCode } from '@lib/shared/language';
-
-// Use Language instances
-const lang = Languages.find(l => l.code === 'en');  // ✅
-const langByCode = getLanguageByCode('en');  // ✅
-```
-
-### What is FORBIDDEN for Language
-
-```typescript
-// ❌ FORBIDDEN: Raw strings
-if (user.language === 'en') { }  // ❌ NEVER
-const lang = 'English';  // ❌ NEVER
-
-// ❌ FORBIDDEN: Custom enums or types
-enum Lang { EN = 'en', BN = 'bn' }  // ❌ NEVER
-type LanguageCode = 'en' | 'bn';  // ❌ NEVER
-
-// ❌ FORBIDDEN: Constants
-const LANG_EN = 'en';  // ❌ NEVER
-const LANGUAGES = ['en', 'bn'];  // ❌ NEVER
-```
-
-### Available Currency Values
-
-```typescript
-// From @lib/shared/currency
-enum Currency {
-  BDT = 'bdt',  // Taka (৳)
-  EUR = 'eur',  // Euro (€)
-  USD = 'usd',  // US Dollar ($)
-}
-
-// Utility functions available:
-- getCurrencySymbol(currency: Currency): string
-- getCurrencyName(currency: Currency): string
-- CurrencyService class for conversions and operations
-```
-
-### Available Language Values
-
-```typescript
-// From @lib/shared/language
-export const Languages = [
-  new Language('English', 'en', 'en', true),
-  new Language('Bengali', 'bn', 'bn-BD', true),
-];
-
-// Utility functions available:
-- getLanguageByCode(code: string): Language | undefined
-```
-
-### Code Review Checklist
-
-When reviewing code, verify:
-- [ ] NO currency strings anywhere ('USD', 'usd', 'EUR', etc.)
-- [ ] NO custom Currency enums or types
-- [ ] NO currency constants or object literals
-- [ ] ALL currency usage is `Currency` from `@lib/shared/currency`
-- [ ] DTOs use `z.nativeEnum(Currency)` NOT `z.enum()`
-- [ ] NO language strings anywhere ('en', 'English', 'bn', etc.)
-- [ ] ALL language usage imports from `@lib/shared/language`
-
-**Reference:**
-- Currency: `libs/shared/src/currency/` (ALL currency files)
-- Language: `libs/shared/src/language/` (ALL language files)
-- **NO OTHER FILES** should define or use currency/language values
-
-## HTTP Controllers, DTOs, Use Cases - MANDATORY PATTERNS
-
-### HTTP Controller Template
-
-```typescript
-import { Controller, Post, Body, Req, Logger } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import type { Request } from 'express';
-
-@Controller('resource')   // ✅ Route prefix
-@ApiTags('Resource')     // ✅ Swagger grouping
-export class ResourceHttpController {
-  private readonly logger = new Logger(ResourceHttpController.name);
+@Controller('characters')
+@ApiTags('Characters')
+export class CharactersHttpController {
+  private readonly logger = new Logger(CharactersHttpController.name);
   
   constructor(
-    private readonly commandBus: CommandBus,  // ✅ Write operations
-    private readonly queryBus: QueryBus,      // ✅ Read operations
+    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
   ) {}
   
-  @Post('create')
-  @ApiOperation({ summary: 'Create resource' })  // ✅ Swagger docs
-  @ApiResponse({ status: 201, description: 'Success', type: ResponseDto })
-  @ApiResponse({ status: 400, description: 'Validation failed' })
+  @Post()
+  @ApiOperation({ summary: 'Create character' })
+  @ApiResponse({ status: 201, type: CreateCharacterResponseDto })
   async create(
-    @Body() dto: CreateResourceHttpDto,  // ✅ HTTP DTO (Zod validated)
+    @Body() dto: CreateCharacterHttpDto,
     @Req() request: Request,
-  ): Promise<CreateResourceResponseDto> {
-    this.logger.log('Create resource request');
-    
-    return this.commandBus.execute(  // ✅ Delegate to CQRS
-      new CreateResourceCommand({ ...dto, ip: extractIp(request) }),
+  ): Promise<CreateCharacterResponseDto> {
+    this.logger.log('Create character request');
+    return this.commandBus.execute(
+      new CreateCharacterCommand({ ...dto }),
     );
   }
 }
 ```
 
-**Rules:**
-- ✅ Use `@ApiTags`, `@ApiOperation`, `@ApiResponse` for Swagger
-- ✅ Inject CommandBus for writes, QueryBus for reads
-- ✅ Log all incoming requests
-- ✅ Thin controllers - delegate to CQRS
-- ✅ Add server-side data (IP, timestamps) in controller
-
 ### DTO Pattern (Zod + Swagger)
-
 ```typescript
 import { z } from 'zod';
 import { createZodDto } from '@anatine/zod-nestjs';
 import { ApiProperty } from '@nestjs/swagger';
-import { Currency } from '@lib/shared/currency';
 
-// ✅ Step 1: Zod schema (validation logic)
-export const CreatePaymentRequestSchema = z.object({
-  userId: z.string().regex(/^\d+$/),
-  amount: z.string().regex(/^\d+$/),
-  currency: z.nativeEnum(Currency),  // ✅ Shared enum
+export const CreateCharacterRequestSchema = z.object({
+  nickname: z.string().min(3).max(20),
+  avatarUrl: z.string().url().optional(),
 });
 
-// ✅ Step 2: Extract TypeScript type
-export type CreatePaymentRequestDto = z.infer<typeof CreatePaymentRequestSchema>;
+export type CreateCharacterRequestDto = z.infer<typeof CreateCharacterRequestSchema>;
 
-// ✅ Step 3: HTTP DTO with Swagger docs
-export class CreatePaymentHttpDto extends createZodDto(
-  CreatePaymentRequestSchema,
+export class CreateCharacterHttpDto extends createZodDto(
+  CreateCharacterRequestSchema,
 ) {
-  @ApiProperty({ description: 'User ID', example: '12345' })
-  declare userId: string;  // ✅ Use 'declare' keyword
-  
-  @ApiProperty({ description: 'Amount', example: '10000' })
-  declare amount: string;
-  
-  @ApiProperty({ description: 'Currency', enum: Currency })
-  declare currency: Currency;
-}
-
-// ✅ Step 4: Response DTO
-export class CreatePaymentResponseDto {
-  @ApiProperty({ description: 'Payment ID' })
-  paymentId: string;
-  
-  @ApiProperty({ description: 'Success' })
-  success: boolean;
+  @ApiProperty({ description: 'Character nickname', example: 'ShadowBoss' })
+  declare nickname: string;
 }
 ```
 
-**DTO Rules:**
-- ✅ Zod schema first (single source of truth for validation)
-- ✅ Use `createZodDto()` to generate NestJS DTO
-- ✅ Add `@ApiProperty()` for Swagger documentation
-- ✅ Use `declare` keyword (no initialization)
-- ✅ Use `z.nativeEnum()` for Currency/Language
-- ✅ String types for IDs and amounts (not numbers)
-- ✅ Separate HTTP DTO from internal request DTO
+## Testing
 
-### Use Case Handler Pattern
-
-```typescript
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { Logger } from '@nestjs/common';
-
-// ✅ Command class
-export class CreatePaymentCommand {
-  constructor(
-    public readonly request: CreatePaymentRequestDto & { ip: string },
-  ) {}
-}
-
-// ✅ Handler
-@CommandHandler(CreatePaymentCommand)
-export class CreatePaymentHandler
-  implements ICommandHandler<CreatePaymentCommand>
-{
-  private readonly logger = new Logger(CreatePaymentHandler.name);
-  
-  constructor(
-    private readonly repository: PaymentPortRepository,  // ✅ Abstract class
-  ) {}
-  
-  async execute(command: CreatePaymentCommand): Promise<CreatePaymentResponseDto> {
-    this.logger.log('Creating payment');
-    
-    // Business logic
-    const payment = await this.repository.create(...);
-    
-    return { paymentId: payment.id, success: true };
-  }
-}
-```
-
-**Handler Rules:**
-- ✅ Commands for writes, Queries for reads
-- ✅ Keep handlers focused (<100 lines)
-- ✅ Log operations
-- ✅ Inject ports (abstract classes)
-- ✅ Return response DTOs
-
-### File Organization
-
-```
-application/use-cases/create-payment/
-├── create-payment.command.ts    # Command/Query class
-├── create-payment.dto.ts        # Zod + HTTP DTO + Response DTO
-└── create-payment.handler.ts    # Handler implementation
-```
-
-### Zod Validation Examples
-
-```typescript
-z.object({
-  email: z.string().email(),
-  phone: z.string().regex(/^\+?[1-9]\d{1,14}$/),
-  password: z.string().min(6).max(100),
-  currency: z.nativeEnum(Currency),
-  age: z.number().int().min(18).max(120),
-  name: z.string().optional(),
-}).transform((data) => ({
-  ...data,
-  email: data.email?.trim().toLowerCase(),
-}));
-```
-
-**Reference:**
-- `apps/users/src/presentation/http/users.http.controller.ts`
-- `apps/users/src/application/use-cases/register-user/register-user.dto.ts`
-
-## Testing Strategy - MANDATORY COVERAGE
-
-**Test Pyramid:**
-- 70% Unit tests (domain logic, use cases)
-- 20% Integration tests (controllers, repositories with real DB)
-- 10% E2E tests (cross-service flows)
-
-**File Naming:**
-- Unit: `*.spec.ts`
-- Integration: `*.integration.spec.ts`
-- E2E: `e2e/**/*.e2e.spec.ts`
-
-### Required Tests by Layer (100% Coverage)
-
-**1. Domain Layer - Unit Tests ONLY:**
-```typescript
-// ✅ REQUIRED: Every entity must have unit tests
-// domain/entities/user/user.spec.ts
-describe('User', () => {
-  it('should validate business rules', () => {
-    const user = new User({ balance: new BigNumber(100) });
-    expect(user.canAffordPurchase(new BigNumber(50))).toBe(true);
-  });
-});
-
-// ✅ REQUIRED: Every domain service must have unit tests
-// domain/services/payment-validation.service.spec.ts
-```
-- ✅ **Every entity** → `entity-name.spec.ts`
-- ✅ **Every domain service** → `service-name.spec.ts`
-- Test all business logic methods
-- NO mocking needed (pure TypeScript)
-
-**2. Application Layer - Unit Tests ONLY:**
-```typescript
-// ✅ REQUIRED: Every use case handler must have unit tests
-// application/use-cases/create-withdrawal/create-withdrawal.handler.spec.ts
-describe('CreateWithdrawalHandler', () => {
-  let handler: CreateWithdrawalHandler;
-  let mockRepository: jest.Mocked<PaymentRepository>;
-  
-  beforeEach(() => {
-    mockRepository = createMockRepository();
-    handler = new CreateWithdrawalHandler(mockRepository);
-  });
-  
-  it('should create withdrawal', async () => {
-    // Mock all ports/dependencies
-    mockRepository.create.mockResolvedValue(payment);
-    
-    const result = await handler.execute(command);
-    
-    expect(mockRepository.create).toHaveBeenCalledWith(...);
-    expect(result.success).toBe(true);
-  });
-});
-```
-- ✅ **Every use case handler** → `handler-name.spec.ts`
-- Mock ALL ports (repositories, external services)
-- Test business flows and error handling
-
-**3. Presentation Layer - Unit + Integration Tests:**
-
-*HTTP Controllers:*
-```typescript
-// ✅ REQUIRED: Unit test (mock all dependencies)
-// presentation/http/payments.http.controller.spec.ts
-describe('PaymentsHttpController (unit)', () => {
-  it('should call handler with correct params', async () => {
-    // Mock handler
-    const result = await controller.createWithdrawal(dto);
-    expect(mockHandler.execute).toHaveBeenCalled();
-  });
-});
-
-// ✅ REQUIRED: Integration test with supertest
-// presentation/http/payments.http.controller.integration.spec.ts
-import request from 'supertest';
-
-describe('PaymentsHttpController (integration)', () => {
-  it('should create withdrawal via HTTP', async () => {
-    const response = await request(app.getHttpServer())
-      .post('/api/v2/payments/withdrawal')
-      .set('Authorization', `Bearer ${token}`)
-      .send({ amount: '10000', currency: 'USD' })
-      .expect(201);
-      
-    expect(response.body.success).toBe(true);
-    // Verify in database
-    const payment = await prisma.payment.findUnique(...);
-    expect(payment).toBeDefined();
-  });
-});
-```
-- ✅ **Every HTTP controller** → `controller.spec.ts` (unit)
-- ✅ **Every HTTP controller** → `controller.integration.spec.ts` (supertest)
-- Integration: Real database, test full HTTP cycle
-
-*NATS Controllers:*
-```typescript
-// ✅ REQUIRED: Unit test
-// presentation/nats/balance-created.nats.controller.spec.ts
-
-// ✅ REQUIRED: Integration test with real NATS
-// presentation/nats/balance-created.nats.controller.integration.spec.ts
-describe('BalanceCreatedNatsController (integration)', () => {
-  it('should handle balance.created message', async () => {
-    // Use real NATS.io connection and publisher
-    const publisher = app.get(BalancePublisher);
-    const message = { userId: '123', amount: '1000' };
-    
-    await publisher.sendBalanceCreatedEvent(message);
-    
-    // Wait for async processing
-    await new Promise(resolve => setTimeout(resolve, 100));
-    
-    // Verify database changes
-    const result = await prisma.ledger.findMany(...);
-    expect(result).toHaveLength(1);
-  });
-});
-```
-- ✅ **Every NATS controller** → `controller.spec.ts` (unit)
-- ✅ **Every NATS controller** → `controller.integration.spec.ts` (real NATS + real database)
-- Integration: Real NATS.io (docker-compose up -d nats-1 nats-2 nats-3), real database
-
-**4. Infrastructure Layer - Mixed Tests:**
-
-*Repositories:*
-```typescript
-// ✅ REQUIRED: Integration test with real database
-// infrastructure/prisma/repositories/payment.prisma.repository.integration.spec.ts
-describe('PaymentPrismaRepository (integration)', () => {
-  let repository: PaymentPrismaRepository;
-  let prisma: PrismaClient;
-  
-  beforeEach(async () => {
-    // Real database connection
-    prisma = new PrismaClient();
-    repository = new PaymentPrismaRepository(prisma);
-  });
-  
-  it('should create payment', async () => {
-    const payment = await repository.create(createPaymentData);
-    
-    expect(payment.id).toBeDefined();
-    // Verify in database
-    const found = await prisma.payment.findUnique({ where: { id: payment.id } });
-    expect(found).toBeDefined();
-  });
-});
-```
-- ✅ **Every repository** → `repository.integration.spec.ts`
-- Real database connection
-- Test CRUD operations
-- Verify Prisma queries work correctly
-
-*Mappers:*
-```typescript
-// ✅ REQUIRED: Unit test (NO database)
-// infrastructure/prisma/mapper/payment.prisma.mapper.spec.ts
-describe('PaymentPrismaMapper', () => {
-  it('should map Prisma entity to domain', () => {
-    const prismaPayment = { userId: 123n, amount: 1000n }; // bigint
-    
-    const domain = PaymentPrismaMapper.toDomain(prismaPayment);
-    
-    expect(domain.userId).toBeInstanceOf(BigNumber);
-    expect(domain.amount).toBeInstanceOf(BigNumber);
-  });
-  
-  it('should map domain to Prisma', () => {
-    const domain = { userId: new BigNumber(123), amount: new BigNumber(1000) };
-    
-    const prisma = PaymentPrismaMapper.toPrisma(domain);
-    
-    expect(typeof prisma.userId).toBe('bigint');
-    expect(typeof prisma.amount).toBe('bigint');
-  });
-});
-```
-- ✅ **Every mapper** → `mapper.spec.ts`
-- Test `toDomain()` and `toPrisma()` conversions
-- Verify BigNumber ↔ bigint conversions
-- NO database needed
-
-### Testing Patterns
-
-**Fixtures:**
-- Use from `apps/{service}/src/__fixtures__/`
-- Create reusable test data builders
-
-**Mocking:**
-- Unit tests: Mock ALL infrastructure (repositories, external services, NATS)
-- Integration tests: Real database and real NATS.io, mock external services only
-- Never mock what you're testing
-
-**Database:**
-- Integration tests use real test database
-- Clean before each test run
-- Use transactions for isolation
-
-**NATS:**
-- Never hardcode subjects in tests
-- Use library publishers
-- Both E2E and integration tests use real NATS.io (docker-compose up -d nats-1 nats-2 nats-3)
-- Unit tests mock NATS infrastructure
-
-**Commands:**
 ```bash
-npm run test:users              # All tests
-npm run test:users:unit         # Unit only
-npm run test:users:integration  # Integration only
-npm run test:db:create:users    # Create test DB (run first!)
+npm test              # Run all tests
+npm run test:watch    # Watch mode
+npm run test:cov      # Coverage
+npm run test:e2e      # E2E tests
 ```
+
+**Test Pyramid:** 70% unit, 20% integration, 10% E2E
+**Quality First:** Test business logic and real-world scenarios, NOT trivial getters/setters.
 
 ## Development Workflow
 
 **Adding New Feature:**
 1. Identify owning service
-2. Domain entities/value objects (domain layer)
-3. Application ports as abstract classes (application/ports)
-4. Use case handlers (application/use-cases)
-5. Infrastructure implementations (infrastructure layer)
-6. HTTP/NATS controllers (presentation layer)
-7. Update library contracts if inter-service
-8. Write tests (unit → integration → E2E)
-9. **MANDATORY:** Run `npm run lint` to verify zero lint errors before completing ANY change
+2. Domain entities (domain layer)
+3. Application ports as abstract classes
+4. Use case handlers
+5. Infrastructure implementations
+6. HTTP/NATS controllers
+7. Update library contracts if needed
+8. Write tests
+9. **MANDATORY:** Run `npm run lint`
 
-**Database Schema Changes:**
-1. Update `prisma/{service}/schema.prisma`
-2. Run: `npm run migrate:{service}:dev`
-3. Regenerate: `npm run generate:{service}`
-4. Update mappers in `infrastructure/prisma/mapper/`
-5. Update repositories if needed
-6. **MANDATORY:** Run `npm run lint` to verify no lint errors
+## CRITICAL RULES — NEVER VIOLATE
 
-**NATS Communication:**
-1. Define in library: `libs/lib-{service}/src/subjects.ts`
-2. Create publisher: `libs/lib-{service}/src/publishers/`
-3. Add handler: `apps/{service}/src/presentation/nats/`
-4. Use publisher (never hardcode subjects)
-5. **MANDATORY:** Run `npm run lint` to verify no lint errors
-
-## Logging Best Practices
-
-**Reference:** `docs/LOGGING_BEST_PRACTICES.md`
-
-**Key Rules:**
-1. **Structured Logging** - Use objects with `operationId`, not string concatenation
-2. **Layer-specific**:
-   - Presentation: Log request/response
-   - Application: Log operation start/end
-   - Domain: NO logging!
-   - Infrastructure: Only critical DB errors
-3. **Mask PII**: Never log passwords, full emails, tokens - use `maskEmail()`, `maskPhone()`
-4. **Error context**: Always include `operationId`, `userId`, `operation`, `error: serializeError(error)`
-
-```typescript
-// ✅ CORRECT
-this.logger.log('User balance created', {
-  operationId: 'uuid-123',
-  userId: '12345',
-  operation: 'CreateUserBalance',
-  service: 'balance',
-  currencies: ['USD'],
-});
-
-// ❌ WRONG
-this.logger.log(`Creating balance for user ${userId} with currencies ${currencies.join(', ')}`);
-```
-
-## TypeScript Type Best Practices - MANDATORY
-
-**CRITICAL RULE:** Function-level type objects, `never`, and `any` types are PROHIBITED.
-
-### Required Pattern
-
-All types and interfaces MUST be defined at the class level or in separate type definition files.
-
-```typescript
-// ✅ CORRECT: Interface/type at class or file level
-interface UserData {
-  id: string;
-  email: string;
-  balance: BigNumber;
-}
-
-class UserService {
-  processUser(data: UserData): void { }
-}
-
-// ✅ CORRECT: Type alias at top of file
-type PaymentStatus = 'pending' | 'completed' | 'failed';
-
-class PaymentService {
-  getStatus(): PaymentStatus {
-    return 'pending';
-  }
-}
-```
-
-### FORBIDDEN
-
-```typescript
-// ❌ NEVER: Inline object types in function signatures
-class UserService {
-  processUser(data: { id: string; email: string }): void { }  // ❌
-  getUser(): { id: string; email: string } { }  // ❌
-}
-
-// ❌ NEVER: Using 'any' type
-processData(data: any): void { }  // ❌
-
-// ❌ NEVER: Using 'never' (except genuine never-return functions)
-function getData(): never { throw new Error(); }  // ❌ Avoid
-
-// ❌ NEVER: Inline types in parameters
-processPayment(payment: { amount: string; currency: Currency }): Promise<void> { }  // ❌
-```
-
-### Correct Alternatives
-
-```typescript
-// ✅ Define interfaces/types before usage
-interface ProcessUserRequest {
-  id: string;
-  email: string;
-}
-
-interface UserResponse {
-  id: string;
-  email: string;
-}
-
-class UserService {
-  processUser(data: ProcessUserRequest): void { }
-  getUser(): UserResponse { }
-}
-
-// ✅ Use 'unknown' instead of 'any', then narrow with type guards
-interface ProcessDataRequest {
-  type: string;
-  payload: unknown;  // Narrow with type guards
-}
-
-class DataService {
-  processData(data: ProcessDataRequest): void {
-    if (typeof data.payload === 'string') {
-      // TypeScript knows it's string here
-    }
-  }
-}
-```
-
-### Type Organization
-
-- **Single-use types:** Define at top of file, before class
-- **Shared types:** Create separate `.types.ts` files in same directory
-- **Domain types:** In `domain/` layer with entities
-- **DTOs:** Alongside Zod schemas in use-case folders
-
-```
-application/use-cases/create-payment/
-├── create-payment.command.ts
-├── create-payment.dto.ts     # Types here
-├── create-payment.handler.ts
-└── create-payment.types.ts   # Optional shared types
-```
-
-### Checklist
-
-- [ ] NO inline object types in function signatures
-- [ ] NO `any` type (use `unknown` with type guards)
-- [ ] NO `never` type (except genuine cases)
-- [ ] ALL types/interfaces at class/file level
-- [ ] Types properly named and descriptive
-
-## Environment Variables - MANDATORY REGISTRATION
-
-**CRITICAL RULE: Every environment variable MUST be registered in the shared environment schema.**
-
-### Required Pattern
-
-All environment variables MUST be added to `/libs/shared/src/application/env/env.ts` with Zod validation.
-
-```typescript
-// ✅ CORRECT: Add to shared env schema
-// /libs/shared/src/application/env/env.ts
-export const commonSchema = z.object({
-  // ... existing variables
-  
-  // Game providers
-  SLOTEGRATOR_BASE_URL: z.string().optional(),
-  SLOTEGRATOR_MERCHANT_ID: z.string().optional(),
-  SLOTEGRATOR_MERCHANT_KEY: z.string().optional(),
-  
-  INOUT_SECRET: z.string().optional(),
-  INOUT_OPERATOR_ID: z.string().optional(),
-});
-
-export type Env = z.infer<typeof commonSchema>;
-```
-
-### Workflow for New Environment Variables
-
-1. **Add to environment files**: `.env.local`, `.env.dev`, `docker/.env.dev`
-2. **Register in schema**: `/libs/shared/src/application/env/env.ts`
-3. **Add validation**: Use appropriate Zod validator (`.string()`, `.optional()`, `.default()`, etc.)
-4. **Use via EnvService**: Access validated env vars through the EnvService in application code
-
-### What is FORBIDDEN
-
-```typescript
-// ❌ NEVER: Direct process.env access without schema registration
-const apiKey = process.env.SOME_API_KEY; // ❌
-const baseUrl = process.env.API_BASE_URL; // ❌
-
-// ❌ NEVER: Adding env vars only to .env files without schema
-// This creates unvalidated, untyped configuration
-```
-
-### Why This is Critical
-
-1. **Type Safety**: All env vars are typed via `Env` type
-2. **Validation**: Zod catches missing/invalid variables at startup
-3. **Documentation**: Schema is single source of truth
-4. **Consistency**: All services use same definitions
-5. **Early Errors**: Validation failures happen on startup, not at runtime
-
-### Checklist
-
-- [ ] Environment variable added to all `.env.*` files
-- [ ] Variable registered in `/libs/shared/src/application/env/env.ts`
-- [ ] Appropriate Zod validation added (optional, required, default, etc.)
-- [ ] Type is inferred from schema (no manual type definitions)
-
-## CRITICAL RULES - NEVER VIOLATE
-
-### DO NOT:
+**DO NOT:**
 - Put business logic in application/infrastructure layers
 - Use Prisma directly from handlers (use repositories via ports)
 - Hardcode NATS subjects (use library contracts)
 - Define ports as interfaces (use abstract classes for NestJS DI)
-- Access other services' databases directly (use NATS)
-- Use `bigint` in domain/application code (use `BigNumber`)
-- Use `BigInt()` or `.toString()` conversions (use utility functions)
-- Use `number` type for IDs/amounts in DTOs (use `string`)
 - Import framework code in domain layer
-- Mix test and development databases
-- **CRITICAL:** Use ANY currency strings, custom enums, or constants (ONLY `Currency` from `@lib/shared/currency`)
-- **CRITICAL:** Use ANY language strings, custom enums, or constants (ONLY `Language` from `@lib/shared/language`)
-- Use `z.enum()` for currency (use `z.nativeEnum(Currency)`)
-- Create custom Currency or Language types anywhere
-- Hardcode 'USD', 'EUR', 'BDT', 'en', 'bn' or any currency/language strings
-- **CRITICAL:** Hardcode decimal precision for provider API amounts (`toFixed(2)`, `/100`, default `bigNumberToDecimal` without currency decimals)
-- **CRITICAL:** Use function-level inline object types in signatures (define interfaces/types at class/file level)
-- **CRITICAL:** Use `any` type (use `unknown` with type guards or specific types)
-- **CRITICAL:** Use `never` type (except for genuine never-return functions)
+- Skip running `npm run lint` after code changes
 
-### DO:
+**DO:**
 - Keep handlers thin (<50 lines)
-- Use CQRS pattern (Commands/Queries)
+- Use CQRS (Commands for writes, Queries for reads)
 - Use path aliases (@app/*, @lib/*, @prisma/*)
-- Use string validation for IDs/amounts in DTOs
-- Convert strings to BigNumber with `stringToBigNumber()`
-- Use `bigIntToBigNumber()` and `bigNumberToBigInt()` in mappers
-- Resolve provider API amount precision via `getCurrencyVelueByStringCode(...).getDecimals()`
-- Follow test pyramid (70% unit, 20% integration, 10% E2E)
-- Create test databases before running tests
-- **CRITICAL:** Run `npm run lint` after EVERY code change to ensure zero lint errors
+- Follow test pyramid
+- Run `npm run lint` after EVERY code change
+- Validate NATS publisher responses with Zod
+- Use Zod schemas for DTO validation
 
-### TESTING REQUIREMENTS (100% Coverage):
-- Write unit test for EVERY domain entity (`entity.spec.ts`)
-- Write unit test for EVERY domain service (`service.spec.ts`)
-- Write unit test for EVERY use case handler (`handler.spec.ts`)
-- Write unit test for EVERY controller (`controller.spec.ts`)
-- Write integration test for EVERY HTTP controller with `supertest` (`controller.integration.spec.ts`)
-- Write integration test for EVERY NATS controller with real NATS.io (`controller.integration.spec.ts`)
-- Write integration test for EVERY repository with real database (`repository.integration.spec.ts`)
-- Write unit test for EVERY mapper (`mapper.spec.ts`)
+## Documentation References
+
+- Architecture docs: `docs/architecture/` (37 documents)
+- Network protocol: `docs/architecture/01_network_protocol.md`
+- Server architecture: `docs/architecture/02_server_architecture.md`
+- Building Service: `docs/architecture/13_building_service.md`
+- Combat Progress Service: `docs/architecture/14_combat_progress_service.md`
+- Player Service: `docs/architecture/15_player_service.md`
+- Scheduler Service: `docs/architecture/16_scheduler_service.md`
+- Game loop: `docs/architecture/25_game_loop_best_practices.md`
+- Service contracts: `docs/architecture/26_service_contracts.md`
+- Gameplay internals: `docs/architecture/33_gameplay_service_internals.md`
+- NATS best practices: `docs/architecture/19_nats_best_practices.md`
