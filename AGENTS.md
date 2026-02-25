@@ -16,7 +16,7 @@ Survival Syndicate — online multiplayer survival game server. Architecture is 
 Before modifying an app, read its feature documentation for context:
 - `apps/{service}/FEATURES.md` — All features and capabilities of that app
 - `libs/LIBS.md` — All shared libraries and their purposes
-- `docs/architecture/` — 37 architecture documents covering all aspects
+- `docs/architecture/` — 32 architecture documents covering all aspects
 
 ## Essential Commands
 
@@ -217,11 +217,11 @@ Two shared PostgreSQL databases (not per-service):
 
 ## Documentation References
 
-- Architecture docs: `docs/architecture/` (37 documents)
+- Architecture docs: `docs/architecture/` (32 documents)
 - Server development guide: `docs/01_server_development_guide.md`
-- Network protocol: `docs/architecture/01_network_protocol.md`
-- Server architecture: `docs/architecture/02_server_architecture.md`
-- Game loop: `docs/architecture/25_game_loop_best_practices.md`
-- Service contracts: `docs/architecture/26_service_contracts.md`
-- NATS best practices: `docs/architecture/19_nats_best_practices.md`
-- Database schema: `docs/architecture/12_database_schema.md`
+- Game loop: `docs/architecture/21_game_loop_best_practices.md`
+- Service contracts: `docs/architecture/22_service_contracts.md`
+- NATS best practices: `docs/architecture/15_nats_best_practices.md`
+- Database schema: `docs/architecture/08_database_schema.md`
+- WebSocket contracts: `docs/architecture/25_api_and_websocket_contracts.md`
+- Gameplay internals: `docs/architecture/28_gameplay_service_internals.md`

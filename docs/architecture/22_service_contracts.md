@@ -30,6 +30,7 @@
     ```json
     {
       "matchId": "string",
+      "lobbyId": "string",
       "teams": [
         { "teamId": "a", "players": ["playerId1", "playerId2"] },
         { "teamId": "b", "players": ["playerId3", "playerId4"] }
@@ -113,3 +114,14 @@
 #### Тема: `gameplay.world_state.{matchId}`
 -   **Назнаczenie:** Публикует актуальное состояние мира после каждого тика.
 -   **Payload:** `WorldState` (бинарный формат).
+
+#### Тема: `match.finished`
+-   **Назначение:** `Gameplay Service` публикует это событие по окончании матча.
+-   **Payload:**
+    ```json
+    {
+      "matchId": "string",
+      "lobbyId": "string",
+      "results": { ... } 
+    }
+    ```

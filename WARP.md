@@ -40,7 +40,7 @@ Naming note: legacy docs/code may mention `game-server` and `analytics-service`;
 Before modifying an app, read its feature documentation for context:
 - `apps/{service}/FEATURES.md` — All features and capabilities of that app
 - `libs/LIBS.md` — All shared libraries and their purposes
-- `docs/` — Complete architecture documentation (37 documents)
+- `docs/` — Complete architecture documentation (32 documents)
 
 ## Commands
 
@@ -276,11 +276,11 @@ Two shared PostgreSQL databases:
 
 ## Documentation References
 
-- Architecture docs: `docs/architecture/` (37 documents covering all aspects)
+- Architecture docs: `docs/architecture/` (32 documents covering all aspects)
 - Server development guide: `docs/01_server_development_guide.md`
-- Network protocol: `docs/architecture/01_network_protocol.md`
-- Server architecture: `docs/architecture/02_server_architecture.md`
-- Game loop best practices: `docs/architecture/25_game_loop_best_practices.md`
-- Service contracts: `docs/architecture/26_service_contracts.md`
-- Game simulation: `docs/architecture/27_game_simulation_interface.md`
-- NATS best practices: `docs/architecture/19_nats_best_practices.md`
+- Game loop best practices: `docs/architecture/21_game_loop_best_practices.md`
+- Service contracts: `docs/architecture/22_service_contracts.md`
+- Gameplay internals: `docs/architecture/28_gameplay_service_internals.md`
+- NATS best practices: `docs/architecture/15_nats_best_practices.md`
+- WebSocket contracts: `docs/architecture/25_api_and_websocket_contracts.md`
+- Connection handling: `docs/architecture/27_connection_handling.md`

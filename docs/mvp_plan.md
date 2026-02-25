@@ -1,114 +1,80 @@
 # MVP План: "Каркас" серверной архитектуры
 
 ## 1. Цель MVP
+Проверить и отладить всю межсервисную коммуникацию, описанную в архитектурных документах, без реализации сложной игровой логики (`GameLoop`).
 
-Основная цель этого MVP — **проверить и отладить всю межсервисную коммуникацию**, описанную в архитектурных документах, без реализации сложной игровой логики (`GameLoop`).
-
-Мы создадим "заглушки" для всех ключевых сервисов, научим их общаться друг с другом через NATS и HTTP, и убедимся, что полный цикл от поиска матча до его (фейкового) завершения работает.
+**Ключевые инварианты, которые проверяет MVP:**
+- В групповой игре каждый слот жёстко привязан к `playerId` с момента создания матча.
+- После дисконнекта слот резервируется за тем же игроком на время `GRACE_PERIOD` (60 сек).
+- Попытка реконнекта другого игрока в чужой слот отклоняется с кодом `SLOT_NOT_AVAILABLE`.
 
 ## 2. Список сервисов в MVP
-
-### А. Центральная Зона (Global Scope)
-
-1.  **Auth Service:**
-    -   **Задача:** Выдача JWT токенов по `username`.
-    -   **Контракт:** `POST /api/auth/login`.
-    -   **Референсы:**
-        -   `docs/architecture/30_api_and_websocket_contracts.md`
-        -   `docs/architecture/37_user_creation_flow.md`
-
-2.  **Matchmaking Service:**
-    -   **Задача:** Прием запросов на поиск игры и "распределение" игроков по Локальным Зонам.
-    -   **Контракты:**
-        -   `POST /api/matchmaking/join` (HTTP).
-        -   Подписка на `orchestrator.zone.heartbeat` (NATS).
-    -   **Референсы:**
-        -   `docs/architecture/30_api_and_websocket_contracts.md`
-        -   `docs/architecture/29_nats_orchestrator_reporting_contract.md`
-        -   `docs/architecture/24_combat_gameplay_architecture.md`
-        
-3.  **Player Service:**
-    -   **Задача:** Хранит всю информацию о прогрессе игрока (мета, персонажи, балансы).
-    -   **Контракты:**
-        -   Подписка на `user.registered` (NATS) для создания записи о новом игроке.
-    -   **Референсы:**
-        -   `docs/architecture/15_player_service.md`
-        -   `docs/architecture/37_user_creation_flow.md`
-
-### Б. Локальная Зона (Zone Scope)
-
-1.  **Local Orchestrator:**
-    -   **Задача:** Управляет своей Зоной, общается с Матчмейкером.
-    -   **Контракты:**
-        -   Публикация `orchestrator.zone.heartbeat` (NATS).
-        -   Подписка на `gameplay.service.heartbeat` (NATS).
-    -   **Референсы:**
-        -   `docs/architecture/29_nats_orchestrator_reporting_contract.md`
-        -   `docs/architecture/28_nats_gameplay_reporting_contract.md`
-
-2.  **Gameplay Service:**
-    -   **Задача:** Имитирует управление инстансами игр (без реальной симуляции).
-    -   **Контракты:**
-        -   Публикация `gameplay.service.heartbeat` (NATS).
-        -   Подписка на NATS-команды от Оркестратора.
-    -   **Референсы:**
-        -   `docs/architecture/28_nats_gameplay_reporting_contract.md`
-        -   `docs/architecture/33_gameplay_service_internals.md`
-
-3.  **WebSocket Service:**
-    -   **Задача:** Управляет WebSocket-соединениями игроков.
-    -   **Контракты:**
-        -   Прием `client.authenticate`.
-        -   Простая пересылка "эхо" сообщений для проверки связи.
-    -   **Референсы:**
-        -   `docs/architecture/30_api_and_websocket_contracts.md`
-        -   `docs/architecture/31_websocket_json_protocol.md`
-        -   `docs/architecture/32_connection_handling.md`
+- Auth Service
+- Matchmaking Service (включая логику Лобби)
+- Player Service
+- Local Orchestrator
+- Gameplay Service
+- WebSocket Service
 
 ## 3. Задачи для реализации (Таск-борд)
 
 ### Epic 1: Базовая инфраструктура
-
--   [ ] **TASK-1.1:** Создать Monorepo-структуру проекта с помощью NestJS CLI.
--   [ ] **TASK-1.2:** Настроить Docker Compose для запуска всех сервисов MVP и NATS.
--   [ ] **TASK-1.3:** Создать общую `libs` библиотеку для DTO и контрактов.
+-   [ ] **TASK-1.1:** Создать Monorepo-структуру проекта.
+-   [ ] **TASK-1.2:** Настроить Docker Compose для всех сервисов.
+-   [ ] **TASK-1.3:** Создать общую `libs` библиотеку.
 
 ### Epic 2: Реализация сервисов-"заглушек"
-
 -   [ ] **TASK-2.1:** **Auth Service:**
-    -   Реализовать `POST /api/auth/register` (создание юзера).
-    -   При регистрации публиковать событие `user.registered` в NATS.
-    -   Реализовать `POST /api/auth/login`, который генерирует JWT.
+    -   Реализовать регистрацию и логин.
+    -   Публиковать событие `user.registered`.
 -   [ ] **TASK-2.2:** **Player Service:**
-    -   Реализовать подписчика на `user.registered`.
-    -   При получении события, создавать для нового `userId` базовый профиль игрока (персонаж по умолчанию, начальная мета-прогрессия, здания).
+    -   Подписаться на `user.registered` и создавать профиль игрока.
 -   [ ] **TASK-2.3:** **Matchmaking Service:**
-    -   Реализовать `POST /api/matchmaking/join` (валидация JWT).
-    -   Реализовать подписчика на `orchestrator.zone.heartbeat`, который будет хранить состояние Зон в памяти.
-    -   При запросе на `join` выбирать первую доступную Зону и возвращать ее `websocketUrl`.
+    -   Реализовать HTTP эндпоинты для управления лобби (`/api/lobbies/*`).
+    -   Реализовать `POST /api/matchmaking/join-solo` для быстрого старта.
+    -   Подписаться на `orchestrator.zone.heartbeat`.
+    -   Подписаться на `match.finished` для обновления статуса лобби.
+    -   При создании матча передавать Оркестратору **зафиксированный список `playerIds`** (слоты).
 -   [ ] **TASK-2.4:** **Local Orchestrator:**
-    -   Реализовать публикатор `orchestrator.zone.heartbeat` (отправляет фейковые данные каждые 5 сек).
-    -   Реализовать подписчика на `gameplay.service.heartbeat` (просто логирует полученные данные).
+    -   Реализовать публикацию `orchestrator.zone.heartbeat`.
+    -   Подписаться на `gameplay.service.heartbeat`.
+    -   Реализовать логику выбора `Gameplay Service`.
+    -   Реализовать отправку команды `gameplay.start_simulation` (включая список слотов).
+    -   **Управление слотами:** хранить `Map<matchId, Map<playerId, SlotStatus>>` где `SlotStatus = 'active' | 'disconnected'`.
+    -   **Grace Period:** при получении `player.connection.status` (disconnected) запускать таймер 60 сек. По истечении — отправлять в `Gameplay Service` команду `gameplay.remove_player`.
+    -   **Блокировка чужого реконнекта:** при запросе `orchestrator.player.reconnect_request` проверять, что `playerId` из JWT присутствует в зафиксированных слотах данного матча. Возвращать ошибку `SLOT_NOT_AVAILABLE`, если это другой `playerId`.
 -   [ ] **TASK-2.5:** **Gameplay Service:**
-    -   Реализовать публикатор `gameplay.service.heartbeat` (отправляет фейковые данные каждые 5 сек).
--   [ ] **TASK-2.6:** **WebSocket Service:**
-    -   Реализовать прием WebSocket-соединений.
-    -   Реализовать обработку сообщения `client.authenticate` (валидация JWT).
-    -   Реализовать простое "эхо" (отправлять обратно все, что пришло от клиента) для проверки связи.
+    -   Реализовать публикацию `gameplay.service.heartbeat`.
+    -   Подписаться на `gameplay.start_simulation`.
+    -   Реализовать честное управление `Map`'ой инстансов симуляций.
+    -   Обрабатывать `gameplay.remove_player` — удалять игрока из симуляции по истечении grace period.
+-   [ ] **TASK-2.6:** **WebSocket Service — первое подключение (connect):**
+    -   Принимать `client.authenticate` (JWT + опционально `matchId`).
+    -   Валидировать JWT, проверять присутствие `playerId` в слотах матча через NATS-запрос к Оркестратору.
+    -   При успехе: отправлять `server.authenticate.success`, публиковать `player.connection.status {status: "connected"}`.
+    -   При разрыве: отправлять `server.match.player_disconnected` остальным игрокам матча, публиковать `player.connection.status {status: "disconnected"}`.
+-   [ ] **TASK-2.7:** **WebSocket Service — реконнект (reconnect):**
+    -   Принимать `client.reconnect` (JWT) как первое сообщение нового WS-соединения.
+    -   Делать NATS-запрос `orchestrator.player.reconnect_request` с `playerId`.
+    -   Если Оркестратор вернул успех: отправлять `server.reconnect.success` с актуальным `matchId` + полным `WorldState`, публиковать `player.connection.status {status: "reconnected"}`, рассылать `server.match.player_reconnected` остальным игрокам.
+    -   Если Оркестратор вернул ошибку (`SLOT_NOT_AVAILABLE` / `GRACE_EXPIRED` / `MATCH_NOT_FOUND`): отправлять `server.reconnect.error` с кодом и закрывать соединение.
+    -   Реализовать логику синхронизации состояния лобби (`server.lobby.state_update`).
+    -   Реализовать простое "эхо" в игровом режиме.
 
 ### Epic 3: Интеграционное тестирование
-
--   [ ] **TASK-3.1:** Написать e2e тест (например, на Jest), который симулирует полный цикл:
-    1.  Зарегистрироваться через `Auth Service`.
-    2.  Проверить, что `Player Service` создал для юзера все необходимые данные.
-    3.  Получить JWT в `Auth Service`.
-    4.  С этим JWT пойти в `Matchmaking Service` и получить адрес Зоны.
-    5.  Подключиться по WebSocket, отправить JWT.
-    6.  Получить ответное сообщение об успехе.
-    7.  Отправить тестовое сообщение и получить "эхо".
+-   [ ] **TASK-3.1:** E2E тест — базовый флоу (connect → authenticate → echo → disconnect).
+-   [ ] **TASK-3.2:** E2E тест — реконнект:
+    1.  Зарегистрировать и аутентифицировать игрока.
+    2.  Войти в матч, разорвать соединение.
+    3.  Переподключиться тем же JWT в течение grace period — ожидать `server.reconnect.success`.
+    4.  Переподключиться тем же JWT после истечения grace period — ожидать `server.reconnect.error { code: "GRACE_EXPIRED" }`.
+-   [ ] **TASK-3.3:** E2E тест — защита слота:
+    1.  Создать матч на двух игроков (игрок A и игрок B).
+    2.  Игрок A разрывает соединение.
+    3.  Игрок C пытается реконнектнуться в слот A с чужим JWT — ожидать `server.reconnect.error { code: "SLOT_NOT_AVAILABLE" }`.
+    4.  Игрок A реконнектится с правильным JWT — ожидать успех.
 
 ## 4. Требования к качеству (Definition of Done)
-
--   **Unit-тесты:** Все новые контроллеры (controllers) и сервисы/use-cases с бизнес-логикой **обязательно** должны быть покрыты unit-тестами.
--   **Линтинг:** Весь код должен проходить проверку линтером без ошибок.
--   **Документация:** Все новые эндпоинты и NATS-события должны быть задокументированы в соответствующих `*.md` файлах.
+-   **Unit-тесты:** Все новые контроллеры и сервисы/use-cases должны быть покрыты unit-тестами.
+-   **Линтинг:** Весь код проходит проверку линтером.
+-   **Документация:** Все эндпоинты и события задокументированы.
