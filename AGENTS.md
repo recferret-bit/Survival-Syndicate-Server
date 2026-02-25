@@ -4,9 +4,10 @@ This file provides guidance to AI agents (Cursor, Warp) when working with code i
 
 ## Project Overview
 
-Survival Syndicate — online multiplayer survival game server. NestJS monorepo with 8 microservices communicating via NATS. The server is the authoritative source of truth for all game state, running deterministic simulations at a fixed tick rate.
+Survival Syndicate — online multiplayer survival game server. Architecture is split into **Central Zone (global scope)** and **Local Zones (zone scope)**; services communicate via NATS.
 
-**Services:** `api-gateway`, `auth-service`, `player-service`, `building-service`, `combat-progress-service`, `scheduler-service`, `game-server`, `analytics-service`
+**Central Zone (Global Scope):** `api-gateway`, `auth-service`, `matchmaking-service`, `player-service`, `building-service`, `combat-progress-service`, `scheduler-service`, `collector-service`, `payment-service`, `history-service`
+**Local Zone (Zone Scope):** `local-orchestrator`, `gameplay-service`, `websocket-service`
 
 **Tech Stack:** NestJS 11, TypeScript 5.7, Prisma 7, NATS, Redis, PostgreSQL 15, WebSocket, ClickHouse (analytics)
 

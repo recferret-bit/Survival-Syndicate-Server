@@ -32,7 +32,9 @@ survival-syndicate-server/
 The `.cursorrules` file contains comprehensive guidance for the Survival Syndicate game server:
 
 ### 1. Project Context
-- 8 microservices: api-gateway, auth-service, player-service, building-service, combat-progress-service, scheduler-service, game-server, analytics-service
+- Central vs Local Zone split (see `docs/mvp_plan.md`)
+- Central Zone services: api-gateway, auth-service, matchmaking-service, player-service, building-service, combat-progress-service, scheduler-service, collector-service, payment-service, history-service
+- Local Zone services: local-orchestrator, gameplay-service, websocket-service
 - Tech stack: NestJS 11, TypeScript 5.7, Prisma 7, NATS, Redis, PostgreSQL 15, WebSocket, ClickHouse
 
 ### 2. Clean Architecture Enforcement

@@ -8,15 +8,26 @@ Survival Syndicate — an online multiplayer survival game server built as a Nes
 
 ## Microservices Architecture
 
-**Core Services:**
-- `api-gateway` — HTTP entry point, request routing, Swagger docs
-- `auth-service` — User authentication, JWT tokens, refresh tokens, guards
-- `player-service` — Player accounts, characters (CRUD), friend lists, bans
-- `building-service` — Building construction, upgrades, bonuses, content unlocks, passive income
-- `combat-progress-service` — Player Level (XP), Battle Pass (3 streams), achievements, trophies, combat pool
-- `scheduler-service` — Cron/Bull jobs: passive income, daily/weekly resets, leaderboards, shop rotation
-- `game-server` — Real-time gameplay simulation (WebSocket, game loop, physics, lag compensation)
-- `analytics-service` — Event collection, ClickHouse integration
+### Central Zone (Global Scope)
+Services that do not require ultra-low latency and operate at global scope.
+- `api-gateway` — HTTP entry point / routing
+- `auth-service` — JWT issuance/auth
+- `matchmaking-service` — selects a Zone and returns `websocketUrl`
+- `player-service` — player meta/progression
+- `building-service` — meta buildings/upgrades
+- `combat-progress-service` — meta combat progression
+- `scheduler-service` — cron/jobs
+- `collector-service` — analytics/events ingestion (ClickHouse)
+- `payment-service` — IAP validation
+- `history-service` — match history / replays storage pipeline
+
+### Local Zone (Zone Scope)
+Services running close to players; responsible for real-time gameplay.
+- `local-orchestrator` — manages a Zone and its capacity/placement decisions (see `docs/mvp_plan.md`)
+- `gameplay-service` — runs match simulations (see `docs/architecture/33_gameplay_service_internals.md`)
+- `websocket-service` — WebSocket entry point for the Zone (see `docs/architecture/30_api_and_websocket_contracts.md`)
+
+Naming note: legacy docs/code may mention `game-server` and `analytics-service`; in the Central/Zone model the real-time stack is split into `websocket-service` + `gameplay-service`, and analytics ingestion is `collector-service`.
 
 **Communication:**
 - Inter-service: NATS for request-reply and pub/sub

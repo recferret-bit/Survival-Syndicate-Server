@@ -2,17 +2,26 @@
 
 ## Project Context
 
-Survival Syndicate — online multiplayer survival game server. NestJS monorepo with 8 microservices communicating via NATS. The server runs deterministic game simulations at a fixed tick rate and manages meta-game progression.
+Survival Syndicate — online multiplayer survival game server. The architecture is split into **Central Zone (global scope)** and **Local Zones (zone scope, close to players)**. Services communicate via NATS; clients use HTTP for Central Zone APIs and WebSocket for Local Zone gameplay.
 
-**Services:**
-- `api-gateway` — HTTP entry point, routing, Swagger
-- `auth-service` — JWT authentication, refresh tokens, guards
-- `player-service` — Player accounts, characters (CRUD), friends, bans
-- `building-service` — Buildings, upgrades, bonuses, content unlocks, passive income
-- `combat-progress-service` — Player Level (XP), Battle Pass, achievements, trophies, combat pool
-- `scheduler-service` — Cron/Bull: passive income, daily/weekly resets, leaderboards
-- `game-server` — Real-time gameplay simulation (WebSocket, GameLoop, physics, lag compensation)
-- `analytics-service` — Event collection, ClickHouse
+**Central Zone (Global Scope):**
+- `api-gateway` — единая HTTP точка входа (см. `docs/architecture/17_api_reference.md`)
+- `auth-service` — JWT выдача/валидация (см. `docs/mvp_plan.md`, `docs/architecture/30_api_and_websocket_contracts.md`)
+- `matchmaking-service` — выбор зоны и выдача `websocketUrl` (см. `docs/mvp_plan.md`, `docs/architecture/29_nats_orchestrator_reporting_contract.md`)
+- `player-service` — мета-прогрессия игрока (см. `docs/mvp_plan.md`, `docs/architecture/15_player_service.md`)
+- `building-service` — мета: здания/улучшения (см. `docs/architecture/13_building_service.md`)
+- `combat-progress-service` — мета: XP/Battle Pass/трофеи (см. `docs/architecture/14_combat_progress_service.md`)
+- `scheduler-service` — cron/jobs (см. `docs/architecture/16_scheduler_service.md`)
+- `collector-service` — сбор аналитики/ивентов в ClickHouse (см. `docs/architecture/05_analytics_and_events.md`, `docs/architecture/17_api_reference.md`)
+- `payment-service` — валидация IAP (см. `docs/architecture/10_payment_validation_service.md`, `docs/architecture/17_api_reference.md`)
+- `history-service` — запись реплеев/истории матчей (см. `docs/architecture/34_match_history_system.md`)
+
+**Local Zone (Zone Scope):**
+- `local-orchestrator` — управляет зоной и распределяет матчи (см. `docs/mvp_plan.md`, `docs/architecture/29_nats_orchestrator_reporting_contract.md`)
+- `gameplay-service` — запускает/ведёт симуляции матчей (см. `docs/mvp_plan.md`, `docs/architecture/33_gameplay_service_internals.md`)
+- `websocket-service` — держит WS-соединения и проксирует сообщения в зону (см. `docs/mvp_plan.md`, `docs/architecture/30_api_and_websocket_contracts.md`)
+
+Naming note: legacy docs/code may mention `game-server` and `analytics-service`; in the Central/Zone model the real-time stack is split into `websocket-service` + `gameplay-service`, and analytics ingestion is `collector-service`.
 
 **Tech Stack:** NestJS 11, TypeScript 5.7, Prisma 7, NATS, Redis, PostgreSQL 15, WebSocket, ClickHouse
 
