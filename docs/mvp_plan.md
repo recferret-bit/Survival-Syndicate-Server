@@ -32,7 +32,9 @@
 -   [ ] **TASK-2.3:** **Matchmaking Service:**
     -   Реализовать HTTP эндпоинты для управления лобби (`/api/lobbies/*`).
     -   Реализовать `POST /api/matchmaking/join-solo` для быстрого старта.
+    -   При старте матча, сохранять связь `lobbyId` -> `matchId`.
     -   Подписаться на `orchestrator.zone.heartbeat`.
+    -   Подписаться на `match.finished` для обновления статуса лобби.
 -   [ ] **TASK-2.4:** **Local Orchestrator:**
     -   Реализовать публикацию `orchestrator.zone.heartbeat`.
     -   Подписаться на `gameplay.service.heartbeat`.
