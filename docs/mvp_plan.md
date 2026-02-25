@@ -87,10 +87,15 @@
     -   Реализовать подписчика на `orchestrator.zone.heartbeat`, который будет хранить состояние Зон в памяти.
     -   При запросе на `join` выбирать первую доступную Зону и возвращать ее `websocketUrl`.
 -   [ ] **TASK-2.4:** **Local Orchestrator:**
-    -   Реализовать публикатор `orchestrator.zone.heartbeat` (отправляет фейковые данные каждые 5 сек).
-    -   Реализовать подписчика на `gameplay.service.heartbeat` (просто логирует полученные данные).
+    -   Реализовать публикатор `orchestrator.zone.heartbeat`.
+    -   Реализовать подписчика на `gameplay.service.heartbeat`.
+    -   Добавить логику для выбора `Gameplay Service` при получении запроса на создание матча (пока можно выбирать первый доступный).
+    -   Реализовать отправку команды `gameplay.start_simulation` в NATS.
 -   [ ] **TASK-2.5:** **Gameplay Service:**
-    -   Реализовать публикатор `gameplay.service.heartbeat` (отправляет фейковые данные каждые 5 сек).
+    -   Реализовать публикатор `gameplay.service.heartbeat`.
+    -   Реализовать подписчика на `gameplay.start_simulation`.
+    -   При получении команды, **честно создавать** "заглушку" инстанса симуляции и добавлять ее в `Map<string, GameSimulation>`.
+    -   В `heartbeat` отправлять реальное количество инстансов и игроков.
 -   [ ] **TASK-2.6:** **WebSocket Service:**
     -   Реализовать прием WebSocket-соединений.
     -   Реализовать обработку сообщения `client.authenticate` (валидация JWT).
