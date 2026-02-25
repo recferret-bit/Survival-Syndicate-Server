@@ -28,26 +28,12 @@
 
 ## 2. Matchmaking Service (Сервис Матчмейкинга)
 
-### `POST /api/matchmaking/join`
-
--   **Назначение:** Поиск подходящей Зоны и получение адреса для подключения.
--   **Аутентификация:** Требуется `Bearer Token` (JWT, полученный от Auth Service).
--   **Request Body:**
-    ```json
-    {
-      "gameMode": "string",
-      "characterId": "string"
-    }
-    ```
--   **Response (200 OK):**
-    ```json
-    {
-      "zoneId": "string",
-      "websocketUrl": "string" 
-    }
-    ```
-    -   `zoneId`: Уникальный ID Зоны, в которой будет проходить матч.
-    -   `websocketUrl`: Полный адрес для подключения к `WebSocket Service` этой Зоны (например, `ws://45.91.236.144:18789`).
+-   `POST /api/matchmaking/join`: Поиск игры для группы из лобби.
+-   `POST /api/matchmaking/join-solo`: Быстрый старт для соло-игрока.
+-   `POST /api/lobbies/create`: Создать лобби.
+-   `POST /api/lobbies/{lobbyId}/join`: Присоединиться к лобби.
+-   `DELETE /api/lobbies/{lobbyId}/leave`: Покинуть лобби.
+-   `POST /api/lobbies/{lobbyId}/start`: (Хост) Начать поиск игры для полного и готового лобби.
 
 ---
 
@@ -90,12 +76,18 @@
     -   `matchId`: ID конкретного матча, к которому подключен игрок.
     -   `playerId`: ID игрока, извлеченный из JWT.
 
-#### 3. `client.input` (Клиент -> Сервер)
+#### 3. `client.lobby.set_ready` (Клиент -> Сервер, в лобби)
+- **Payload:** `{ "type": "lobby_set_ready", "isReady": boolean }`
+
+#### 4. `server.lobby.state_update` (Сервер -> Клиент, в лобби)
+- **Payload:** `{ "type": "lobby_state_update", "lobbyId": "...", "players": [...] }`
+
+#### 5. `client.input` (Клиент -> Сервер, в игре)
 
 -   **Назначение:** Отправка ввода игрока.
 -   **Payload:** Бинарная структура `PlayerInput`.
 
-#### 4. `server.state` (Сервер -> Клиент)
+#### 6. `server.state` (Сервер -> Клиент, в игре)
 
 -   **Назначение:** Отправка состояния мира.
 -   **Payload:** Бинарная структура `WorldState`.
