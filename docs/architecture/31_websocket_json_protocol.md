@@ -84,3 +84,90 @@
 ---
 
 **`lastProcessedInput`** по-прежнему используется для **сверки (Reconciliation)** на стороне клиента.
+
+---
+
+## 3. `client.reconnect` (Клиент -> Сервер)
+
+-   **`type`:** `"reconnect"`
+-   **Должно быть первым сообщением** после установки нового WS-соединения.
+-   **Ограничение:** только исходный владелец слота может успешно реконнектнуться.
+
+```json
+{
+  "type": "reconnect",
+  "token": "<accessToken JWT>"
+}
+```
+
+---
+
+## 4. `server.reconnect.success` (Сервер -> Клиент)
+
+-   **`type`:** `"reconnect_success"`
+
+```json
+{
+  "type": "reconnect_success",
+  "matchId": "uuid-match-5678",
+  "playerId": "uuid-player-1",
+  "worldState": {
+    "serverTick": 4920,
+    "serverTimestamp": 1676738810000,
+    "entities_full": [ ],
+    "entities_delta": [ ],
+    "entities_removed": [ ]
+  }
+}
+```
+
+-   **`worldState`:** Полный снимок состояния мира на момент реконнекта. После его получения клиент переходит в обычный режим обмена `input`/`state`.
+
+---
+
+## 5. `server.reconnect.error` (Сервер -> Клиент)
+
+-   **`type`:** `"reconnect_error"`
+-   Сервер закрывает WS-соединение сразу после отправки.
+
+```json
+{
+  "type": "reconnect_error",
+  "code": "SLOT_NOT_AVAILABLE",
+  "message": "Чужой playerId пытается занять чужой слот"
+}
+```
+
+| Код | Причина |
+|---|---|
+| `SLOT_NOT_AVAILABLE` | чужой `playerId` пытается занять чужой слот |
+| `GRACE_EXPIRED` | грейс-период 60 сек истёк, игрок удалён из матча |
+| `MATCH_NOT_FOUND` | матч завершён или не существует |
+
+---
+
+## 6. `server.match.player_disconnected` (Сервер -> всем остальным игрокам)
+
+-   **`type`:** `"player_disconnected"`
+-   Рассылается всем, кроме отключившегося. Клиенты могут отобразить UI "игрок отключился, ожидаем..."
+
+```json
+{
+  "type": "player_disconnected",
+  "playerId": "uuid-player-1",
+  "gracePeriodSeconds": 60
+}
+```
+
+---
+
+## 7. `server.match.player_reconnected` (Сервер -> всем остальным игрокам)
+
+-   **`type`:** `"player_reconnected"`
+-   Рассылается всем, кроме вернувшегося.
+
+```json
+{
+  "type": "player_reconnected",
+  "playerId": "uuid-player-1"
+}

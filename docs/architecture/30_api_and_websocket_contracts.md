@@ -82,12 +82,78 @@
 #### 4. `server.lobby.state_update` (Сервер -> Клиент, в лобби)
 - **Payload:** `{ "type": "lobby_state_update", "lobbyId": "...", "players": [...] }`
 
-#### 5. `client.input` (Клиент -> Сервер, в игре)
+#### 5. `client.reconnect` (Клиент -> Сервер)
+
+-   **Назначение:** Возврат в активный матч после разрыва соединения. **Должно быть первым сообщением** после установки нового WS-соединения.
+-   **Ограничение:** Только тот же `playerId`, который изначально был в этом слоте матча, может успешно реконнектнуться. Другой `playerId` получает `SLOT_NOT_AVAILABLE`.
+-   **Payload:**
+    ```json
+    {
+      "type": "reconnect",
+      "token": "string"
+    }
+    ```
+    -   `token`: Тот же `accessToken` (JWT), который использовался при первом входе. `playerId` извлекается сервером из токена.
+
+#### 6. `server.reconnect.success` (Сервер -> Клиент)
+
+-   **Назначение:** Реконнект удался. Содержит актуальный `WorldState`, чтобы клиент мог немедленно продолжить игру.
+-   **Payload:**
+    ```json
+    {
+      "type": "reconnect_success",
+      "matchId": "string",
+      "playerId": "string",
+      "worldState": { }
+    }
+    ```
+    -   `worldState`: Полный `WorldState` на момент реконнекта (так же, как в `server.authenticate.success`).
+
+#### 7. `server.reconnect.error` (Сервер -> Клиент)
+
+-   **Назначение:** Реконнект отклонён. Сервер закрывает соединение сразу после отправки.
+-   **Коды ошибок:**
+    -   `SLOT_NOT_AVAILABLE` — чужой `playerId` пытается занять чужой слот.
+    -   `GRACE_EXPIRED` — грейс-период истёк, игрок удалён из матча.
+    -   `MATCH_NOT_FOUND` — матч уже завершён или не существует.
+-   **Payload:**
+    ```json
+    {
+      "type": "reconnect_error",
+      "code": "SLOT_NOT_AVAILABLE | GRACE_EXPIRED | MATCH_NOT_FOUND",
+      "message": "string"
+    }
+    ```
+
+#### 8. `server.match.player_disconnected` (Сервер -> всем остальным игрокам матча)
+
+-   **Назначение:** Уведомляет членов группы об отключении игрока. Участники могут отобразить "подожди возвращения".
+-   **Payload:**
+    ```json
+    {
+      "type": "player_disconnected",
+      "playerId": "string",
+      "gracePeriodSeconds": 60
+    }
+    ```
+
+#### 9. `server.match.player_reconnected` (Сервер -> всем остальным игрокам матча)
+
+-   **Назначение:** Уведомляет членов группы о возвращении игрока.
+-   **Payload:**
+    ```json
+    {
+      "type": "player_reconnected",
+      "playerId": "string"
+    }
+    ```
+
+#### 10. `client.input` (Клиент -> Сервер, в игре)
 
 -   **Назначение:** Отправка ввода игрока.
 -   **Payload:** Бинарная структура `PlayerInput`.
 
-#### 6. `server.state` (Сервер -> Клиент, в игре)
+#### 11. `server.state` (Сервер -> Клиент, в игре)
 
 -   **Назначение:** Отправка состояния мира.
 -   **Payload:** Бинарная структура `WorldState`.
