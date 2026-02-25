@@ -368,7 +368,29 @@ interface IncreaseCharacterSlotsCommand {
 // Запрос данных пользователя
 // Topic: player.query.get_user
 // Response: player.reply.user_data
+
+// Регистрация нового пользователя (от Auth Service)
+// Topic: user.registered
+interface UserRegisteredEvent {
+  userId: string;
+  username: string;
+  email: string;
+}
 ```
+
+### 4.3. Флоу создания нового игрока (по событию)
+
+`Player Service` является одним из ключевых подписчиков на событие `user.registered`. При получении этого события, он инициирует создание всех необходимых данных для нового игрока.
+
+1.  **Создает запись `User`:** В своей базе данных создает основного пользователя.
+2.  **Публикует `player.event.user_created`:** Сообщает другим системам, что базовый профиль игрока готов.
+3.  **Вызывает `CharacterManager.createCharacter()`:** Создает персонажа по умолчанию.
+4.  `CharacterManager`, в свою очередь, публикует событие `player.event.character_created`.
+5.  На это новое событие реагируют другие сервисы:
+    -   **`Meta Progression Service`:** Создает дефолтную мета-прогрессию.
+    -   **`Building Service`:** Создает дефолтный набор зданий.
+
+Таким образом, `Player Service` выступает координатором в процессе онбординга нового игрока.
 
 ---
 
