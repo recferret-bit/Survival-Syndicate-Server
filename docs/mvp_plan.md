@@ -13,17 +13,27 @@
 1.  **Auth Service:**
     -   **Задача:** Выдача JWT токенов по `username`.
     -   **Контракт:** `POST /api/auth/login`.
+    -   **Референсы:**
+        -   `docs/architecture/30_api_and_websocket_contracts.md`
+        -   `docs/architecture/37_user_creation_flow.md`
 
 2.  **Matchmaking Service:**
     -   **Задача:** Прием запросов на поиск игры и "распределение" игроков по Локальным Зонам.
     -   **Контракты:**
         -   `POST /api/matchmaking/join` (HTTP).
         -   Подписка на `orchestrator.zone.heartbeat` (NATS).
+    -   **Референсы:**
+        -   `docs/architecture/30_api_and_websocket_contracts.md`
+        -   `docs/architecture/29_nats_orchestrator_reporting_contract.md`
+        -   `docs/architecture/24_combat_gameplay_architecture.md`
         
 3.  **Player Service:**
     -   **Задача:** Хранит всю информацию о прогрессе игрока (мета, персонажи, балансы).
     -   **Контракты:**
         -   Подписка на `user.registered` (NATS) для создания записи о новом игроке.
+    -   **Референсы:**
+        -   `docs/architecture/15_player_service.md`
+        -   `docs/architecture/37_user_creation_flow.md`
 
 ### Б. Локальная Зона (Zone Scope)
 
@@ -32,18 +42,28 @@
     -   **Контракты:**
         -   Публикация `orchestrator.zone.heartbeat` (NATS).
         -   Подписка на `gameplay.service.heartbeat` (NATS).
+    -   **Референсы:**
+        -   `docs/architecture/29_nats_orchestrator_reporting_contract.md`
+        -   `docs/architecture/28_nats_gameplay_reporting_contract.md`
 
 2.  **Gameplay Service:**
     -   **Задача:** Имитирует управление инстансами игр (без реальной симуляции).
     -   **Контракты:**
         -   Публикация `gameplay.service.heartbeat` (NATS).
         -   Подписка на NATS-команды от Оркестратора.
+    -   **Референсы:**
+        -   `docs/architecture/28_nats_gameplay_reporting_contract.md`
+        -   `docs/architecture/33_gameplay_service_internals.md`
 
 3.  **WebSocket Service:**
     -   **Задача:** Управляет WebSocket-соединениями игроков.
     -   **Контракты:**
         -   Прием `client.authenticate`.
         -   Простая пересылка "эхо" сообщений для проверки связи.
+    -   **Референсы:**
+        -   `docs/architecture/30_api_and_websocket_contracts.md`
+        -   `docs/architecture/31_websocket_json_protocol.md`
+        -   `docs/architecture/32_connection_handling.md`
 
 ## 3. Задачи для реализации (Таск-борд)
 
