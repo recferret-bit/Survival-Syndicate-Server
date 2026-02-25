@@ -1,20 +1,15 @@
 # MVP План: "Каркас" серверной архитектуры
 
 ## 1. Цель MVP
-
-Основная цель этого MVP — **проверить и отладить всю межсервисную коммуникацию**, описанную в архитектурных документах, без реализации сложной игровой логики (`GameLoop`).
+Проверить и отладить всю межсервисную коммуникацию, описанную в архитектурных документах, без реализации сложной игровой логики (`GameLoop`).
 
 ## 2. Список сервисов в MVP
-
-### А. Центральная Зона (Global Scope)
-1.  **Auth Service**
-2.  **Matchmaking Service** (включая логику Лобби)
-3.  **Player Service**
-
-### Б. Локальная Зона (Zone Scope)
-1.  **Local Orchestrator**
-2.  **Gameplay Service**
-3.  **WebSocket Service**
+- Auth Service
+- Matchmaking Service (включая логику Лобби)
+- Player Service
+- Local Orchestrator
+- Gameplay Service
+- WebSocket Service
 
 ## 3. Задачи для реализации (Таск-борд)
 
@@ -32,24 +27,26 @@
 -   [ ] **TASK-2.3:** **Matchmaking Service:**
     -   Реализовать HTTP эндпоинты для управления лобби (`/api/lobbies/*`).
     -   Реализовать `POST /api/matchmaking/join-solo` для быстрого старта.
-    -   При старте матча, сохранять связь `lobbyId` -> `matchId`.
     -   Подписаться на `orchestrator.zone.heartbeat`.
     -   Подписаться на `match.finished` для обновления статуса лобби.
 -   [ ] **TASK-2.4:** **Local Orchestrator:**
     -   Реализовать публикацию `orchestrator.zone.heartbeat`.
     -   Подписаться на `gameplay.service.heartbeat`.
-    -   Реализовать логику выбора `Gameplay Service` и отправки команды `gameplay.start_simulation`.
+    -   Реализовать логику выбора `Gameplay Service`.
+    -   Реализовать отправку команды `gameplay.start_simulation`.
+    -   Реализовать логику "grace period" для дисконнектов.
 -   [ ] **TASK-2.5:** **Gameplay Service:**
     -   Реализовать публикацию `gameplay.service.heartbeat`.
     -   Подписаться на `gameplay.start_simulation`.
-    -   Реализовать **честное управление** `Map`'ой инстансов симуляций.
+    -   Реализовать честное управление `Map`'ой инстансов симуляций.
 -   [ ] **TASK-2.6:** **WebSocket Service:**
     -   Реализовать аутентификацию `client.authenticate`.
+    -   Реализовать обработку `client.reconnect` с проверкой, что игрок возвращается в свой же слот.
     -   Реализовать логику синхронизации состояния лобби (`server.lobby.state_update`).
     -   Реализовать простое "эхо" в игровом режиме.
 
 ### Epic 3: Интеграционное тестирование
--   [ ] **TASK-3.1:** Написать e2e тест, покрывающий флоу с созданием лобби и стартом матча.
+-   [ ] **TASK-3.1:** Написать e2e тест, покрывающий флоу с дисконнектом и реконнектом.
 
 ## 4. Требования к качеству (Definition of Done)
 -   **Unit-тесты:** Все новые контроллеры и сервисы/use-cases должны быть покрыты unit-тестами.
