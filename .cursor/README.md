@@ -90,5 +90,5 @@ If there's ever a conflict between files:
 For more detailed information, see:
 - `WARP.md` - Complete project guidance
 - `AGENTS.md` - Concise AI agent rules
-- `docs/architecture/` - 37 architecture documents
+- `docs/architecture/` - 32 architecture documents
 - `docs/01_server_development_guide.md` - Full development guide

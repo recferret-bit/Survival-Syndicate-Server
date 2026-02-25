@@ -18,7 +18,7 @@ Survival Syndicate — online multiplayer survival game server. NestJS monorepo 
 
 ## Per-App Documentation
 
-Read `apps/{service}/FEATURES.md` when working in that app. Read `libs/LIBS.md` when using shared libraries. Read `docs/architecture/` for full system design (37 documents).
+Read `apps/{service}/FEATURES.md` when working in that app. Read `libs/LIBS.md` when using shared libraries. Read `docs/architecture/` for full system design (32 documents).
 
 ## Clean Architecture - STRICT ENFORCEMENT
 
@@ -258,14 +258,14 @@ npm run test:e2e      # E2E tests
 
 ## Documentation References
 
-- Architecture docs: `docs/architecture/` (37 documents)
-- Network protocol: `docs/architecture/01_network_protocol.md`
-- Server architecture: `docs/architecture/02_server_architecture.md`
-- Building Service: `docs/architecture/13_building_service.md`
-- Combat Progress Service: `docs/architecture/14_combat_progress_service.md`
-- Player Service: `docs/architecture/15_player_service.md`
-- Scheduler Service: `docs/architecture/16_scheduler_service.md`
-- Game loop: `docs/architecture/25_game_loop_best_practices.md`
-- Service contracts: `docs/architecture/26_service_contracts.md`
-- Gameplay internals: `docs/architecture/33_gameplay_service_internals.md`
-- NATS best practices: `docs/architecture/19_nats_best_practices.md`
+- Architecture docs: `docs/architecture/` (32 documents)
+- Building Service: `docs/architecture/09_building_service.md`
+- Combat Progress Service: `docs/architecture/10_combat_progress_service.md`
+- Player Service: `docs/architecture/11_player_service.md`
+- Scheduler Service: `docs/architecture/12_scheduler_service.md`
+- Game loop: `docs/architecture/21_game_loop_best_practices.md`
+- Service contracts: `docs/architecture/22_service_contracts.md`
+- Gameplay internals: `docs/architecture/28_gameplay_service_internals.md`
+- NATS best practices: `docs/architecture/15_nats_best_practices.md`
+- WebSocket contracts: `docs/architecture/25_api_and_websocket_contracts.md`
+- Connection handling: `docs/architecture/27_connection_handling.md`

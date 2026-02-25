@@ -122,21 +122,18 @@ npm run build:all
 - **[docs/index.md](docs/index.md)** — Индекс всех документов
 - **[docs/01_server_development_guide.md](docs/01_server_development_guide.md)** — Полный гайд по разработке
 
-### Архитектура (`docs/architecture/`)
+### Архитектура (`docs/architecture/`) — 32 документа
 
-- Сетевой протокол (WebSocket)
-- Архитектура игрового сервера
 - Сетевые оптимизации (Delta, Interest)
 - Персистентность (PostgreSQL, ClickHouse)
-- Оркестрация серверов (центр + регионы)
 - Anti-Cheat и валидация
 - Building Service, Combat Progress Service, Player Service, Scheduler Service
 - NATS Best Practices
 - Структура проекта (NestJS Monorepo)
 - Auth & Authorization (JWT, Guards)
 - Database Migrations (Prisma ORM)
-- Gameplay Service Internals
-- Game Simulation Internals
+- API & WebSocket контракты, JSON протокол, Connection Handling
+- Gameplay Service Internals (ECS, GameLoop, интерфейсы)
 
 **Дополнительно:**
 - [WARP.md](WARP.md) — Руководство для AI-агентов
