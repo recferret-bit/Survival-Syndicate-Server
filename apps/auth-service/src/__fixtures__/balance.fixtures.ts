@@ -1,17 +1,17 @@
-import { UserBalance } from '@app/balance/domain/entities/user-balance/user-balance';
-import { UserBalanceProps } from '@app/balance/domain/entities/user-balance/user-balance.type';
-import { BalanceResult } from '@app/balance/domain/entities/balance-result/balance-result';
-import { BalanceResultProps } from '@app/balance/domain/entities/balance-result/balance-result.type';
-import { BalanceLedgerEntry } from '@app/balance/domain/entities/balance-ledger-entry/balance-ledger-entry';
-import { BalanceLedgerEntryProps } from '@app/balance/domain/entities/balance-ledger-entry/balance-ledger-entry.type';
-import { BalanceAmount } from '@app/balance/domain/value-objects/balance-amount';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
-import { OperationType } from '@app/balance/domain/value-objects/operation-type';
-import { OperationStatus } from '@app/balance/domain/value-objects/operation-status';
-import { LedgerReason } from '@app/balance/domain/value-objects/ledger-reason';
+import { UserBalance } from '@app/auth-service/domain/entities/user-balance/user-balance';
+import { UserBalanceProps } from '@app/auth-service/domain/entities/user-balance/user-balance.type';
+import { BalanceResult } from '@app/auth-service/domain/entities/balance-result/balance-result';
+import { BalanceResultProps } from '@app/auth-service/domain/entities/balance-result/balance-result.type';
+import { BalanceLedgerEntry } from '@app/auth-service/domain/entities/balance-ledger-entry/balance-ledger-entry';
+import { BalanceLedgerEntryProps } from '@app/auth-service/domain/entities/balance-ledger-entry/balance-ledger-entry.type';
+import { BalanceAmount } from '@app/auth-service/domain/value-objects/balance-amount';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
+import { OperationType } from '@app/auth-service/domain/value-objects/operation-type';
+import { OperationStatus } from '@app/auth-service/domain/value-objects/operation-status';
+import { LedgerReason } from '@app/auth-service/domain/value-objects/ledger-reason';
 import BigNumber from 'bignumber.js';
-import type { CreateUserBalanceRequestDto } from '@app/balance/application/use-cases/create-user-balance/create-user-balance.dto';
-import type { GetUserBalanceResponseDto } from '@app/balance/application/use-cases/get-user-balance/get-user-balance.dto';
+import type { CreateUserBalanceRequestDto } from '@app/auth-service/application/use-cases/create-user-balance/create-user-balance.dto';
+import type { GetUserBalanceResponseDto } from '@app/auth-service/application/use-cases/get-user-balance/get-user-balance.dto';
 import { CurrencyCode } from '@lib/shared/currency';
 
 export class BalanceFixtures {

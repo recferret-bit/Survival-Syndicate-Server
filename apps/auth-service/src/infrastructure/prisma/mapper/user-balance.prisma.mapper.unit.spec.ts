@@ -1,8 +1,8 @@
 import BigNumber from 'bignumber.js';
 import { UserBalancePrismaMapper } from './user-balance.prisma.mapper';
-import { UserBalance } from '@app/balance/domain/entities/user-balance/user-balance';
+import { UserBalance } from '@app/auth-service/domain/entities/user-balance/user-balance';
 import { BalanceResultPrismaMapper } from './balance-result.prisma.mapper';
-import { Prisma } from '@prisma/balance';
+import { Prisma } from '@prisma/catalog';
 
 // Mock Prisma UserBalance type structure with relations
 type MockPrismaUserBalance = {

@@ -1,12 +1,12 @@
 import BigNumber from 'bignumber.js';
 import { BalanceResultPrismaMapper } from './balance-result.prisma.mapper';
-import { BalanceResult } from '@app/balance/domain/entities/balance-result/balance-result';
-import { BalanceAmount } from '@app/balance/domain/value-objects/balance-amount';
+import { BalanceResult } from '@app/auth-service/domain/entities/balance-result/balance-result';
+import { BalanceAmount } from '@app/auth-service/domain/value-objects/balance-amount';
 import {
   FiatBalanceResult,
   BonusBalanceResult,
   CryptoBalanceResult,
-} from '@prisma/balance';
+} from '@prisma/catalog';
 
 // Mock Prisma BalanceResult type structure
 type MockPrismaBalanceResult = {

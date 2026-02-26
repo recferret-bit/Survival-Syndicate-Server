@@ -6,8 +6,8 @@ import {
   NatsClientModule,
   DEFAULT_NATS_CLIENT_STREAM_NAME,
 } from '@lib/shared';
-import { ApplicationModule } from '@app/users/application/application.module';
-import { InfrastructureModule } from '@app/users/infrastructure/infrastructure.module';
+import { ApplicationModule } from '@app/player-service/application/application.module';
+import { InfrastructureModule } from '@app/player-service/infrastructure/infrastructure.module';
 import { UsersHttpController } from './http/users.http.controller';
 import { UsersNatsController } from './nats/users.nats.controller';
 

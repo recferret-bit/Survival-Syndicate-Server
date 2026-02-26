@@ -1,6 +1,6 @@
-import { Prisma } from '@prisma/users';
-import { Admin } from '@app/users/domain/entities/admin/admin';
-import { AdminStatus } from '@app/users/domain/entities/admin/admin.type';
+import { Prisma } from '@prisma/meta';
+import { Admin } from '@app/player-service/domain/entities/admin/admin';
+import { AdminStatus } from '@app/player-service/domain/entities/admin/admin.type';
 import { bigIntToBigNumber } from '@lib/shared';
 
 type PrismaAdmin = Prisma.AdminGetPayload<{}>;

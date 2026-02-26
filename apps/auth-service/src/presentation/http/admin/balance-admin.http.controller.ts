@@ -12,16 +12,16 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Request } from 'express';
 import { AdminApiKeyGuard } from '@lib/shared/admin/guards/admin-api-key.guard';
 import { BaseHttpResponse } from '@lib/shared';
-import { RecalculateBalanceCommand } from '@app/balance/application/use-cases/recalculate-balance/recalculate-balance.command';
+import { RecalculateBalanceCommand } from '@app/auth-service/application/use-cases/recalculate-balance/recalculate-balance.command';
 import {
   RecalculateBalanceHttpDto,
   RecalculateBalanceResponseDto,
-} from '@app/balance/application/use-cases/recalculate-balance/recalculate-balance.dto';
-import { IncreaseFiatBalanceCommand } from '@app/balance/application/use-cases/increase-fiat-balance/increase-fiat-balance.command';
+} from '@app/auth-service/application/use-cases/recalculate-balance/recalculate-balance.dto';
+import { IncreaseFiatBalanceCommand } from '@app/auth-service/application/use-cases/increase-fiat-balance/increase-fiat-balance.command';
 import {
   IncreaseFiatBalanceHttpDto,
   IncreaseFiatBalanceResponseDto,
-} from '@app/balance/application/use-cases/increase-fiat-balance/increase-fiat-balance.dto';
+} from '@app/auth-service/application/use-cases/increase-fiat-balance/increase-fiat-balance.dto';
 
 @Controller('admin')
 @ApiTags('Balance Admin')

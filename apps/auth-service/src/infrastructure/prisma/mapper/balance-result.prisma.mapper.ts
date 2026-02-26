@@ -1,17 +1,17 @@
 import BigNumber from 'bignumber.js';
-import { BalanceResult } from '@app/balance/domain/entities/balance-result/balance-result';
+import { BalanceResult } from '@app/auth-service/domain/entities/balance-result/balance-result';
 import {
   BalanceResultProps,
   CreateBalanceResult,
   UpdateBalanceResult,
-} from '@app/balance/domain/entities/balance-result/balance-result.type';
-import { BalanceAmount } from '@app/balance/domain/value-objects/balance-amount';
+} from '@app/auth-service/domain/entities/balance-result/balance-result.type';
+import { BalanceAmount } from '@app/auth-service/domain/value-objects/balance-amount';
 import {
   FiatBalanceResult,
   BonusBalanceResult,
   CryptoBalanceResult,
   Prisma,
-} from '@prisma/balance';
+} from '@prisma/catalog';
 
 type ResultModel = FiatBalanceResult | BonusBalanceResult | CryptoBalanceResult;
 

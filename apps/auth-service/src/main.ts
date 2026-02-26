@@ -2,7 +2,7 @@ import { ApplicationBootstrapBuilder } from '@lib/shared';
 import { name, version } from '../package.json';
 import { AppModule } from './app.module';
 import { registerNonDurablePattern } from '@lib/shared/nats';
-import { BalanceSubjects } from '@lib/lib-balance';
+import { BalanceSubjects } from '@lib/lib-building';
 
 class App {
   async bootstrap() {

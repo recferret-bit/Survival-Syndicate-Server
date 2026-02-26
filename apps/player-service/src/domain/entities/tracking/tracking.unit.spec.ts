@@ -1,5 +1,5 @@
 import { Tracking } from './tracking';
-import { UserFixtures } from '@app/users/__fixtures__/user.fixtures';
+import { UserFixtures } from '@app/player-service/__fixtures__/user.fixtures';
 import { ValidationException } from '@lib/shared/application';
 import BigNumber from 'bignumber.js';
 

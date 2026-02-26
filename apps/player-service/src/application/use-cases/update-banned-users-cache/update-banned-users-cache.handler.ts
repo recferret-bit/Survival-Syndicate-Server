@@ -2,7 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Logger } from '@nestjs/common';
 import { UpdateBannedUsersCacheCommand } from './update-banned-users-cache.command';
 import { UpdateBannedUsersCacheResponseDto } from './update-banned-users-cache.dto';
-import { UserPortRepository } from '@app/users/application/ports/user.port.repository';
+import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
 import {
   BannedUsersCacheService,
   BearerTokenHashCacheService,

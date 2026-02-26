@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { AttachPhoneCommand } from './attach-phone.command';
 import { AttachPhoneResponseDto } from './attach-phone.dto';
-import { UserPortRepository } from '@app/users/application/ports/user.port.repository';
+import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
 import { stringToBigNumber } from '@lib/shared';
 
 @CommandHandler(AttachPhoneCommand)

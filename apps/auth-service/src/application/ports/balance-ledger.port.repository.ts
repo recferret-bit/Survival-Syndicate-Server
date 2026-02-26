@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
-import { BalanceLedgerEntry } from '@app/balance/domain/entities/balance-ledger-entry/balance-ledger-entry';
-import { CreateBalanceLedgerEntry } from '@app/balance/domain/entities/balance-ledger-entry/balance-ledger-entry.type';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
+import { BalanceLedgerEntry } from '@app/auth-service/domain/entities/balance-ledger-entry/balance-ledger-entry';
+import { CreateBalanceLedgerEntry } from '@app/auth-service/domain/entities/balance-ledger-entry/balance-ledger-entry.type';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
 
 export abstract class BalanceLedgerPortRepository {
   abstract create(

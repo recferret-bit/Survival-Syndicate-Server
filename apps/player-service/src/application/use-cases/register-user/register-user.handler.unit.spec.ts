@@ -2,28 +2,25 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ConflictException, BadRequestException } from '@nestjs/common';
 import { RegisterUserHandler } from './register-user.handler';
 import { RegisterUserCommand } from './register-user.command';
-import { UserPortRepository } from '@app/users/application/ports/user.port.repository';
-import { TrackingPortRepository } from '@app/users/application/ports/tracking.port.repository';
+import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
 import { AuthJwtService } from '@lib/shared/auth';
 import { EnvService } from '@lib/shared/application';
-import { BalancePublisher } from '@lib/lib-balance';
-import { PrismaService } from '@app/users/infrastructure/prisma/prisma.service';
-import { UserFixtures } from '@app/users/__fixtures__/user.fixtures';
-import { Tracking } from '@app/users/domain/entities/tracking/tracking';
-import { TrackingProps } from '@app/users/domain/entities/tracking/tracking.type';
-import { UserPrismaMapper } from '@app/users/infrastructure/prisma/mapper/user.prisma.mapper';
-import { TrackingPrismaMapper } from '@app/users/infrastructure/prisma/mapper/tracking.prisma.mapper';
+import { BalancePublisher } from '@lib/lib-building';
+import { UsersPublisher } from '@lib/lib-player';
+import { PrismaService } from '@app/player-service/infrastructure/prisma/prisma.service';
+import { UserFixtures } from '@app/player-service/__fixtures__/user.fixtures';
 import { bigNumberToBigInt } from '@lib/shared/utils/amount.utils';
-import BigNumber from 'bignumber.js';
+import { BearerTokenHashCacheService } from '@lib/shared/redis';
 
 describe('RegisterUserHandler', () => {
   let handler: RegisterUserHandler;
   let userRepository: jest.Mocked<UserPortRepository>;
-  let trackingRepository: jest.Mocked<TrackingPortRepository>;
   let balancePublisher: jest.Mocked<BalancePublisher>;
+  let usersPublisher: jest.Mocked<UsersPublisher>;
   let authJwtService: jest.Mocked<AuthJwtService>;
   let envService: jest.Mocked<EnvService>;
   let prismaService: jest.Mocked<PrismaService>;
+  let bearerTokenHashCacheService: jest.Mocked<BearerTokenHashCacheService>;
 
   beforeEach(async () => {
     userRepository = {
@@ -35,14 +32,11 @@ describe('RegisterUserHandler', () => {
       update: jest.fn(),
     } as any;
 
-    trackingRepository = {
-      create: jest.fn(),
-      findByUserId: jest.fn(),
-      updateLastIp: jest.fn(),
-    } as any;
-
     balancePublisher = {
       createUserBalance: jest.fn(),
+    } as any;
+    usersPublisher = {
+      publishUserRegistered: jest.fn(),
     } as any;
 
     authJwtService = {
@@ -60,6 +54,11 @@ describe('RegisterUserHandler', () => {
     prismaService = {
       $transaction: jest.fn(),
     } as any;
+    bearerTokenHashCacheService = {
+      setBearerTokenHash: jest.fn(),
+      getBearerTokenHash: jest.fn(),
+      removeBearerTokenHash: jest.fn(),
+    } as any;
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -69,12 +68,12 @@ describe('RegisterUserHandler', () => {
           useValue: userRepository,
         },
         {
-          provide: TrackingPortRepository,
-          useValue: trackingRepository,
-        },
-        {
           provide: BalancePublisher,
           useValue: balancePublisher,
+        },
+        {
+          provide: UsersPublisher,
+          useValue: usersPublisher,
         },
         {
           provide: AuthJwtService,
@@ -87,6 +86,10 @@ describe('RegisterUserHandler', () => {
         {
           provide: PrismaService,
           useValue: prismaService,
+        },
+        {
+          provide: BearerTokenHashCacheService,
+          useValue: bearerTokenHashCacheService,
         },
       ],
     }).compile();
@@ -102,14 +105,6 @@ describe('RegisterUserHandler', () => {
     it('should register user successfully', async () => {
       const dto = UserFixtures.createRegisterUserDto();
       const user = UserFixtures.createUser();
-      const trackingProps: TrackingProps = {
-        id: 1,
-        userId: user.id,
-        firstIp: '127.0.0.1',
-        lastIp: '127.0.0.1',
-      };
-      const tracking = new Tracking(trackingProps);
-
       // Mock Prisma transaction
       const mockTx = {
         user: {
@@ -218,14 +213,6 @@ describe('RegisterUserHandler', () => {
     it('should handle balance creation failure gracefully', async () => {
       const dto = UserFixtures.createRegisterUserDto();
       const user = UserFixtures.createUser();
-      const trackingProps: TrackingProps = {
-        id: 1,
-        userId: user.id,
-        firstIp: '127.0.0.1',
-        lastIp: '127.0.0.1',
-      };
-      const tracking = new Tracking(trackingProps);
-
       // Mock Prisma transaction
       const mockTx = {
         user: {

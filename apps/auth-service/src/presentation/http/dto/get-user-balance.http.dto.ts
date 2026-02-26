@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
 
 /**
  * HTTP-specific Balance DTO

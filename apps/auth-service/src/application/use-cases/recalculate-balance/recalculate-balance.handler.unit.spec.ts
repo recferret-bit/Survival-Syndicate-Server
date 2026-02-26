@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import BigNumber from 'bignumber.js';
 import { RecalculateBalanceHandler } from './recalculate-balance.handler';
 import { RecalculateBalanceCommand } from './recalculate-balance.command';
-import { BalanceRecalculationService } from '@app/balance/infrastructure/services/balance-recalculation.service';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
+import { BalanceRecalculationService } from '@app/auth-service/infrastructure/services/balance-recalculation.service';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
 
 describe('RecalculateBalanceHandler', () => {
   let handler: RecalculateBalanceHandler;

@@ -2,7 +2,7 @@ import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
 import { Logger } from '@nestjs/common';
 import { ValidateAdminApiKeyQuery } from './validate-admin-api-key.query';
 import { ValidateAdminApiKeyResponseDto } from './validate-admin-api-key.dto';
-import { AdminPortRepository } from '@app/users/application/ports/admin.port.repository';
+import { AdminPortRepository } from '@app/player-service/application/ports/admin.port.repository';
 
 @QueryHandler(ValidateAdminApiKeyQuery)
 export class ValidateAdminApiKeyHandler

@@ -1,8 +1,8 @@
 import BigNumber from 'bignumber.js';
-import { OperationType } from '@app/balance/domain/value-objects/operation-type';
-import { LedgerReason } from '@app/balance/domain/value-objects/ledger-reason';
-import { OperationStatus } from '@app/balance/domain/value-objects/operation-status';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
+import { OperationType } from '@app/auth-service/domain/value-objects/operation-type';
+import { LedgerReason } from '@app/auth-service/domain/value-objects/ledger-reason';
+import { OperationStatus } from '@app/auth-service/domain/value-objects/operation-status';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
 import type { AddBalanceEntryRequest } from '../schemas/balance.schemas';
 
 /**

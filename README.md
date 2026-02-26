@@ -171,7 +171,7 @@ npm run test:e2e
 
 ### Prisma
 
-Две базы данных: **Postgres_Meta** (данные игроков) и **Postgres_Catalog** (статический конфиг):
+В текущей локальной конфигурации используются две Prisma-схемы: **users** и **balance**.
 
 ```bash
 # Сгенерировать Prisma клиенты
@@ -184,8 +184,8 @@ npm run prisma:migrate:dev
 npm run prisma:migrate:deploy
 
 # Prisma Studio
-npm run prisma:studio:meta
-npm run prisma:studio:catalog
+npm run prisma:studio:users
+npm run prisma:studio:balance
 ```
 
 ## 🔄 Межсервисная коммуникация

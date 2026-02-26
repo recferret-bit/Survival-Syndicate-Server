@@ -1,16 +1,16 @@
 import BigNumber from 'bignumber.js';
 import { BalanceLedgerPrismaMapper } from './balance-ledger.prisma.mapper';
-import { BalanceLedgerEntry } from '@app/balance/domain/entities/balance-ledger-entry/balance-ledger-entry';
-import { BalanceAmount } from '@app/balance/domain/value-objects/balance-amount';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
-import { OperationType } from '@app/balance/domain/value-objects/operation-type';
-import { OperationStatus } from '@app/balance/domain/value-objects/operation-status';
-import { LedgerReason } from '@app/balance/domain/value-objects/ledger-reason';
+import { BalanceLedgerEntry } from '@app/auth-service/domain/entities/balance-ledger-entry/balance-ledger-entry';
+import { BalanceAmount } from '@app/auth-service/domain/value-objects/balance-amount';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
+import { OperationType } from '@app/auth-service/domain/value-objects/operation-type';
+import { OperationStatus } from '@app/auth-service/domain/value-objects/operation-status';
+import { LedgerReason } from '@app/auth-service/domain/value-objects/ledger-reason';
 import {
   FiatBalanceLedger,
   BonusBalanceLedger,
   CryptoBalanceLedger,
-} from '@prisma/balance';
+} from '@prisma/catalog';
 
 // Mock Prisma BalanceLedger type structure
 type MockPrismaBalanceLedger = {

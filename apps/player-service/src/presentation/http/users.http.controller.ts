@@ -19,35 +19,35 @@ import {
 import type { Request } from 'express';
 import { Public, AuthJwtGuard, UserSession } from '@lib/shared/auth';
 import { BaseHttpResponse } from '@lib/shared';
-import { RegisterUserCommand } from '@app/users/application/use-cases/register-user/register-user.command';
+import { RegisterUserCommand } from '@app/player-service/application/use-cases/register-user/register-user.command';
 import {
   RegisterUserHttpDto,
   RegisterUserResponseDto,
-} from '@app/users/application/use-cases/register-user/register-user.dto';
-import { LoginUserQuery } from '@app/users/application/use-cases/login-user/login-user.query';
+} from '@app/player-service/application/use-cases/register-user/register-user.dto';
+import { LoginUserQuery } from '@app/player-service/application/use-cases/login-user/login-user.query';
 import {
   LoginUserHttpDto,
   LoginUserResponseDto,
-} from '@app/users/application/use-cases/login-user/login-user.dto';
-import { GetProfileQuery } from '@app/users/application/use-cases/get-profile/get-profile.query';
-import { GetProfileResponseDto } from '@app/users/application/use-cases/get-profile/get-profile.dto';
-import { UpdateProfileCommand } from '@app/users/application/use-cases/update-profile/update-profile.command';
+} from '@app/player-service/application/use-cases/login-user/login-user.dto';
+import { GetProfileQuery } from '@app/player-service/application/use-cases/get-profile/get-profile.query';
+import { GetProfileResponseDto } from '@app/player-service/application/use-cases/get-profile/get-profile.dto';
+import { UpdateProfileCommand } from '@app/player-service/application/use-cases/update-profile/update-profile.command';
 import {
   UpdateProfileHttpDto,
   UpdateProfileResponseDto,
-} from '@app/users/application/use-cases/update-profile/update-profile.dto';
-import { AttachEmailCommand } from '@app/users/application/use-cases/attach-email/attach-email.command';
+} from '@app/player-service/application/use-cases/update-profile/update-profile.dto';
+import { AttachEmailCommand } from '@app/player-service/application/use-cases/attach-email/attach-email.command';
 import {
   AttachEmailHttpDto,
   AttachEmailResponseDto,
-} from '@app/users/application/use-cases/attach-email/attach-email.dto';
-import { AttachPhoneCommand } from '@app/users/application/use-cases/attach-phone/attach-phone.command';
+} from '@app/player-service/application/use-cases/attach-email/attach-email.dto';
+import { AttachPhoneCommand } from '@app/player-service/application/use-cases/attach-phone/attach-phone.command';
 import {
   AttachPhoneHttpDto,
   AttachPhoneResponseDto,
-} from '@app/users/application/use-cases/attach-phone/attach-phone.dto';
-import { GetCurrenciesResponseDto } from '@app/users/application/use-cases/get-currencies/get-currencies.dto';
-import { GetLanguagesResponseDto } from '@app/users/application/use-cases/get-languages/get-languages.dto';
+} from '@app/player-service/application/use-cases/attach-phone/attach-phone.dto';
+import { GetCurrenciesResponseDto } from '@app/player-service/application/use-cases/get-currencies/get-currencies.dto';
+import { GetLanguagesResponseDto } from '@app/player-service/application/use-cases/get-languages/get-languages.dto';
 import { Currencies } from '@lib/shared/currency';
 import { Languages } from '@lib/shared/language';
 

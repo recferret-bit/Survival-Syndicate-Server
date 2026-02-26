@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserPortRepository } from '@app/users/application/ports/user.port.repository';
+import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
 import { PrismaService } from '../prisma.service';
-import { InfrastructureModule } from '@app/users/infrastructure/infrastructure.module';
-import { User } from '@app/users/domain/entities/user/user';
-import { BanReason } from '@app/users/domain/entities/user/user.type';
+import { InfrastructureModule } from '@app/player-service/infrastructure/infrastructure.module';
+import { User } from '@app/player-service/domain/entities/user/user';
+import { BanReason } from '@app/player-service/domain/entities/user/user.type';
 
 describe('UserPrismaRepository (Integration)', () => {
   let repository: UserPortRepository;

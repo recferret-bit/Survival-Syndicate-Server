@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
 import { GetProfileHandler } from './get-profile.handler';
 import { GetProfileQuery } from './get-profile.query';
-import { UserPortRepository } from '@app/users/application/ports/user.port.repository';
-import { UserFixtures } from '@app/users/__fixtures__/user.fixtures';
+import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
+import { UserFixtures } from '@app/player-service/__fixtures__/user.fixtures';
 import BigNumber from 'bignumber.js';
 
 describe('GetProfileHandler (Unit)', () => {

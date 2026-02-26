@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserBalancePortRepository } from '@app/balance/application/ports/user-balance.port.repository';
-import { BalanceResultPortRepository } from '@app/balance/application/ports/balance-result.port.repository';
+import { UserBalancePortRepository } from '@app/auth-service/application/ports/user-balance.port.repository';
+import { BalanceResultPortRepository } from '@app/auth-service/application/ports/balance-result.port.repository';
 import { PrismaService } from '../prisma.service';
-import { InfrastructureModule } from '@app/balance/infrastructure/infrastructure.module';
-import { UserBalance } from '@app/balance/domain/entities/user-balance/user-balance';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
-import { BalanceAmount } from '@app/balance/domain/value-objects/balance-amount';
+import { InfrastructureModule } from '@app/auth-service/infrastructure/infrastructure.module';
+import { UserBalance } from '@app/auth-service/domain/entities/user-balance/user-balance';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
+import { BalanceAmount } from '@app/auth-service/domain/value-objects/balance-amount';
 import BigNumber from 'bignumber.js';
 import { v4 as uuidv4 } from 'uuid';
 

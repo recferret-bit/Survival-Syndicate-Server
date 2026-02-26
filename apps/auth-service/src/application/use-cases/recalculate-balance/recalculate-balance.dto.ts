@@ -1,7 +1,7 @@
 import { createZodDto } from '@anatine/zod-nestjs';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { z } from 'zod';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
 
 export const RecalculateBalanceRequestSchema = z.object({
   userId: z

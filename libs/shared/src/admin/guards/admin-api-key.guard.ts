@@ -5,7 +5,7 @@ import {
   Logger,
   UnauthorizedException,
 } from '@nestjs/common';
-import { UsersPublisher } from '@lib/lib-users';
+import { UsersPublisher } from '@lib/lib-player';
 import { ADMIN_API_KEY_NAME } from '@lib/shared/admin';
 
 @Injectable()

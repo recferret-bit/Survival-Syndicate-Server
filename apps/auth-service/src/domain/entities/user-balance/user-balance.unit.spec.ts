@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { UserBalance } from './user-balance';
-import { BalanceFixtures } from '@app/balance/__fixtures__/balance.fixtures';
+import { BalanceFixtures } from '@app/auth-service/__fixtures__/balance.fixtures';
 
 describe('UserBalance Entity', () => {
   describe('Creation', () => {

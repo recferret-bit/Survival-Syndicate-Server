@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { BonusType } from '@lib/lib-bonus';
+import { BonusType } from '@lib/lib-combat-progress';
 import { CurrencyCode } from '@lib/shared';
 
 /**

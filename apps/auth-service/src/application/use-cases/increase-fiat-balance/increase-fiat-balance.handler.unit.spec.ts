@@ -2,11 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CommandBus } from '@nestjs/cqrs';
 import { IncreaseFiatBalanceHandler } from './increase-fiat-balance.handler';
 import { IncreaseFiatBalanceCommand } from './increase-fiat-balance.command';
-import { AddBalanceEntryCommand } from '@app/balance/application/use-cases/add-balance-entry/add-balance-entry.command';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
-import { OperationType } from '@app/balance/domain/value-objects/operation-type';
-import { OperationStatus } from '@app/balance/domain/value-objects/operation-status';
-import { LedgerReason } from '@app/balance/domain/value-objects/ledger-reason';
+import { AddBalanceEntryCommand } from '@app/auth-service/application/use-cases/add-balance-entry/add-balance-entry.command';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
+import { OperationType } from '@app/auth-service/domain/value-objects/operation-type';
+import { OperationStatus } from '@app/auth-service/domain/value-objects/operation-status';
+import { LedgerReason } from '@app/auth-service/domain/value-objects/ledger-reason';
 
 describe('IncreaseFiatBalanceHandler', () => {
   let handler: IncreaseFiatBalanceHandler;

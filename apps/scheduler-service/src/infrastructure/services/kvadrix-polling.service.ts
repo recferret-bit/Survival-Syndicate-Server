@@ -1,7 +1,7 @@
 import { Injectable, Logger, Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { PaymentsSubjects } from '@lib/lib-payments';
+import { PaymentsSubjects } from '@lib/lib-analytics';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()

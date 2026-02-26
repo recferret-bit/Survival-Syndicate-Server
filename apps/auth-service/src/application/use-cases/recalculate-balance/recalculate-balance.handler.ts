@@ -2,8 +2,8 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Logger } from '@nestjs/common';
 import { RecalculateBalanceCommand } from './recalculate-balance.command';
 import { RecalculateBalanceResponseDto } from './recalculate-balance.dto';
-import { BalanceRecalculationService } from '@app/balance/infrastructure/services/balance-recalculation.service';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
+import { BalanceRecalculationService } from '@app/auth-service/infrastructure/services/balance-recalculation.service';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
 import { Currencies } from '@lib/shared/currency/currency';
 import { stringToBigNumber } from '@lib/shared';
 

@@ -1,7 +1,7 @@
 import { TrackingPrismaMapper } from './tracking.prisma.mapper';
-import { Tracking } from '@app/users/domain/entities/tracking/tracking';
+import { Tracking } from '@app/player-service/domain/entities/tracking/tracking';
 import { bigNumberToBigInt } from '@lib/shared/utils/amount.utils';
-import { Prisma } from '@prisma/users';
+import { Prisma } from '@prisma/meta';
 import BigNumber from 'bignumber.js';
 
 // Mock Prisma Tracking type structure

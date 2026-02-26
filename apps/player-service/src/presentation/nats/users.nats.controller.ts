@@ -9,19 +9,19 @@ import {
   GetUserByIdResponseSchema,
   ValidateAdminApiKeyRequestSchema,
   ValidateAdminApiKeyResponseSchema,
-} from '@lib/lib-users';
+} from '@lib/lib-player';
 import type {
   GetUserByIdRequest,
   GetUserByIdResponse,
   ValidateAdminApiKeyRequest,
   ValidateAdminApiKeyResponse,
-} from '@lib/lib-users';
-import { UpdateBannedUsersCacheCommand } from '@app/users/application/use-cases/update-banned-users-cache/update-banned-users-cache.command';
-import { UpdateBannedUsersCacheResponseDto } from '@app/users/application/use-cases/update-banned-users-cache/update-banned-users-cache.dto';
-import { SyncActiveUsersCacheCommand } from '@app/users/application/use-cases/sync-active-users-cache/sync-active-users-cache.command';
-import { SyncActiveUsersCacheResponseDto } from '@app/users/application/use-cases/sync-active-users-cache/sync-active-users-cache.dto';
-import { GetUserByIdQuery } from '@app/users/application/use-cases/get-user-by-id/get-user-by-id.query';
-import { ValidateAdminApiKeyQuery } from '@app/users/application/use-cases/validate-admin-api-key/validate-admin-api-key.query';
+} from '@lib/lib-player';
+import { UpdateBannedUsersCacheCommand } from '@app/player-service/application/use-cases/update-banned-users-cache/update-banned-users-cache.command';
+import { UpdateBannedUsersCacheResponseDto } from '@app/player-service/application/use-cases/update-banned-users-cache/update-banned-users-cache.dto';
+import { SyncActiveUsersCacheCommand } from '@app/player-service/application/use-cases/sync-active-users-cache/sync-active-users-cache.command';
+import { SyncActiveUsersCacheResponseDto } from '@app/player-service/application/use-cases/sync-active-users-cache/sync-active-users-cache.dto';
+import { GetUserByIdQuery } from '@app/player-service/application/use-cases/get-user-by-id/get-user-by-id.query';
+import { ValidateAdminApiKeyQuery } from '@app/player-service/application/use-cases/validate-admin-api-key/validate-admin-api-key.query';
 
 @Controller()
 export class UsersNatsController {

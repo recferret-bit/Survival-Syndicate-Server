@@ -1,14 +1,14 @@
 import BigNumber from 'bignumber.js';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { BalanceResultPortRepository } from '@app/balance/application/ports/balance-result.port.repository';
-import { BalanceResult } from '@app/balance/domain/entities/balance-result/balance-result';
+import { BalanceResultPortRepository } from '@app/auth-service/application/ports/balance-result.port.repository';
+import { BalanceResult } from '@app/auth-service/domain/entities/balance-result/balance-result';
 import {
   CreateBalanceResult,
   UpdateBalanceResult,
-} from '@app/balance/domain/entities/balance-result/balance-result.type';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
-import { BalanceResultPrismaMapper } from '@app/balance/infrastructure/prisma/mapper/balance-result.prisma.mapper';
+} from '@app/auth-service/domain/entities/balance-result/balance-result.type';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
+import { BalanceResultPrismaMapper } from '@app/auth-service/infrastructure/prisma/mapper/balance-result.prisma.mapper';
 
 @Injectable()
 export class BalanceResultPrismaRepository extends BalanceResultPortRepository {

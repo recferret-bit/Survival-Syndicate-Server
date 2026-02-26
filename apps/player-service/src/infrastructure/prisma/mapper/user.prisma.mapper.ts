@@ -1,7 +1,7 @@
-import { Prisma } from '@prisma/users';
-import { User } from '@app/users/domain/entities/user/user';
-import { CreateUser } from '@app/users/domain/entities/user/user.type';
-import { BanReason } from '@app/users/domain/entities/user/user.type';
+import { Prisma } from '@prisma/meta';
+import { User } from '@app/player-service/domain/entities/user/user';
+import { CreateUser } from '@app/player-service/domain/entities/user/user.type';
+import { BanReason } from '@app/player-service/domain/entities/user/user.type';
 import { bigIntToBigNumber } from '@lib/shared';
 
 type PrismaUserWithoutTracking = Prisma.UserGetPayload<{}>;

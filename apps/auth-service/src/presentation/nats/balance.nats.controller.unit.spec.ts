@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { BalanceNatsController } from './balance.nats.controller';
-import { BalanceSubjects } from '@lib/lib-balance';
-import type { CreateUserBalanceRequest } from '@lib/lib-balance';
-import { CreateUserBalanceCommand } from '@app/balance/application/use-cases/create-user-balance/create-user-balance.command';
+import { BalanceSubjects } from '@lib/lib-building';
+import type { CreateUserBalanceRequest } from '@lib/lib-building';
+import { CreateUserBalanceCommand } from '@app/auth-service/application/use-cases/create-user-balance/create-user-balance.command';
 import { CurrencyCode } from '@lib/shared/currency';
 
 describe('BalanceNatsController (Unit)', () => {
@@ -16,6 +16,12 @@ describe('BalanceNatsController (Unit)', () => {
       providers: [
         {
           provide: CommandBus,
+          useValue: {
+            execute: jest.fn(),
+          },
+        },
+        {
+          provide: QueryBus,
           useValue: {
             execute: jest.fn(),
           },

@@ -1,5 +1,5 @@
 import { User } from './user';
-import { UserFixtures } from '@app/users/__fixtures__/user.fixtures';
+import { UserFixtures } from '@app/player-service/__fixtures__/user.fixtures';
 import { ValidationException } from '@lib/shared/application';
 import { BanReason } from './user.type';
 import BigNumber from 'bignumber.js';

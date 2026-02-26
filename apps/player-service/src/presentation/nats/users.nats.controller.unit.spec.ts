@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { UsersNatsController } from './users.nats.controller';
-import { UpdateBannedUsersCacheCommand } from '@app/users/application/use-cases/update-banned-users-cache/update-banned-users-cache.command';
-import { UpdateBannedUsersCacheResponseDto } from '@app/users/application/use-cases/update-banned-users-cache/update-banned-users-cache.dto';
+import { UpdateBannedUsersCacheCommand } from '@app/player-service/application/use-cases/update-banned-users-cache/update-banned-users-cache.command';
+import { UpdateBannedUsersCacheResponseDto } from '@app/player-service/application/use-cases/update-banned-users-cache/update-banned-users-cache.dto';
 
 describe('UsersNatsController (Unit)', () => {
   let controller: UsersNatsController;
@@ -19,6 +19,12 @@ describe('UsersNatsController (Unit)', () => {
         {
           provide: CommandBus,
           useValue: commandBus,
+        },
+        {
+          provide: QueryBus,
+          useValue: {
+            execute: jest.fn(),
+          },
         },
       ],
     }).compile();

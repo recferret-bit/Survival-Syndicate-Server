@@ -1,19 +1,19 @@
-import { User } from '@app/users/domain/entities/user/user';
+import { User } from '@app/player-service/domain/entities/user/user';
 import {
   UserProps,
   BanReason,
-} from '@app/users/domain/entities/user/user.type';
+} from '@app/player-service/domain/entities/user/user.type';
 import {
   RegisterUserHttpDto,
   RegisterUserRequestDto,
   RegisterUserResponseDto,
-} from '@app/users/application/use-cases/register-user/register-user.dto';
+} from '@app/player-service/application/use-cases/register-user/register-user.dto';
 import {
   LoginUserHttpDto,
   LoginUserResponseDto,
-} from '@app/users/application/use-cases/login-user/login-user.dto';
-import { Tracking } from '@app/users/domain/entities/tracking/tracking';
-import { TrackingProps } from '@app/users/domain/entities/tracking/tracking.type';
+} from '@app/player-service/application/use-cases/login-user/login-user.dto';
+import { Tracking } from '@app/player-service/domain/entities/tracking/tracking';
+import { TrackingProps } from '@app/player-service/domain/entities/tracking/tracking.type';
 import BigNumber from 'bignumber.js';
 
 export class UserFixtures {

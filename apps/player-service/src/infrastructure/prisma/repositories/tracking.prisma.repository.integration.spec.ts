@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TrackingPortRepository } from '@app/users/application/ports/tracking.port.repository';
-import { UserPortRepository } from '@app/users/application/ports/user.port.repository';
+import { TrackingPortRepository } from '@app/player-service/application/ports/tracking.port.repository';
+import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
 import { PrismaService } from '../prisma.service';
-import { InfrastructureModule } from '@app/users/infrastructure/infrastructure.module';
-import { Tracking } from '@app/users/domain/entities/tracking/tracking';
+import { InfrastructureModule } from '@app/player-service/infrastructure/infrastructure.module';
+import { Tracking } from '@app/player-service/domain/entities/tracking/tracking';
 import { bigNumberToBigInt } from '@lib/shared';
 import BigNumber from 'bignumber.js';
 

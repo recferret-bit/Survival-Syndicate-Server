@@ -2,7 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Logger, NotFoundException } from '@nestjs/common';
 import { UpdateProfileCommand } from './update-profile.command';
 import { UpdateProfileResponseDto } from './update-profile.dto';
-import { UserPortRepository } from '@app/users/application/ports/user.port.repository';
+import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
 import { stringToBigNumber } from '@lib/shared';
 
 @CommandHandler(UpdateProfileCommand)

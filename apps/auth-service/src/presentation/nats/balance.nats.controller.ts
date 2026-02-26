@@ -11,7 +11,7 @@ import {
   AddBalanceEntryResponseSchema,
   GetUserBalanceRequestSchema,
   GetUserBalanceResponseSchema,
-} from '@lib/lib-balance';
+} from '@lib/lib-building';
 import type {
   CreateUserBalanceRequest,
   CreateUserBalanceResponse,
@@ -19,16 +19,16 @@ import type {
   AddBalanceEntryResponse,
   GetUserBalanceRequest,
   GetUserBalanceResponse,
-} from '@lib/lib-balance';
-import { CreateUserBalanceCommand } from '@app/balance/application/use-cases/create-user-balance/create-user-balance.command';
-import { CreateUserBalanceRequestDto } from '@app/balance/application/use-cases/create-user-balance/create-user-balance.dto';
-import { AddBalanceEntryCommand } from '@app/balance/application/use-cases/add-balance-entry/add-balance-entry.command';
-import { AddBalanceEntryRequestDto } from '@app/balance/application/use-cases/add-balance-entry/add-balance-entry.dto';
-import { GetUserBalanceQuery } from '@app/balance/application/use-cases/get-user-balance/get-user-balance.query';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
-import { OperationType } from '@app/balance/domain/value-objects/operation-type';
-import { OperationStatus } from '@app/balance/domain/value-objects/operation-status';
-import { LedgerReason } from '@app/balance/domain/value-objects/ledger-reason';
+} from '@lib/lib-building';
+import { CreateUserBalanceCommand } from '@app/auth-service/application/use-cases/create-user-balance/create-user-balance.command';
+import { CreateUserBalanceRequestDto } from '@app/auth-service/application/use-cases/create-user-balance/create-user-balance.dto';
+import { AddBalanceEntryCommand } from '@app/auth-service/application/use-cases/add-balance-entry/add-balance-entry.command';
+import { AddBalanceEntryRequestDto } from '@app/auth-service/application/use-cases/add-balance-entry/add-balance-entry.dto';
+import { GetUserBalanceQuery } from '@app/auth-service/application/use-cases/get-user-balance/get-user-balance.query';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
+import { OperationType } from '@app/auth-service/domain/value-objects/operation-type';
+import { OperationStatus } from '@app/auth-service/domain/value-objects/operation-status';
+import { LedgerReason } from '@app/auth-service/domain/value-objects/ledger-reason';
 
 @Controller()
 export class BalanceNatsController {

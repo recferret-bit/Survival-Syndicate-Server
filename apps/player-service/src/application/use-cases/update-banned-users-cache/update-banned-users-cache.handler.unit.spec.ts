@@ -1,15 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UpdateBannedUsersCacheHandler } from './update-banned-users-cache.handler';
 import { UpdateBannedUsersCacheCommand } from './update-banned-users-cache.command';
-import { UserPortRepository } from '@app/users/application/ports/user.port.repository';
-import { RedisService } from '@lib/shared/redis';
-import { UserFixtures } from '@app/users/__fixtures__/user.fixtures';
+import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
+import {
+  BannedUsersCacheService,
+  BearerTokenHashCacheService,
+} from '@lib/shared/redis';
+import { UserFixtures } from '@app/player-service/__fixtures__/user.fixtures';
 import BigNumber from 'bignumber.js';
 
 describe('UpdateBannedUsersCacheHandler (Unit)', () => {
   let handler: UpdateBannedUsersCacheHandler;
   let userRepository: jest.Mocked<UserPortRepository>;
-  let redisService: jest.Mocked<RedisService>;
+  let bannedUsersCacheService: jest.Mocked<BannedUsersCacheService>;
+  let bearerTokenHashCacheService: jest.Mocked<BearerTokenHashCacheService>;
 
   beforeEach(async () => {
     userRepository = {
@@ -22,9 +26,18 @@ describe('UpdateBannedUsersCacheHandler (Unit)', () => {
       findAllBanned: jest.fn(),
     } as any;
 
-    redisService = {
-      sremAll: jest.fn(),
-      sadd: jest.fn(),
+    bannedUsersCacheService = {
+      updateCache: jest.fn(),
+      isBanned: jest.fn(),
+      addUser: jest.fn(),
+      removeUser: jest.fn(),
+      getAllBannedUsers: jest.fn(),
+    } as any;
+
+    bearerTokenHashCacheService = {
+      setBearerTokenHash: jest.fn(),
+      getBearerTokenHash: jest.fn(),
+      removeBearerTokenHash: jest.fn(),
     } as any;
 
     const module: TestingModule = await Test.createTestingModule({
@@ -35,8 +48,12 @@ describe('UpdateBannedUsersCacheHandler (Unit)', () => {
           useValue: userRepository,
         },
         {
-          provide: RedisService,
-          useValue: redisService,
+          provide: BannedUsersCacheService,
+          useValue: bannedUsersCacheService,
+        },
+        {
+          provide: BearerTokenHashCacheService,
+          useValue: bearerTokenHashCacheService,
         },
       ],
     }).compile();
@@ -61,8 +78,10 @@ describe('UpdateBannedUsersCacheHandler (Unit)', () => {
       const bannedUsers = [bannedUser1, bannedUser2];
 
       userRepository.findAllBanned.mockResolvedValue(bannedUsers);
-      redisService.sremAll.mockResolvedValue(undefined);
-      redisService.sadd.mockResolvedValue(2);
+      bannedUsersCacheService.updateCache.mockResolvedValue(undefined);
+      bearerTokenHashCacheService.removeBearerTokenHash.mockResolvedValue(
+        undefined,
+      );
 
       const result = await handler.execute(new UpdateBannedUsersCacheCommand());
 
@@ -71,13 +90,18 @@ describe('UpdateBannedUsersCacheHandler (Unit)', () => {
         bannedUsersCount: 2,
       });
       expect(userRepository.findAllBanned).toHaveBeenCalledTimes(1);
-      expect(redisService.sremAll).toHaveBeenCalledWith('banned:users');
-      expect(redisService.sadd).toHaveBeenCalledWith('banned:users', '1', '2');
+      expect(bannedUsersCacheService.updateCache).toHaveBeenCalledWith([
+        '1',
+        '2',
+      ]);
+      expect(
+        bearerTokenHashCacheService.removeBearerTokenHash,
+      ).toHaveBeenCalledTimes(2);
     });
 
     it('should update cache successfully with no banned users', async () => {
       userRepository.findAllBanned.mockResolvedValue([]);
-      redisService.sremAll.mockResolvedValue(undefined);
+      bannedUsersCacheService.updateCache.mockResolvedValue(undefined);
 
       const result = await handler.execute(new UpdateBannedUsersCacheCommand());
 
@@ -86,8 +110,10 @@ describe('UpdateBannedUsersCacheHandler (Unit)', () => {
         bannedUsersCount: 0,
       });
       expect(userRepository.findAllBanned).toHaveBeenCalledTimes(1);
-      expect(redisService.sremAll).toHaveBeenCalledWith('banned:users');
-      expect(redisService.sadd).not.toHaveBeenCalled();
+      expect(bannedUsersCacheService.updateCache).toHaveBeenCalledWith([]);
+      expect(
+        bearerTokenHashCacheService.removeBearerTokenHash,
+      ).not.toHaveBeenCalled();
     });
 
     it('should convert user IDs to strings for cache', async () => {
@@ -100,16 +126,17 @@ describe('UpdateBannedUsersCacheHandler (Unit)', () => {
       const bannedUsers = [bannedUser1, bannedUser2];
 
       userRepository.findAllBanned.mockResolvedValue(bannedUsers);
-      redisService.sremAll.mockResolvedValue(undefined);
-      redisService.sadd.mockResolvedValue(2);
+      bannedUsersCacheService.updateCache.mockResolvedValue(undefined);
+      bearerTokenHashCacheService.removeBearerTokenHash.mockResolvedValue(
+        undefined,
+      );
 
       await handler.execute(new UpdateBannedUsersCacheCommand());
 
-      expect(redisService.sadd).toHaveBeenCalledWith(
-        'banned:users',
+      expect(bannedUsersCacheService.updateCache).toHaveBeenCalledWith([
         '12345',
         '67890',
-      );
+      ]);
     });
 
     it('should handle repository errors', async () => {
@@ -121,8 +148,10 @@ describe('UpdateBannedUsersCacheHandler (Unit)', () => {
       ).rejects.toThrow('Database connection failed');
 
       expect(userRepository.findAllBanned).toHaveBeenCalledTimes(1);
-      expect(redisService.sremAll).not.toHaveBeenCalled();
-      expect(redisService.sadd).not.toHaveBeenCalled();
+      expect(bannedUsersCacheService.updateCache).not.toHaveBeenCalled();
+      expect(
+        bearerTokenHashCacheService.removeBearerTokenHash,
+      ).not.toHaveBeenCalled();
     });
 
     it('should handle Redis errors', async () => {
@@ -131,7 +160,7 @@ describe('UpdateBannedUsersCacheHandler (Unit)', () => {
       });
 
       userRepository.findAllBanned.mockResolvedValue([bannedUser]);
-      redisService.sremAll.mockRejectedValue(
+      bannedUsersCacheService.updateCache.mockRejectedValue(
         new Error('Redis connection failed'),
       );
 
@@ -140,27 +169,29 @@ describe('UpdateBannedUsersCacheHandler (Unit)', () => {
       ).rejects.toThrow('Redis connection failed');
 
       expect(userRepository.findAllBanned).toHaveBeenCalledTimes(1);
-      expect(redisService.sremAll).toHaveBeenCalledWith('banned:users');
-      expect(redisService.sadd).not.toHaveBeenCalled();
+      expect(bannedUsersCacheService.updateCache).toHaveBeenCalledWith(['1']);
+      expect(
+        bearerTokenHashCacheService.removeBearerTokenHash,
+      ).not.toHaveBeenCalled();
     });
 
-    it('should clear cache before populating', async () => {
+    it('should remove bearer token hash for each banned user', async () => {
       const bannedUser = UserFixtures.createBannedUser({
         id: new BigNumber(1),
       });
 
       userRepository.findAllBanned.mockResolvedValue([bannedUser]);
-      redisService.sremAll.mockResolvedValue(undefined);
-      redisService.sadd.mockResolvedValue(1);
+      bannedUsersCacheService.updateCache.mockResolvedValue(undefined);
+      bearerTokenHashCacheService.removeBearerTokenHash.mockResolvedValue(
+        undefined,
+      );
 
       await handler.execute(new UpdateBannedUsersCacheCommand());
 
-      // Verify order: sremAll is called before sadd
-      const sremAllCallOrder = (redisService.sremAll as jest.Mock).mock
-        .invocationCallOrder[0];
-      const saddCallOrder = (redisService.sadd as jest.Mock).mock
-        .invocationCallOrder[0];
-      expect(sremAllCallOrder).toBeLessThan(saddCallOrder);
+      expect(bannedUsersCacheService.updateCache).toHaveBeenCalledWith(['1']);
+      expect(
+        bearerTokenHashCacheService.removeBearerTokenHash,
+      ).toHaveBeenCalledWith('1');
     });
   });
 });

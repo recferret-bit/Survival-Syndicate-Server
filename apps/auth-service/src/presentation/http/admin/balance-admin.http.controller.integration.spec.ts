@@ -7,17 +7,17 @@ import {
 } from '@nestjs/common';
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
 import request from 'supertest';
-import { AppModule } from '@app/balance/app.module';
+import { AppModule } from '@app/auth-service/app.module';
 import { AdminApiKeyGuard } from '@lib/shared/admin/guards/admin-api-key.guard';
 import {
   ZodExceptionFilter,
   HttpExceptionsFilter,
 } from '@lib/shared/application';
-import { PrismaService } from '@app/balance/infrastructure/prisma/prisma.service';
-import { UserBalancePortRepository } from '@app/balance/application/ports/user-balance.port.repository';
-import { BalanceResultPortRepository } from '@app/balance/application/ports/balance-result.port.repository';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
-import { BalanceAmount } from '@app/balance/domain/value-objects/balance-amount';
+import { PrismaService } from '@app/auth-service/infrastructure/prisma/prisma.service';
+import { UserBalancePortRepository } from '@app/auth-service/application/ports/user-balance.port.repository';
+import { BalanceResultPortRepository } from '@app/auth-service/application/ports/balance-result.port.repository';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
+import { BalanceAmount } from '@app/auth-service/domain/value-objects/balance-amount';
 import { stringToBigNumber } from '@lib/shared';
 import { CurrencyCode } from '@lib/shared/currency';
 

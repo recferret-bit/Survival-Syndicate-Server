@@ -3,11 +3,11 @@ import { Logger } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { IncreaseFiatBalanceCommand } from './increase-fiat-balance.command';
 import { IncreaseFiatBalanceResponseDto } from './increase-fiat-balance.dto';
-import { AddBalanceEntryCommand } from '@app/balance/application/use-cases/add-balance-entry/add-balance-entry.command';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
-import { OperationType } from '@app/balance/domain/value-objects/operation-type';
-import { OperationStatus } from '@app/balance/domain/value-objects/operation-status';
-import { LedgerReason } from '@app/balance/domain/value-objects/ledger-reason';
+import { AddBalanceEntryCommand } from '@app/auth-service/application/use-cases/add-balance-entry/add-balance-entry.command';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
+import { OperationType } from '@app/auth-service/domain/value-objects/operation-type';
+import { OperationStatus } from '@app/auth-service/domain/value-objects/operation-status';
+import { LedgerReason } from '@app/auth-service/domain/value-objects/ledger-reason';
 
 @CommandHandler(IncreaseFiatBalanceCommand)
 export class IncreaseFiatBalanceHandler

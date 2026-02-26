@@ -1,6 +1,6 @@
-import { Prisma } from '@prisma/users';
-import { Tracking } from '@app/users/domain/entities/tracking/tracking';
-import { CreateTracking } from '@app/users/domain/entities/tracking/tracking.type';
+import { Prisma } from '@prisma/meta';
+import { Tracking } from '@app/player-service/domain/entities/tracking/tracking';
+import { CreateTracking } from '@app/player-service/domain/entities/tracking/tracking.type';
 import { bigIntToBigNumber, bigNumberToBigInt } from '@lib/shared';
 
 type PrismaTracking = Prisma.TrackingGetPayload<{}>;

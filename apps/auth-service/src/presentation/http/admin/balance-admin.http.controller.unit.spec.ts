@@ -2,11 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CommandBus } from '@nestjs/cqrs';
 import { Request } from 'express';
 import { BalanceAdminHttpController } from './balance-admin.http.controller';
-import { RecalculateBalanceCommand } from '@app/balance/application/use-cases/recalculate-balance/recalculate-balance.command';
-import { IncreaseFiatBalanceCommand } from '@app/balance/application/use-cases/increase-fiat-balance/increase-fiat-balance.command';
-import { IncreaseFiatBalanceHttpDto } from '@app/balance/application/use-cases/increase-fiat-balance/increase-fiat-balance.dto';
-import { RecalculateBalanceHttpDto } from '@app/balance/application/use-cases/recalculate-balance/recalculate-balance.dto';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
+import { RecalculateBalanceCommand } from '@app/auth-service/application/use-cases/recalculate-balance/recalculate-balance.command';
+import { IncreaseFiatBalanceCommand } from '@app/auth-service/application/use-cases/increase-fiat-balance/increase-fiat-balance.command';
+import { IncreaseFiatBalanceHttpDto } from '@app/auth-service/application/use-cases/increase-fiat-balance/increase-fiat-balance.dto';
+import { RecalculateBalanceHttpDto } from '@app/auth-service/application/use-cases/recalculate-balance/recalculate-balance.dto';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
 import { AdminApiKeyGuard } from '@lib/shared/admin/guards/admin-api-key.guard';
 import { Reflector } from '@nestjs/core';
 
