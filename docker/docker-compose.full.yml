@@ -1,0 +1,249 @@
+services:
+  postgres-meta:
+    extends:
+      file: ./docker-compose.infra.yml
+      service: postgres-meta
+
+  postgres-catalog:
+    extends:
+      file: ./docker-compose.infra.yml
+      service: postgres-catalog
+
+  nats:
+    extends:
+      file: ./docker-compose.infra.yml
+      service: nats
+
+  redis:
+    extends:
+      file: ./docker-compose.infra.yml
+      service: redis
+
+  swagger-aggregator:
+    image: node:22-alpine
+    container_name: ss-swagger-aggregator
+    working_dir: /app
+    command: sh -c "npm install && npm run start:swagger-aggregator"
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: ${SWAGGER_AGGREGATOR_PORT:-3000}
+      NATS_SERVERS: nats://nats:4222
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET:-local-jwt-secret}
+      PASSWORD_SECRET: ${PASSWORD_SECRET:-local-password-secret}
+      PGBOUNCER_USERS_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres-meta:5432/users_db?pgbouncer=true
+      PGBOUNCER_BALANCE_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres-meta:5432/balance_db?pgbouncer=true
+      PGBOUNCER_PAYMENTS_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres-catalog:5432/payments_db?pgbouncer=true
+      PGBOUNCER_GAMES_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres-catalog:5432/games_db?pgbouncer=true
+      PGBOUNCER_BONUS_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres-catalog:5432/bonus_db?pgbouncer=true
+    ports:
+      - "${SWAGGER_AGGREGATOR_PORT:-3000}:3000"
+    volumes:
+      - ..:/app
+      - root_node_modules:/app/node_modules
+    depends_on:
+      nats:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      postgres-meta:
+        condition: service_healthy
+      postgres-catalog:
+        condition: service_healthy
+    restart: unless-stopped
+
+  auth-service:
+    image: node:22-alpine
+    container_name: ss-auth-service
+    working_dir: /app
+    command: sh -c "npm install && npm run start:auth-service"
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      BALANCE_APP_PORT: 3001
+      NATS_SERVERS: nats://nats:4222
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET:-local-jwt-secret}
+      PASSWORD_SECRET: ${PASSWORD_SECRET:-local-password-secret}
+      PGBOUNCER_USERS_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres-meta:5432/users_db?pgbouncer=true
+      PGBOUNCER_BALANCE_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres-meta:5432/balance_db?pgbouncer=true
+      PGBOUNCER_PAYMENTS_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres-catalog:5432/payments_db?pgbouncer=true
+      PGBOUNCER_GAMES_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres-catalog:5432/games_db?pgbouncer=true
+      PGBOUNCER_BONUS_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres-catalog:5432/bonus_db?pgbouncer=true
+    ports:
+      - "3001:3001"
+      - "5001:5001"
+      - "9001:9001"
+    volumes:
+      - ..:/app
+      - root_node_modules:/app/node_modules
+    depends_on:
+      nats:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      postgres-meta:
+        condition: service_healthy
+      postgres-catalog:
+        condition: service_healthy
+    restart: unless-stopped
+
+  player-service:
+    image: node:22-alpine
+    container_name: ss-player-service
+    working_dir: /app
+    command: sh -c "npm install && npm run start:player-service"
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      USERS_APP_PORT: 3002
+      NATS_SERVERS: nats://nats:4222
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET:-local-jwt-secret}
+      PASSWORD_SECRET: ${PASSWORD_SECRET:-local-password-secret}
+      PGBOUNCER_USERS_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres-meta:5432/users_db?pgbouncer=true
+      PGBOUNCER_BALANCE_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres-meta:5432/balance_db?pgbouncer=true
+      PGBOUNCER_PAYMENTS_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres-catalog:5432/payments_db?pgbouncer=true
+      PGBOUNCER_GAMES_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres-catalog:5432/games_db?pgbouncer=true
+      PGBOUNCER_BONUS_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres-catalog:5432/bonus_db?pgbouncer=true
+    ports:
+      - "3002:3002"
+      - "5002:5002"
+      - "9002:9002"
+    volumes:
+      - ..:/app
+      - root_node_modules:/app/node_modules
+    depends_on:
+      nats:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      postgres-meta:
+        condition: service_healthy
+      postgres-catalog:
+        condition: service_healthy
+    restart: unless-stopped
+
+  scheduler-service:
+    image: node:22-alpine
+    container_name: ss-scheduler-service
+    working_dir: /app
+    command: sh -c "npm install && npm run start:scheduler-service"
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      CRON_APP_PORT: 5200
+      NATS_SERVERS: nats://nats:4222
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET:-local-jwt-secret}
+      PASSWORD_SECRET: ${PASSWORD_SECRET:-local-password-secret}
+      PGBOUNCER_USERS_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres-meta:5432/users_db?pgbouncer=true
+      PGBOUNCER_BALANCE_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres-meta:5432/balance_db?pgbouncer=true
+      PGBOUNCER_PAYMENTS_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres-catalog:5432/payments_db?pgbouncer=true
+      PGBOUNCER_GAMES_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres-catalog:5432/games_db?pgbouncer=true
+      PGBOUNCER_BONUS_DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres-catalog:5432/bonus_db?pgbouncer=true
+    ports:
+      - "5200:5200"
+      - "5100:5100"
+      - "9100:9100"
+    volumes:
+      - ..:/app
+      - root_node_modules:/app/node_modules
+    depends_on:
+      nats:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      postgres-meta:
+        condition: service_healthy
+      postgres-catalog:
+        condition: service_healthy
+    restart: unless-stopped
+
+  building-service:
+    image: node:22-alpine
+    container_name: ss-building-service
+    working_dir: /app
+    command: sh -c "npm install && npm run start:building-service"
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: 3003
+      NATS_SERVERS: nats://nats:4222
+      REDIS_URL: redis://redis:6379
+    ports:
+      - "3003:3003"
+    volumes:
+      - ..:/app
+      - root_node_modules:/app/node_modules
+    depends_on:
+      nats:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  combat-progress-service:
+    image: node:22-alpine
+    container_name: ss-combat-progress-service
+    working_dir: /app
+    command: sh -c "npm install && npm run start:combat-progress-service"
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: 3004
+      NATS_SERVERS: nats://nats:4222
+      REDIS_URL: redis://redis:6379
+    ports:
+      - "3004:3004"
+    volumes:
+      - ..:/app
+      - root_node_modules:/app/node_modules
+    depends_on:
+      nats:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  game-server:
+    image: node:22-alpine
+    container_name: ss-game-server
+    working_dir: /app
+    command: sh -c "npm install && npm run start:game-server"
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: 3005
+      NATS_SERVERS: nats://nats:4222
+      REDIS_URL: redis://redis:6379
+    ports:
+      - "3005:3005"
+    volumes:
+      - ..:/app
+      - root_node_modules:/app/node_modules
+    depends_on:
+      nats:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  analytics-service:
+    image: node:22-alpine
+    container_name: ss-analytics-service
+    working_dir: /app
+    command: sh -c "npm install && npm run start:analytics-service"
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: 3006
+      NATS_SERVERS: nats://nats:4222
+      REDIS_URL: redis://redis:6379
+    ports:
+      - "3006:3006"
+    volumes:
+      - ..:/app
+      - root_node_modules:/app/node_modules
+    depends_on:
+      nats:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  root_node_modules:

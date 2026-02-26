@@ -1,6 +1,6 @@
 # TASK-1.2: Docker Compose
 
-## Статус: `NOT STARTED`
+## Статус: `IN REVIEW`
 
 **Epic:** Epic 1: Базовая инфраструктура
 **Ветка:** `feature/infra/docker-compose`
@@ -48,4 +48,5 @@ docker compose up проходит без ошибок
 
 | Дата | Событие | Агент |
 |------|---------|-------|
+| 2026-02-26 | Подготовка начата | Cursor |
 | — | Задача создана | System |
