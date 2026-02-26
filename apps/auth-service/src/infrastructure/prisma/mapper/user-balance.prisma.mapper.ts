@@ -1,11 +1,11 @@
 import BigNumber from 'bignumber.js';
-import { UserBalance } from '@app/balance/domain/entities/user-balance/user-balance';
+import { UserBalance } from '@app/auth-service/domain/entities/user-balance/user-balance';
 import {
   UserBalanceProps,
   CreateUserBalance,
-} from '@app/balance/domain/entities/user-balance/user-balance.type';
+} from '@app/auth-service/domain/entities/user-balance/user-balance.type';
 import { BalanceResultPrismaMapper } from './balance-result.prisma.mapper';
-import { Prisma } from '@prisma/balance';
+import { Prisma } from '@prisma/catalog';
 
 type UserBalanceWithRelations = Prisma.UserBalanceGetPayload<{
   include: {

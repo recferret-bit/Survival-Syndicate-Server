@@ -1,11 +1,11 @@
 import BigNumber from 'bignumber.js';
 import { BalanceLedgerEntry } from './balance-ledger-entry';
-import { BalanceFixtures } from '@app/balance/__fixtures__/balance.fixtures';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
-import { OperationType } from '@app/balance/domain/value-objects/operation-type';
-import { OperationStatus } from '@app/balance/domain/value-objects/operation-status';
-import { LedgerReason } from '@app/balance/domain/value-objects/ledger-reason';
-import { BalanceAmount } from '@app/balance/domain/value-objects/balance-amount';
+import { BalanceFixtures } from '@app/auth-service/__fixtures__/balance.fixtures';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
+import { OperationType } from '@app/auth-service/domain/value-objects/operation-type';
+import { OperationStatus } from '@app/auth-service/domain/value-objects/operation-status';
+import { LedgerReason } from '@app/auth-service/domain/value-objects/ledger-reason';
+import { BalanceAmount } from '@app/auth-service/domain/value-objects/balance-amount';
 
 describe('BalanceLedgerEntry Entity', () => {
   describe('Creation', () => {

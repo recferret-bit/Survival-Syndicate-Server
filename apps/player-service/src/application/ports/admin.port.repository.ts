@@ -1,4 +1,4 @@
-import { Admin } from '@app/users/domain/entities/admin/admin';
+import { Admin } from '@app/player-service/domain/entities/admin/admin';
 import BigNumber from 'bignumber.js';
 
 export abstract class AdminPortRepository {

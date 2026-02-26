@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { TrackingPortRepository } from '@app/users/application/ports/tracking.port.repository';
-import { Tracking } from '@app/users/domain/entities/tracking/tracking';
-import { CreateTracking } from '@app/users/domain/entities/tracking/tracking.type';
-import { TrackingPrismaMapper } from '@app/users/infrastructure/prisma/mapper/tracking.prisma.mapper';
+import { TrackingPortRepository } from '@app/player-service/application/ports/tracking.port.repository';
+import { Tracking } from '@app/player-service/domain/entities/tracking/tracking';
+import { CreateTracking } from '@app/player-service/domain/entities/tracking/tracking.type';
+import { TrackingPrismaMapper } from '@app/player-service/infrastructure/prisma/mapper/tracking.prisma.mapper';
 import BigNumber from 'bignumber.js';
 import { bigNumberToBigInt } from '@lib/shared';
 

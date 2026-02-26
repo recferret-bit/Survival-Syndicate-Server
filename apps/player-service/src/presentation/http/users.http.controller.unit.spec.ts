@@ -3,10 +3,10 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Reflector } from '@nestjs/core';
 import { AuthJwtGuard } from '@lib/shared/auth';
 import { UsersHttpController } from './users.http.controller';
-import { RegisterUserCommand } from '@app/users/application/use-cases/register-user/register-user.command';
-import { LoginUserQuery } from '@app/users/application/use-cases/login-user/login-user.query';
-import { GetProfileQuery } from '@app/users/application/use-cases/get-profile/get-profile.query';
-import { UserFixtures } from '@app/users/__fixtures__/user.fixtures';
+import { RegisterUserCommand } from '@app/player-service/application/use-cases/register-user/register-user.command';
+import { LoginUserQuery } from '@app/player-service/application/use-cases/login-user/login-user.query';
+import { GetProfileQuery } from '@app/player-service/application/use-cases/get-profile/get-profile.query';
+import { UserFixtures } from '@app/player-service/__fixtures__/user.fixtures';
 import type { Request } from 'express';
 
 describe('UsersHttpController (Unit)', () => {

@@ -3,11 +3,11 @@ import { ConflictException } from '@nestjs/common';
 import BigNumber from 'bignumber.js';
 import { CreateUserBalanceHandler } from './create-user-balance.handler';
 import { CreateUserBalanceCommand } from './create-user-balance.command';
-import { UserBalancePortRepository } from '@app/balance/application/ports/user-balance.port.repository';
-import { BalanceResultPortRepository } from '@app/balance/application/ports/balance-result.port.repository';
-import { BalanceFixtures } from '@app/balance/__fixtures__/balance.fixtures';
-import { BalanceResult } from '@app/balance/domain/entities/balance-result/balance-result';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
+import { UserBalancePortRepository } from '@app/auth-service/application/ports/user-balance.port.repository';
+import { BalanceResultPortRepository } from '@app/auth-service/application/ports/balance-result.port.repository';
+import { BalanceFixtures } from '@app/auth-service/__fixtures__/balance.fixtures';
+import { BalanceResult } from '@app/auth-service/domain/entities/balance-result/balance-result';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
 
 describe('CreateUserBalanceHandler', () => {
   let handler: CreateUserBalanceHandler;

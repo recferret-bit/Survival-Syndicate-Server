@@ -6,8 +6,8 @@ import {
 } from '@nestjs/common';
 import { AttachPhoneHandler } from './attach-phone.handler';
 import { AttachPhoneCommand } from './attach-phone.command';
-import { UserPortRepository } from '@app/users/application/ports/user.port.repository';
-import { UserFixtures } from '@app/users/__fixtures__/user.fixtures';
+import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
+import { UserFixtures } from '@app/player-service/__fixtures__/user.fixtures';
 import BigNumber from 'bignumber.js';
 
 describe('AttachPhoneHandler (Unit)', () => {

@@ -1,11 +1,11 @@
 import BigNumber from 'bignumber.js';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { BalanceLedgerPortRepository } from '@app/balance/application/ports/balance-ledger.port.repository';
-import { BalanceLedgerEntry } from '@app/balance/domain/entities/balance-ledger-entry/balance-ledger-entry';
-import { CreateBalanceLedgerEntry } from '@app/balance/domain/entities/balance-ledger-entry/balance-ledger-entry.type';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
-import { BalanceLedgerPrismaMapper } from '@app/balance/infrastructure/prisma/mapper/balance-ledger.prisma.mapper';
+import { BalanceLedgerPortRepository } from '@app/auth-service/application/ports/balance-ledger.port.repository';
+import { BalanceLedgerEntry } from '@app/auth-service/domain/entities/balance-ledger-entry/balance-ledger-entry';
+import { CreateBalanceLedgerEntry } from '@app/auth-service/domain/entities/balance-ledger-entry/balance-ledger-entry.type';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
+import { BalanceLedgerPrismaMapper } from '@app/auth-service/infrastructure/prisma/mapper/balance-ledger.prisma.mapper';
 
 @Injectable()
 export class BalanceLedgerPrismaRepository extends BalanceLedgerPortRepository {

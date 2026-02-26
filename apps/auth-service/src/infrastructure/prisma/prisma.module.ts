@@ -1,11 +1,11 @@
 import { Module, OnApplicationShutdown } from '@nestjs/common';
-import { PrismaService } from '@app/balance/infrastructure/prisma/prisma.service';
-import { BalanceLedgerPortRepository } from '@app/balance/application/ports/balance-ledger.port.repository';
-import { BalanceResultPortRepository } from '@app/balance/application/ports/balance-result.port.repository';
-import { UserBalancePortRepository } from '@app/balance/application/ports/user-balance.port.repository';
-import { BalanceLedgerPrismaRepository } from '@app/balance/infrastructure/prisma/repositories/balance-ledger.prisma.repository';
-import { BalanceResultPrismaRepository } from '@app/balance/infrastructure/prisma/repositories/balance-result.prisma.repository';
-import { UserBalancePrismaRepository } from '@app/balance/infrastructure/prisma/repositories/user-balance.prisma.repository';
+import { PrismaService } from '@app/auth-service/infrastructure/prisma/prisma.service';
+import { BalanceLedgerPortRepository } from '@app/auth-service/application/ports/balance-ledger.port.repository';
+import { BalanceResultPortRepository } from '@app/auth-service/application/ports/balance-result.port.repository';
+import { UserBalancePortRepository } from '@app/auth-service/application/ports/user-balance.port.repository';
+import { BalanceLedgerPrismaRepository } from '@app/auth-service/infrastructure/prisma/repositories/balance-ledger.prisma.repository';
+import { BalanceResultPrismaRepository } from '@app/auth-service/infrastructure/prisma/repositories/balance-result.prisma.repository';
+import { UserBalancePrismaRepository } from '@app/auth-service/infrastructure/prisma/repositories/user-balance.prisma.repository';
 import { EnvModule } from '@lib/shared';
 
 @Module({

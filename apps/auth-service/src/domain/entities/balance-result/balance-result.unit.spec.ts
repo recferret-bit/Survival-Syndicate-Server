@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { BalanceResult } from './balance-result';
-import { BalanceFixtures } from '@app/balance/__fixtures__/balance.fixtures';
-import { BalanceAmount } from '@app/balance/domain/value-objects/balance-amount';
+import { BalanceFixtures } from '@app/auth-service/__fixtures__/balance.fixtures';
+import { BalanceAmount } from '@app/auth-service/domain/value-objects/balance-amount';
 
 describe('BalanceResult Entity', () => {
   describe('Creation', () => {

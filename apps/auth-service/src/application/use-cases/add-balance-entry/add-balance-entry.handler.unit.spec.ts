@@ -2,15 +2,15 @@ import BigNumber from 'bignumber.js';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AddBalanceEntryHandler } from './add-balance-entry.handler';
 import { AddBalanceEntryCommand } from './add-balance-entry.command';
-import { BalanceLedgerPortRepository } from '@app/balance/application/ports/balance-ledger.port.repository';
-import { BalanceResultPortRepository } from '@app/balance/application/ports/balance-result.port.repository';
-import { UserBalancePortRepository } from '@app/balance/application/ports/user-balance.port.repository';
-import { BalanceLockService } from '@app/balance/infrastructure/services/balance-lock.service';
-import { BalanceFixtures } from '@app/balance/__fixtures__/balance.fixtures';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
-import { OperationType } from '@app/balance/domain/value-objects/operation-type';
-import { OperationStatus } from '@app/balance/domain/value-objects/operation-status';
-import { LedgerReason } from '@app/balance/domain/value-objects/ledger-reason';
+import { BalanceLedgerPortRepository } from '@app/auth-service/application/ports/balance-ledger.port.repository';
+import { BalanceResultPortRepository } from '@app/auth-service/application/ports/balance-result.port.repository';
+import { UserBalancePortRepository } from '@app/auth-service/application/ports/user-balance.port.repository';
+import { BalanceLockService } from '@app/auth-service/infrastructure/services/balance-lock.service';
+import { BalanceFixtures } from '@app/auth-service/__fixtures__/balance.fixtures';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
+import { OperationType } from '@app/auth-service/domain/value-objects/operation-type';
+import { OperationStatus } from '@app/auth-service/domain/value-objects/operation-status';
+import { LedgerReason } from '@app/auth-service/domain/value-objects/ledger-reason';
 
 describe('AddBalanceEntryHandler', () => {
   let handler: AddBalanceEntryHandler;

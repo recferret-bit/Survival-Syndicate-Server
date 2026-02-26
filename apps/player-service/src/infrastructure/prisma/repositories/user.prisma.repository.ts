@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { UserPortRepository } from '@app/users/application/ports/user.port.repository';
-import { User } from '@app/users/domain/entities/user/user';
-import { CreateUser } from '@app/users/domain/entities/user/user.type';
-import { UserPrismaMapper } from '@app/users/infrastructure/prisma/mapper/user.prisma.mapper';
+import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
+import { User } from '@app/player-service/domain/entities/user/user';
+import { CreateUser } from '@app/player-service/domain/entities/user/user.type';
+import { UserPrismaMapper } from '@app/player-service/infrastructure/prisma/mapper/user.prisma.mapper';
 
 @Injectable()
 export class UserPrismaRepository extends UserPortRepository {

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { AdminPortRepository } from '@app/users/application/ports/admin.port.repository';
-import { Admin } from '@app/users/domain/entities/admin/admin';
-import { AdminPrismaMapper } from '@app/users/infrastructure/prisma/mapper/admin.prisma.mapper';
+import { AdminPortRepository } from '@app/player-service/application/ports/admin.port.repository';
+import { Admin } from '@app/player-service/domain/entities/admin/admin';
+import { AdminPrismaMapper } from '@app/player-service/infrastructure/prisma/mapper/admin.prisma.mapper';
 import BigNumber from 'bignumber.js';
 import { bigNumberToBigInt } from '@lib/shared';
 

@@ -6,8 +6,8 @@ import {
 } from '@nestjs/common';
 import { AttachEmailHandler } from './attach-email.handler';
 import { AttachEmailCommand } from './attach-email.command';
-import { UserPortRepository } from '@app/users/application/ports/user.port.repository';
-import { UserFixtures } from '@app/users/__fixtures__/user.fixtures';
+import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
+import { UserFixtures } from '@app/player-service/__fixtures__/user.fixtures';
 import BigNumber from 'bignumber.js';
 
 describe('AttachEmailHandler (Unit)', () => {

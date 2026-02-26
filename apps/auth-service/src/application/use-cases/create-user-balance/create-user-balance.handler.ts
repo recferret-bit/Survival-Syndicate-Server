@@ -2,10 +2,10 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Logger } from '@nestjs/common';
 import { CreateUserBalanceCommand } from './create-user-balance.command';
 import { CreateUserBalanceResponseDto } from './create-user-balance.dto';
-import { UserBalancePortRepository } from '@app/balance/application/ports/user-balance.port.repository';
-import { BalanceResultPortRepository } from '@app/balance/application/ports/balance-result.port.repository';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
-import { BalanceAmount } from '@app/balance/domain/value-objects/balance-amount';
+import { UserBalancePortRepository } from '@app/auth-service/application/ports/user-balance.port.repository';
+import { BalanceResultPortRepository } from '@app/auth-service/application/ports/balance-result.port.repository';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
+import { BalanceAmount } from '@app/auth-service/domain/value-objects/balance-amount';
 import { ConflictException } from '@nestjs/common';
 import { stringToBigNumber } from '@lib/shared';
 

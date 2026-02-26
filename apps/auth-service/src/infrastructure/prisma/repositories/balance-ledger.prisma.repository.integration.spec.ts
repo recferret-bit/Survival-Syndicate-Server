@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { BalanceLedgerPortRepository } from '@app/balance/application/ports/balance-ledger.port.repository';
+import { BalanceLedgerPortRepository } from '@app/auth-service/application/ports/balance-ledger.port.repository';
 import { PrismaService } from '../prisma.service';
-import { InfrastructureModule } from '@app/balance/infrastructure/infrastructure.module';
-import { BalanceLedgerEntry } from '@app/balance/domain/entities/balance-ledger-entry/balance-ledger-entry';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
-import { BalanceAmount } from '@app/balance/domain/value-objects/balance-amount';
-import { OperationType } from '@app/balance/domain/value-objects/operation-type';
-import { OperationStatus } from '@app/balance/domain/value-objects/operation-status';
-import { LedgerReason } from '@app/balance/domain/value-objects/ledger-reason';
+import { InfrastructureModule } from '@app/auth-service/infrastructure/infrastructure.module';
+import { BalanceLedgerEntry } from '@app/auth-service/domain/entities/balance-ledger-entry/balance-ledger-entry';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
+import { BalanceAmount } from '@app/auth-service/domain/value-objects/balance-amount';
+import { OperationType } from '@app/auth-service/domain/value-objects/operation-type';
+import { OperationStatus } from '@app/auth-service/domain/value-objects/operation-status';
+import { LedgerReason } from '@app/auth-service/domain/value-objects/ledger-reason';
 import BigNumber from 'bignumber.js';
 import { v4 as uuidv4 } from 'uuid';
 

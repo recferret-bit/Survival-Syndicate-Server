@@ -3,10 +3,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
 import { GetUserBalanceHandler } from './get-user-balance.handler';
 import { GetUserBalanceQuery } from './get-user-balance.query';
-import { UserBalancePortRepository } from '@app/balance/application/ports/user-balance.port.repository';
-import { BalanceFixtures } from '@app/balance/__fixtures__/balance.fixtures';
+import { UserBalancePortRepository } from '@app/auth-service/application/ports/user-balance.port.repository';
+import { BalanceFixtures } from '@app/auth-service/__fixtures__/balance.fixtures';
 import { CurrencyCode } from '@lib/shared/currency';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
 
 describe('GetUserBalanceHandler', () => {
   let handler: GetUserBalanceHandler;

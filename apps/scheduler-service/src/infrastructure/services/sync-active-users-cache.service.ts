@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { UsersPublisher } from '@lib/lib-users';
+import { UsersPublisher } from '@lib/lib-player';
 
 @Injectable()
 export class SyncActiveUsersCacheService {

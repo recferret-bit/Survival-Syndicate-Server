@@ -1,7 +1,7 @@
 import { Injectable, Logger, Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { GamesSubjects } from '@lib/lib-games';
+import { GamesSubjects } from '@lib/lib-game-server';
 import { firstValueFrom } from 'rxjs';
 import { EnvService } from '@lib/shared';
 

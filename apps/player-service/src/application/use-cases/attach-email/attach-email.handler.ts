@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { AttachEmailCommand } from './attach-email.command';
 import { AttachEmailResponseDto } from './attach-email.dto';
-import { UserPortRepository } from '@app/users/application/ports/user.port.repository';
+import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
 import { stringToBigNumber } from '@lib/shared';
 
 @CommandHandler(AttachEmailCommand)

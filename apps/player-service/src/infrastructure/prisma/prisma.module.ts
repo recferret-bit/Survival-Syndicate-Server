@@ -1,8 +1,8 @@
 import { Module, OnApplicationShutdown } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
-import { UserPortRepository } from '@app/users/application/ports/user.port.repository';
-import { TrackingPortRepository } from '@app/users/application/ports/tracking.port.repository';
-import { AdminPortRepository } from '@app/users/application/ports/admin.port.repository';
+import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
+import { TrackingPortRepository } from '@app/player-service/application/ports/tracking.port.repository';
+import { AdminPortRepository } from '@app/player-service/application/ports/admin.port.repository';
 import { UserPrismaRepository } from './repositories/user.prisma.repository';
 import { TrackingPrismaRepository } from './repositories/tracking.prisma.repository';
 import { AdminPrismaRepository } from './repositories/admin.prisma.repository';

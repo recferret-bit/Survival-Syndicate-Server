@@ -2,7 +2,7 @@ import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
 import { Logger, NotFoundException } from '@nestjs/common';
 import { GetUserByIdQuery } from './get-user-by-id.query';
 import { GetUserByIdResponseDto } from './get-user-by-id.dto';
-import { UserPortRepository } from '@app/users/application/ports/user.port.repository';
+import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
 import { stringToBigNumber } from '@lib/shared';
 
 @QueryHandler(GetUserByIdQuery)

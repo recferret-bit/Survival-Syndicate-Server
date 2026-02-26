@@ -1,9 +1,9 @@
 import BigNumber from 'bignumber.js';
 import { Injectable, Logger } from '@nestjs/common';
-import { BalanceLedgerPortRepository } from '@app/balance/application/ports/balance-ledger.port.repository';
-import { BalanceResultPortRepository } from '@app/balance/application/ports/balance-result.port.repository';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
-import { BalanceAmount } from '@app/balance/domain/value-objects/balance-amount';
+import { BalanceLedgerPortRepository } from '@app/auth-service/application/ports/balance-ledger.port.repository';
+import { BalanceResultPortRepository } from '@app/auth-service/application/ports/balance-result.port.repository';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
+import { BalanceAmount } from '@app/auth-service/domain/value-objects/balance-amount';
 
 @Injectable()
 export class BalanceRecalculationService {

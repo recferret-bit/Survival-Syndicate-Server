@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UpdateBannedUsersCacheHandler } from './update-banned-users-cache.handler';
 import { UpdateBannedUsersCacheCommand } from './update-banned-users-cache.command';
-import { UserPortRepository } from '@app/users/application/ports/user.port.repository';
+import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
 import { RedisService } from '@lib/shared/redis';
-import { UserFixtures } from '@app/users/__fixtures__/user.fixtures';
+import { UserFixtures } from '@app/player-service/__fixtures__/user.fixtures';
 import BigNumber from 'bignumber.js';
 
 describe('UpdateBannedUsersCacheHandler (Unit)', () => {

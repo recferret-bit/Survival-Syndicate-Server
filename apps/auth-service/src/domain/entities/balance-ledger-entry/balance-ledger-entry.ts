@@ -1,11 +1,11 @@
 import BigNumber from 'bignumber.js';
 import { Entity } from '../entity';
 import { BalanceLedgerEntryProps } from './balance-ledger-entry.type';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
-import { OperationType } from '@app/balance/domain/value-objects/operation-type';
-import { OperationStatus } from '@app/balance/domain/value-objects/operation-status';
-import { LedgerReason } from '@app/balance/domain/value-objects/ledger-reason';
-import { BalanceAmount } from '@app/balance/domain/value-objects/balance-amount';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
+import { OperationType } from '@app/auth-service/domain/value-objects/operation-type';
+import { OperationStatus } from '@app/auth-service/domain/value-objects/operation-status';
+import { LedgerReason } from '@app/auth-service/domain/value-objects/ledger-reason';
+import { BalanceAmount } from '@app/auth-service/domain/value-objects/balance-amount';
 
 export class BalanceLedgerEntry extends Entity<BalanceLedgerEntryProps> {
   constructor(props: BalanceLedgerEntryProps) {

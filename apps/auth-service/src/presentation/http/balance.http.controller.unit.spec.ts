@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { QueryBus } from '@nestjs/cqrs';
 import { BalanceHttpController } from './balance.http.controller';
-import { GetUserBalanceQuery } from '@app/balance/application/use-cases/get-user-balance/get-user-balance.query';
-import { BalanceFixtures } from '@app/balance/__fixtures__/balance.fixtures';
+import { GetUserBalanceQuery } from '@app/auth-service/application/use-cases/get-user-balance/get-user-balance.query';
+import { BalanceFixtures } from '@app/auth-service/__fixtures__/balance.fixtures';
 import { UserSession, AuthJwtGuard } from '@lib/shared/auth';
 import type { Request } from 'express';
 

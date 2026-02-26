@@ -2,11 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe, Module } from '@nestjs/common';
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
 import request from 'supertest';
-import { AppModule } from '@app/users/app.module';
-import { UserFixtures } from '@app/users/__fixtures__/user.fixtures';
-import { BalancePublisher } from '@lib/lib-balance';
-import { LibBalanceModule } from '@lib/lib-balance';
-import { PrismaService } from '@app/users/infrastructure/prisma/prisma.service';
+import { AppModule } from '@app/player-service/app.module';
+import { UserFixtures } from '@app/player-service/__fixtures__/user.fixtures';
+import { BalancePublisher } from '@lib/lib-building';
+import { LibBalanceModule } from '@lib/lib-building';
+import { PrismaService } from '@app/player-service/infrastructure/prisma/prisma.service';
 import {
   ZodExceptionFilter,
   HttpExceptionsFilter,

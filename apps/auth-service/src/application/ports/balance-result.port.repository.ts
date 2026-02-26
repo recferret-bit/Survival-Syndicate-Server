@@ -1,10 +1,10 @@
 import BigNumber from 'bignumber.js';
-import { BalanceResult } from '@app/balance/domain/entities/balance-result/balance-result';
+import { BalanceResult } from '@app/auth-service/domain/entities/balance-result/balance-result';
 import {
   CreateBalanceResult,
   UpdateBalanceResult,
-} from '@app/balance/domain/entities/balance-result/balance-result.type';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
+} from '@app/auth-service/domain/entities/balance-result/balance-result.type';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
 
 export abstract class BalanceResultPortRepository {
   abstract create(

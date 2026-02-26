@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import { AppModule } from '@app/balance/app.module';
-import { BalancePublisher, BalanceSubjects } from '@lib/lib-balance';
+import { AppModule } from '@app/auth-service/app.module';
+import { BalancePublisher, BalanceSubjects } from '@lib/lib-building';
 import type {
   CreateUserBalanceRequest,
   CreateUserBalanceResponse,
-} from '@lib/lib-balance';
-import { PrismaService } from '@app/balance/infrastructure/prisma/prisma.service';
+} from '@lib/lib-building';
+import { PrismaService } from '@app/auth-service/infrastructure/prisma/prisma.service';
 import { CurrencyCode } from '@lib/shared/currency';
 import { stringToBigNumber } from '@lib/shared';
 

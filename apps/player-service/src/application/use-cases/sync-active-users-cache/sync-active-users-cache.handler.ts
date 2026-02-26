@@ -2,7 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Logger } from '@nestjs/common';
 import { SyncActiveUsersCacheCommand } from './sync-active-users-cache.command';
 import { SyncActiveUsersCacheResponseDto } from './sync-active-users-cache.dto';
-import { UserPortRepository } from '@app/users/application/ports/user.port.repository';
+import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
 import { BearerTokenHashCacheService } from '@lib/shared/redis';
 
 @CommandHandler(SyncActiveUsersCacheCommand)

@@ -2,8 +2,8 @@ import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
 import { Logger, NotFoundException } from '@nestjs/common';
 import { GetUserBalanceQuery } from './get-user-balance.query';
 import { GetUserBalanceResponseDto, BalanceDto } from './get-user-balance.dto';
-import { UserBalancePortRepository } from '@app/balance/application/ports/user-balance.port.repository';
-import { CurrencyType } from '@app/balance/domain/value-objects/currency-type';
+import { UserBalancePortRepository } from '@app/auth-service/application/ports/user-balance.port.repository';
+import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
 import { getCurrencyVelueByStringCode, stringToBigNumber } from '@lib/shared';
 
 @QueryHandler(GetUserBalanceQuery)

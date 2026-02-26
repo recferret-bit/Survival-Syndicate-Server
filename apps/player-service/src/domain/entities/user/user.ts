@@ -1,4 +1,4 @@
-import { Entity } from '@app/users/domain/entities/entity';
+import { Entity } from '@app/player-service/domain/entities/entity';
 import { ValidationException } from '@lib/shared/application';
 import { UserProps, BanReason } from './user.type';
 

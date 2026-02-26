@@ -1,11 +1,11 @@
 import BigNumber from 'bignumber.js';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { UserBalancePortRepository } from '@app/balance/application/ports/user-balance.port.repository';
-import { UserBalance } from '@app/balance/domain/entities/user-balance/user-balance';
-import { CreateUserBalance } from '@app/balance/domain/entities/user-balance/user-balance.type';
+import { UserBalancePortRepository } from '@app/auth-service/application/ports/user-balance.port.repository';
+import { UserBalance } from '@app/auth-service/domain/entities/user-balance/user-balance';
+import { CreateUserBalance } from '@app/auth-service/domain/entities/user-balance/user-balance.type';
 import { UserBalancePrismaMapper } from '../mapper/user-balance.prisma.mapper';
-import { Prisma } from '@prisma/balance';
+import { Prisma } from '@prisma/catalog';
 
 @Injectable()
 export class UserBalancePrismaRepository extends UserBalancePortRepository {

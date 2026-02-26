@@ -1,6 +1,6 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
-import { SyncActiveUsersCacheHandler } from '@app/users/application/use-cases/sync-active-users-cache/sync-active-users-cache.handler';
-import { SyncActiveUsersCacheCommand } from '@app/users/application/use-cases/sync-active-users-cache/sync-active-users-cache.command';
+import { SyncActiveUsersCacheHandler } from '@app/player-service/application/use-cases/sync-active-users-cache/sync-active-users-cache.handler';
+import { SyncActiveUsersCacheCommand } from '@app/player-service/application/use-cases/sync-active-users-cache/sync-active-users-cache.command';
 
 @Injectable()
 export class ActiveUsersCacheStartupService implements OnModuleInit {

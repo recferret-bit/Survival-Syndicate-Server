@@ -9,8 +9,8 @@ import {
 import type { Request } from 'express';
 import { AuthJwtGuard, UserSession } from '@lib/shared/auth';
 import { bigNumberToDecimal } from '@lib/shared';
-import { GetUserBalanceQuery } from '@app/balance/application/use-cases/get-user-balance/get-user-balance.query';
-import { GetUserBalanceResponseDto } from '@app/balance/application/use-cases/get-user-balance/get-user-balance.dto';
+import { GetUserBalanceQuery } from '@app/auth-service/application/use-cases/get-user-balance/get-user-balance.query';
+import { GetUserBalanceResponseDto } from '@app/auth-service/application/use-cases/get-user-balance/get-user-balance.dto';
 import { GetUserBalanceHttpResponseDto } from './dto/get-user-balance.http.dto';
 
 interface RequestWithSession extends Request {

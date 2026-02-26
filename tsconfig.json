@@ -108,10 +108,10 @@
         "libs/lib-analytics/src/*"
       ],
       "@prisma/meta": [
-        "prisma/meta/generated"
+        "prisma/users/generated"
       ],
       "@prisma/catalog": [
-        "prisma/catalog/generated"
+        "prisma/balance/generated"
       ]
     }
   }

@@ -4,9 +4,9 @@ import { LoginUserQuery } from './login-user.query';
 import { LoginUserResponseDto } from './login-user.dto';
 import { Utils, EnvService } from '@lib/shared/application';
 import { AuthJwtService, UserSession } from '@lib/shared/auth';
-import { User } from '@app/users/domain/entities/user/user';
-import { TrackingPortRepository } from '@app/users/application/ports/tracking.port.repository';
-import { UserPortRepository } from '@app/users/application/ports/user.port.repository';
+import { User } from '@app/player-service/domain/entities/user/user';
+import { TrackingPortRepository } from '@app/player-service/application/ports/tracking.port.repository';
+import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
 import { BearerTokenHashCacheService } from '@lib/shared/redis';
 
 @QueryHandler(LoginUserQuery)

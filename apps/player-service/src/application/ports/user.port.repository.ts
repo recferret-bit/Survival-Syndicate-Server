@@ -1,5 +1,5 @@
-import { User } from '@app/users/domain/entities/user/user';
-import { CreateUser } from '@app/users/domain/entities/user/user.type';
+import { User } from '@app/player-service/domain/entities/user/user';
+import { CreateUser } from '@app/player-service/domain/entities/user/user.type';
 
 export abstract class UserPortRepository {
   abstract findById(id: number): Promise<User | null>;

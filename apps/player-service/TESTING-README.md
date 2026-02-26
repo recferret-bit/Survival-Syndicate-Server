@@ -638,7 +638,7 @@ npm run test:users:unit
 
 Or using workspace:
 ```bash
-npm run test:unit --workspace=@app/users
+npm run test:unit --workspace=@app/player-service
 ```
 
 ### Integration Tests
@@ -650,7 +650,7 @@ npm run test:users:integration
 
 Or using workspace:
 ```bash
-npm run test:integration --workspace=@app/users
+npm run test:integration --workspace=@app/player-service
 ```
 
 **Note**: Integration tests require the test database to be set up and running.
@@ -664,7 +664,7 @@ npm run test:users
 
 Or using workspace:
 ```bash
-npm run test --workspace=@app/users
+npm run test --workspace=@app/player-service
 ```
 
 ### E2E Tests

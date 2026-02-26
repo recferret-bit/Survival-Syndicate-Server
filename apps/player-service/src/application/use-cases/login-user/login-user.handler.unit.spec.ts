@@ -2,11 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UnauthorizedException } from '@nestjs/common';
 import { LoginUserHandler } from './login-user.handler';
 import { LoginUserQuery } from './login-user.query';
-import { UserPortRepository } from '@app/users/application/ports/user.port.repository';
-import { TrackingPortRepository } from '@app/users/application/ports/tracking.port.repository';
+import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
+import { TrackingPortRepository } from '@app/player-service/application/ports/tracking.port.repository';
 import { AuthJwtService } from '@lib/shared/auth';
 import { EnvService, Utils } from '@lib/shared/application';
-import { UserFixtures } from '@app/users/__fixtures__/user.fixtures';
+import { UserFixtures } from '@app/player-service/__fixtures__/user.fixtures';
 
 describe('LoginUserHandler', () => {
   let handler: LoginUserHandler;

@@ -6,13 +6,13 @@ import { Currencies } from '@lib/shared/currency/currency';
 import { Languages } from '@lib/shared/language/language';
 import { Utils, EnvService } from '@lib/shared/application';
 import { AuthJwtService, UserSession } from '@lib/shared/auth';
-import { User } from '@app/users/domain/entities/user/user';
-import { UserPortRepository } from '@app/users/application/ports/user.port.repository';
-import { BalancePublisher } from '@lib/lib-balance';
-import { UsersPublisher } from '@lib/lib-users';
-import { PrismaService } from '@app/users/infrastructure/prisma/prisma.service';
-import { UserPrismaMapper } from '@app/users/infrastructure/prisma/mapper/user.prisma.mapper';
-import { TrackingPrismaMapper } from '@app/users/infrastructure/prisma/mapper/tracking.prisma.mapper';
+import { User } from '@app/player-service/domain/entities/user/user';
+import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
+import { BalancePublisher } from '@lib/lib-building';
+import { UsersPublisher } from '@lib/lib-player';
+import { PrismaService } from '@app/player-service/infrastructure/prisma/prisma.service';
+import { UserPrismaMapper } from '@app/player-service/infrastructure/prisma/mapper/user.prisma.mapper';
+import { TrackingPrismaMapper } from '@app/player-service/infrastructure/prisma/mapper/tracking.prisma.mapper';
 import { BearerTokenHashCacheService } from '@lib/shared/redis';
 
 @CommandHandler(RegisterUserCommand)
