@@ -9,7 +9,7 @@ import { UserBalancePrismaRepository } from '@app/auth-service/infrastructure/pr
 import { EnvModule } from '@lib/shared';
 
 @Module({
-  imports: [],
+  imports: [EnvModule.forRoot()],
   providers: [
     PrismaService,
     {

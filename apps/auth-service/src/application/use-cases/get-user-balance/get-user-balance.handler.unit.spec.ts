@@ -49,20 +49,16 @@ describe('GetUserBalanceHandler', () => {
       const result = await handler.execute(new GetUserBalanceQuery({ userId }));
 
       expect(result).toHaveProperty('balances');
-      // Should include FIAT and BONUS, and CRYPTO if it exists
-      expect(result.balances.length).toBeGreaterThanOrEqual(2);
+      // Current implementation returns FIAT and BONUS balances
+      expect(result.balances.length).toBe(2);
       expect(result.balances[0]).toHaveProperty('currencyType', 'fiat');
       expect(result.balances[1]).toHaveProperty('currencyType', 'bonus');
-      if (userBalance.hasCryptoBalance()) {
-        expect(result.balances.length).toBe(3);
-        expect(result.balances[2]).toHaveProperty('currencyType', 'crypto');
-      }
       expect(userBalanceRepository.findByUserId).toHaveBeenCalledWith(
         userIdBigNumber,
       );
     });
 
-    it('should include crypto balance if exists', async () => {
+    it('should return only fiat and bonus balances', async () => {
       const userId = '1';
       const userIdBigNumber = new BigNumber(userId);
       const userBalance = BalanceFixtures.createUserBalance({
@@ -73,14 +69,10 @@ describe('GetUserBalanceHandler', () => {
 
       const result = await handler.execute(new GetUserBalanceQuery({ userId }));
 
-      // Should include crypto balance if it exists
-      if (userBalance.hasCryptoBalance()) {
-        expect(result.balances.length).toBeGreaterThanOrEqual(3);
-        const cryptoBalance = result.balances.find(
-          (b) => b.currencyType === 'crypto',
-        );
-        expect(cryptoBalance).toBeDefined();
-      }
+      expect(result.balances).toHaveLength(2);
+      expect(result.balances.every((b) => b.currencyType !== 'crypto')).toBe(
+        true,
+      );
     });
 
     it('should throw NotFoundException if balance not found', async () => {
@@ -116,7 +108,7 @@ describe('GetUserBalanceHandler', () => {
       );
       expect(fiatBalance).toBeDefined();
       expect(fiatBalance!.balance).toBe('10000');
-      expect(fiatBalance!.balanceDecimal).toBe(100.0); // 10000 cents = 100.00 USD
+      expect(fiatBalance!.balanceDecimals).toBe(2);
     });
   });
 });

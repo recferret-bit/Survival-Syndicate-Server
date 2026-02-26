@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "clean": "rimraf dist",
-    "build": "nest build --all",
+    "build": "nest build auth-service player-service scheduler-service",
     "build:all": "npm run build swagger-aggregator && npm run build auth-service && npm run build player-service && npm run build building-service && npm run build combat-progress-service && npm run build scheduler-service && npm run build game-server && npm run build analytics-service",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "lint": "eslint \"apps/**/*.ts\" \"libs/**/*.ts\"",

@@ -9,7 +9,7 @@ import { AdminPrismaRepository } from './repositories/admin.prisma.repository';
 import { EnvModule } from '@lib/shared';
 
 @Module({
-  imports: [],
+  imports: [EnvModule.forRoot()],
   providers: [
     PrismaService,
     {

@@ -81,7 +81,10 @@ describe('UsersHttpController (Unit)', () => {
         expect.any(RegisterUserCommand),
       );
       expect(commandBus.execute).toHaveBeenCalledTimes(1);
-      expect(result).toEqual(expectedResponse);
+      expect(result).toEqual({
+        statusCode: 200,
+        data: expectedResponse,
+      });
     });
 
     it('should extract IP from X-Forwarded-For header', async () => {

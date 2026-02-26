@@ -1,6 +1,6 @@
 # TASK-1.1: Monorepo-структура проекта
 
-## Статус: `NOT STARTED`
+## Статус: `PREPARING`
 
 **Epic:** Epic 1: Базовая инфраструктура
 **Ветка:** `feature/infra/monorepo-structure`
@@ -48,3 +48,4 @@ docs/architecture/16_project_structure.md
 | Дата | Событие | Агент |
 |------|---------|-------|
 | — | Задача создана | System |
+| 2026-02-26 | Подготовка начата | Cursor (gpt-5.3-codex) |

@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { BalanceNatsController } from './balance.nats.controller';
 import { BalanceSubjects } from '@lib/lib-building';
 import type { CreateUserBalanceRequest } from '@lib/lib-building';
@@ -16,6 +16,12 @@ describe('BalanceNatsController (Unit)', () => {
       providers: [
         {
           provide: CommandBus,
+          useValue: {
+            execute: jest.fn(),
+          },
+        },
+        {
+          provide: QueryBus,
           useValue: {
             execute: jest.fn(),
           },

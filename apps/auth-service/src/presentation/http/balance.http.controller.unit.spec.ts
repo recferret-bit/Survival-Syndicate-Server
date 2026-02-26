@@ -61,19 +61,32 @@ describe('BalanceHttpController (Unit)', () => {
           {
             currencyType: 'fiat',
             currencyIsoCode: 'USD',
-            amount: '100.00',
-            availableAmount: '100.00',
+            balance: '100.00',
           },
           {
             currencyType: 'bonus',
             currencyIsoCode: 'USD',
-            amount: '50.00',
-            availableAmount: '50.00',
+            balance: '50.00',
           },
         ],
       };
 
-      queryBus.execute.mockResolvedValue(expectedResponse);
+      queryBus.execute.mockResolvedValue({
+        balances: [
+          {
+            currencyType: 'fiat',
+            currencyIsoCode: 'USD',
+            balance: '10000',
+            balanceDecimals: 2,
+          },
+          {
+            currencyType: 'bonus',
+            currencyIsoCode: 'USD',
+            balance: '5000',
+            balanceDecimals: 2,
+          },
+        ],
+      });
 
       const result = await controller.getBalance(mockRequest);
 
@@ -128,8 +141,8 @@ describe('BalanceHttpController (Unit)', () => {
           {
             currencyType: 'fiat',
             currencyIsoCode: 'EUR',
-            amount: '200.00',
-            availableAmount: '200.00',
+            balance: '20000',
+            balanceDecimals: 2,
           },
         ],
       };
@@ -141,7 +154,15 @@ describe('BalanceHttpController (Unit)', () => {
       const callArgs = (queryBus.execute as jest.Mock).mock.calls[0][0];
       expect(callArgs).toBeInstanceOf(GetUserBalanceQuery);
       expect(callArgs.request.userId).toBe(userId.toString());
-      expect(result).toEqual(mockResponse);
+      expect(result).toEqual({
+        balances: [
+          {
+            currencyType: 'fiat',
+            currencyIsoCode: 'EUR',
+            balance: '200.00',
+          },
+        ],
+      });
     });
   });
 });
