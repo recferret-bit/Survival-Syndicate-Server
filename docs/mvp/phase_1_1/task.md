@@ -1,6 +1,6 @@
 # TASK-1.1: Monorepo-структура проекта
 
-## Статус: `IN PROGRESS`
+## Статус: `IN REVIEW`
 
 **Epic:** Epic 1: Базовая инфраструктура
 **Ветка:** `feature/infra/monorepo-structure`
@@ -50,3 +50,4 @@ docs/architecture/16_project_structure.md
 | — | Задача создана | System |
 | 2026-02-26 | Подготовка начата | Cursor (gpt-5.3-codex) |
 | 2026-02-26 | Разработка начата | Cursor (gpt-5.3-codex) |
+| 2026-02-26 | Ревью начато | Cursor (gpt-5.3-codex) |
