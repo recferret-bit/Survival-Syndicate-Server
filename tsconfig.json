@@ -23,11 +23,11 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@app/api-gateway": [
-        "apps/api-gateway/src"
+      "@app/swagger-aggregator": [
+        "apps/swagger-aggregator/src"
       ],
-      "@app/api-gateway/*": [
-        "apps/api-gateway/src/*"
+      "@app/swagger-aggregator/*": [
+        "apps/swagger-aggregator/src/*"
       ],
       "@app/auth-service": [
         "apps/auth-service/src"

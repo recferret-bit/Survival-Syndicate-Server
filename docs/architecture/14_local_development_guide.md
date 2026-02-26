@@ -41,7 +41,7 @@ Survival-Syndicate-Server/
 │   ├── ingress.yml
 │   └── monitoring/
 ├── services/
-│   ├── api-gateway/
+│   ├── swagger-aggregator/
 │   ├── auth-service/
 │   ├── player-service/
 │   ├── building-service/
@@ -212,7 +212,7 @@ docker compose -f docker-compose.infra.yml down -v
 
 ```bash
 # Терминал 1: API Gateway
-cd services/api-gateway
+cd services/swagger-aggregator
 npm run dev
 
 # Терминал 2: Auth Service
@@ -339,11 +339,11 @@ services:
   # BACKEND SERVICES
   # ============================================
 
-  api-gateway:
+  swagger-aggregator:
     build:
-      context: ../services/api-gateway
+      context: ../services/swagger-aggregator
       dockerfile: Dockerfile
-    container_name: ss-api-gateway
+    container_name: ss-swagger-aggregator
     environment:
       NODE_ENV: ${NODE_ENV:-development}
       APP_PORT: 3000
@@ -723,9 +723,9 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
 
-  - job_name: 'api-gateway'
+  - job_name: 'swagger-aggregator'
     static_configs:
-      - targets: ['api-gateway:9000']
+      - targets: ['swagger-aggregator:9000']
 
   - job_name: 'auth-service'
     static_configs:
@@ -977,31 +977,31 @@ spec:
 ### Service Deployment (пример: API Gateway)
 
 ```yaml
-# k8s/deployments/api-gateway.yml
+# k8s/deployments/swagger-aggregator.yml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-gateway
+  name: swagger-aggregator
   namespace: survival-syndicate
   labels:
-    app: api-gateway
+    app: swagger-aggregator
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: api-gateway
+      app: swagger-aggregator
   template:
     metadata:
       labels:
-        app: api-gateway
+        app: swagger-aggregator
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "9000"
         prometheus.io/path: "/metrics"
     spec:
       containers:
-        - name: api-gateway
-          image: survival-syndicate/api-gateway:latest
+        - name: swagger-aggregator
+          image: survival-syndicate/swagger-aggregator:latest
           ports:
             - name: http
               containerPort: 3000
@@ -1041,11 +1041,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: api-gateway
+  name: swagger-aggregator
   namespace: survival-syndicate
 spec:
   selector:
-    app: api-gateway
+    app: swagger-aggregator
   ports:
     - name: http
       port: 80
@@ -1175,7 +1175,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: api-gateway
+                name: swagger-aggregator
                 port:
                   number: 80
 

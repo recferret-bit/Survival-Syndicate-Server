@@ -20,12 +20,12 @@ nest new survival-syndicate-server
 cd survival-syndicate-server
 
 # Конвертируем в monorepo
-nest generate app api-gateway
+nest generate app swagger-aggregator
 
 # Теперь структура:
 # apps/
-#   survival-syndicate-server/  (переименуем в api-gateway)
-#   api-gateway/
+#   survival-syndicate-server/  (переименуем в swagger-aggregator)
+#   swagger-aggregator/
 ```
 
 ### Первоначальная настройка
@@ -55,7 +55,7 @@ nest generate library contracts
 ```
 survival-syndicate-server/
 ├── apps/
-│   ├── api-gateway/
+│   ├── swagger-aggregator/
 │   │   ├── src/
 │   │   │   ├── main.ts
 │   │   │   ├── app.module.ts
@@ -227,23 +227,23 @@ survival-syndicate-server/
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/api-gateway/src",
+  "sourceRoot": "apps/swagger-aggregator/src",
   "monorepo": true,
-  "root": "apps/api-gateway",
+  "root": "apps/swagger-aggregator",
   "compilerOptions": {
     "webpack": false,
-    "tsConfigPath": "apps/api-gateway/tsconfig.app.json",
+    "tsConfigPath": "apps/swagger-aggregator/tsconfig.app.json",
     "assets": [],
     "watchAssets": false
   },
   "projects": {
-    "api-gateway": {
+    "swagger-aggregator": {
       "type": "application",
-      "root": "apps/api-gateway",
+      "root": "apps/swagger-aggregator",
       "entryFile": "main",
-      "sourceRoot": "apps/api-gateway/src",
+      "sourceRoot": "apps/swagger-aggregator/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+        "tsConfigPath": "apps/swagger-aggregator/tsconfig.app.json"
       }
     },
     "auth-service": {
@@ -405,15 +405,15 @@ survival-syndicate-server/
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "build:all": "npm run build api-gateway && npm run build auth-service && npm run build player-service && npm run build building-service && npm run build combat-progress-service && npm run build scheduler-service && npm run build game-server && npm run build analytics-service",
+    "build:all": "npm run build swagger-aggregator && npm run build auth-service && npm run build player-service && npm run build building-service && npm run build combat-progress-service && npm run build scheduler-service && npm run build game-server && npm run build analytics-service",
     
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/apps/api-gateway/main",
+    "start:prod": "node dist/apps/swagger-aggregator/main",
     
-    "start:api-gateway": "nest start api-gateway",
-    "start:api-gateway:dev": "nest start api-gateway --watch",
+    "start:swagger-aggregator": "nest start swagger-aggregator",
+    "start:swagger-aggregator:dev": "nest start swagger-aggregator --watch",
     "start:auth-service": "nest start auth-service",
     "start:auth-service:dev": "nest start auth-service --watch",
     "start:player-service": "nest start player-service",
@@ -434,7 +434,7 @@ survival-syndicate-server/
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./apps/api-gateway/test/jest-e2e.json",
+    "test:e2e": "jest --config ./apps/swagger-aggregator/test/jest-e2e.json",
     
     "prisma:generate": "npm run prisma:generate:meta && npm run prisma:generate:catalog",
     "prisma:generate:meta": "prisma generate --schema=prisma/meta/schema.prisma",
@@ -678,7 +678,7 @@ npm run prisma:migrate:dev
 npm run start:player-service:dev
 
 # Запуск нескольких сервисов (в разных терминалах)
-npm run start:api-gateway:dev
+npm run start:swagger-aggregator:dev
 npm run start:auth-service:dev
 npm run start:player-service:dev
 

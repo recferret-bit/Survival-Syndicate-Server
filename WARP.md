@@ -10,7 +10,7 @@ Survival Syndicate — an online multiplayer survival game server built as a Nes
 
 ### Central Zone (Global Scope)
 Services that do not require ultra-low latency and operate at global scope.
-- `api-gateway` — HTTP entry point / routing
+- `swagger-aggregator` — агрегирует OpenAPI-спецификации со всех сервисов, предоставляет единую Swagger UI
 - `auth-service` — JWT issuance/auth
 - `matchmaking-service` — selects a Zone and returns `websocketUrl`
 - `player-service` — player meta/progression
@@ -32,7 +32,7 @@ Naming note: legacy docs/code may mention `game-server` and `analytics-service`;
 **Communication:**
 - Inter-service: NATS for request-reply and pub/sub
 - Client → Game Server: WebSocket (binary/JSON)
-- Client → Meta Services: HTTP REST via API Gateway
+- Client → Meta Services: HTTP REST напрямую к каждому сервису (каждый имеет собственный HTTP-контроллер)
 - Databases: PostgreSQL (Postgres_Meta for player data, Postgres_Catalog for static game config)
 
 ## Per-App and Libs Documentation
@@ -48,7 +48,7 @@ Before modifying an app, read its feature documentation for context:
 
 ```bash
 # Start specific service in watch mode
-npm run start:api-gateway:dev
+npm run start:swagger-aggregator:dev
 npm run start:auth-service:dev
 npm run start:player-service:dev
 npm run start:building-service:dev
@@ -221,7 +221,7 @@ Two shared PostgreSQL databases:
 
 ```typescript
 // Applications
-@app/api-gateway/*
+@app/swagger-aggregator/*
 @app/auth-service/*
 @app/player-service/*
 @app/building-service/*

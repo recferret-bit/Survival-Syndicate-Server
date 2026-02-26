@@ -22,7 +22,7 @@
 #### Центральная зона (Global Scope)
 Сервисы без жёстких требований к задержке, работают глобально.
 
-- **`api-gateway`** — HTTP точка входа, маршрутизация, Swagger
+- **`swagger-aggregator`** — агрегирует OpenAPI-спецификации со всех сервисов, предоставляет единую Swagger UI
 - **`auth-service`** — Аутентификация, JWT токены, refresh-токены
 - **`matchmaking-service`** — Подбор зоны для игрока, выдача `websocketUrl`
 - **`player-service`** — Аккаунты, персонажи (CRUD), друзья, баны
@@ -214,7 +214,7 @@ natsClient.send('player.get-character.v1', data);
 
 ```typescript
 // Приложения
-@app/api-gateway/*
+@app/swagger-aggregator/*
 @app/auth-service/*
 @app/player-service/*
 @app/building-service/*

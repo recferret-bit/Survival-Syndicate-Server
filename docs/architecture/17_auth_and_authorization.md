@@ -586,7 +586,7 @@ export class RefreshTokenDto {
 ### Глобальный Guard в API Gateway
 
 ```typescript
-// apps/api-gateway/src/main.ts
+// apps/swagger-aggregator/src/main.ts
 import { NestFactory, Reflector } from '@nestjs/core';
 import { JwtAuthGuard, RolesGuard } from '@app/auth';
 import { AppModule } from './app.module';

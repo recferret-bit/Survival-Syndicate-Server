@@ -825,7 +825,7 @@ export class RequestIdMiddleware implements NestMiddleware {
 ### Регистрация
 
 ```typescript
-// apps/api-gateway/src/app.module.ts
+// apps/swagger-aggregator/src/app.module.ts
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { RequestIdMiddleware } from '@app/common';
 

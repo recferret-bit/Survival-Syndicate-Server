@@ -6,7 +6,7 @@ This file provides guidance to AI agents (Cursor, Warp) when working with code i
 
 Survival Syndicate — online multiplayer survival game server. Architecture is split into **Central Zone (global scope)** and **Local Zones (zone scope)**; services communicate via NATS.
 
-**Central Zone (Global Scope):** `api-gateway`, `auth-service`, `matchmaking-service`, `player-service`, `building-service`, `combat-progress-service`, `scheduler-service`, `collector-service`, `payment-service`, `history-service`
+**Central Zone (Global Scope):** `swagger-aggregator`, `auth-service`, `matchmaking-service`, `player-service`, `building-service`, `combat-progress-service`, `scheduler-service`, `collector-service`, `payment-service`, `history-service`
 **Local Zone (Zone Scope):** `local-orchestrator`, `gameplay-service`, `websocket-service`
 
 **Tech Stack:** NestJS 11, TypeScript 5.7, Prisma 7, NATS, Redis, PostgreSQL 15, WebSocket, ClickHouse (analytics)
@@ -130,7 +130,7 @@ The `game-server` service runs real-time gameplay simulations:
 ### Path Aliases
 ```typescript
 // Applications
-@app/api-gateway/*
+@app/swagger-aggregator/*
 @app/auth-service/*
 @app/player-service/*
 @app/building-service/*

@@ -8,13 +8,13 @@
   "monorepo": true,
   "root": "apps",
   "projects": {
-    "api-gateway": {
+    "swagger-aggregator": {
       "type": "application",
-      "root": "apps/api-gateway",
+      "root": "apps/swagger-aggregator",
       "entryFile": "main",
-      "sourceRoot": "apps/api-gateway/src",
+      "sourceRoot": "apps/swagger-aggregator/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
+        "tsConfigPath": "apps/swagger-aggregator/tsconfig.app.json"
       }
     },
     "auth-service": {
