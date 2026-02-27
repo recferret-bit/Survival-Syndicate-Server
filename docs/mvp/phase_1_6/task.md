@@ -1,6 +1,6 @@
 # TASK-2.2: Player Service
 
-## Статус: `NOT STARTED`
+## Статус: `PREPARING`
 
 **Epic:** Epic 2: Реализация сервисов
 **Ветка:** `phase_1_6/feature/player/user-registered-handler`
@@ -54,3 +54,4 @@ NATS user.registered -> profile creation, HTTP GET /api/players/me
 | Дата | Событие | Агент |
 |------|---------|-------|
 | — | Задача создана | System |
+| 2026-02-27 | Подготовка начата | Cursor |
