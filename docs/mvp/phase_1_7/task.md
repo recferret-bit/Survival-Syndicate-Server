@@ -1,6 +1,6 @@
 # TASK-2.3: Matchmaking Service
 
-## Статус: `NOT STARTED`
+## Статус: `DONE`
 
 **Epic:** Epic 2: Реализация сервисов
 **Ветка:** `phase_1_7/feature/matchmaking/lobby-and-solo`
@@ -57,3 +57,6 @@ Lobby HTTP pipeline, NATS found_match publication
 | Дата | Событие | Агент |
 |------|---------|-------|
 | — | Задача создана | System |
+| 2026-02-28 | Подготовка начата | Cursor |
+| 2026-02-28 | Реализация завершена, отправлено на ревью | Cursor |
+| 2026-02-28 | Задача переведена в DONE | Cursor |
