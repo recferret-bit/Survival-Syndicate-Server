@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import {
+  AuthJwtModule,
   EnvModule,
   NatsClientModule,
   DEFAULT_NATS_CLIENT_STREAM_NAME,
@@ -16,6 +17,7 @@ import { MatchmakingNatsController } from './nats/matchmaking.nats.controller';
     CqrsModule.forRoot(),
     ApplicationModule,
     InfrastructureModule,
+    AuthJwtModule,
     NatsClientModule.forRoot({ streamName: DEFAULT_NATS_CLIENT_STREAM_NAME }),
   ],
   controllers: [MatchmakingHttpController, MatchmakingNatsController],

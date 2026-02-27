@@ -156,6 +156,38 @@ export type ResetWagerCycleResponse = z.infer<
   typeof ResetWagerCycleResponseSchema
 >;
 
+// Matchmaking / orchestrator integration schemas
+export const OrchestratorZoneHeartbeatEventSchema = z.object({
+  zoneId: z.string().min(1),
+  websocketUrl: z.string().min(1),
+  reportedAt: z.string().datetime().optional(),
+});
+
+export const MatchFinishedEventSchema = z.object({
+  matchId: z.string().min(1),
+  lobbyId: z.string().optional(),
+});
+
+export const MatchmakingFoundMatchEventSchema = z.object({
+  matchId: z.string().min(1),
+  lobbyId: z.string().optional(),
+  zoneId: z.string().min(1),
+  websocketUrl: z.string().min(1),
+  playerIds: z
+    .array(
+      z.string().regex(/^\d+$/, 'Player ID must be a positive integer string'),
+    )
+    .min(1),
+});
+
+export type OrchestratorZoneHeartbeatEvent = z.infer<
+  typeof OrchestratorZoneHeartbeatEventSchema
+>;
+export type MatchFinishedEvent = z.infer<typeof MatchFinishedEventSchema>;
+export type MatchmakingFoundMatchEvent = z.infer<
+  typeof MatchmakingFoundMatchEventSchema
+>;
+
 /**
  * Subject definitions for NATS
  */
@@ -169,6 +201,9 @@ export const GameServerSubjects = {
   EXPIRE_INACTIVE_SESSIONS: 'games.sessions.expire-inactive.v1',
   GET_USER_STATS: 'games.user-stats.get.v1',
   RESET_WAGER_CYCLE: 'games.wager-cycle.reset.v1',
+  ORCHESTRATOR_ZONE_HEARTBEAT: 'orchestrator.zone.heartbeat.v1',
+  MATCH_FINISHED: 'match.finished.v1',
+  MATCHMAKING_FOUND_MATCH: 'matchmaking.found_match.v1',
 } as const;
 
 export type GameServerSubject =

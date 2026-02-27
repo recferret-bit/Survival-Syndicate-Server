@@ -42,5 +42,8 @@ describe('lib-game-server games schemas', () => {
     expect(GameServerSubjects.EXPIRE_INACTIVE_SESSIONS).toBe(
       'games.sessions.expire-inactive.v1',
     );
+    expect(GameServerSubjects.MATCHMAKING_FOUND_MATCH).toBe(
+      'matchmaking.found_match.v1',
+    );
   });
 });

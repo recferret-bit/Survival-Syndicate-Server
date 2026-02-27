@@ -171,4 +171,14 @@ export class GameServerPublisher extends BasePublisher {
       );
     }
   }
+
+  async publishMatchmakingFoundMatch(
+    dto: Schemas.MatchmakingFoundMatchEvent,
+  ): Promise<void> {
+    await this.emitDurable(
+      Schemas.GameServerSubjects.MATCHMAKING_FOUND_MATCH,
+      dto,
+      Schemas.MatchmakingFoundMatchEventSchema,
+    );
+  }
 }
