@@ -14,6 +14,10 @@ import {
   GetUserByIdResponseSchema,
   GetUserByIdRequest,
   GetUserByIdResponse,
+  GetPlayerRequestSchema,
+  GetPlayerResponseSchema,
+  GetPlayerRequest,
+  GetPlayerResponse,
   ValidateAdminApiKeyRequestSchema,
   ValidateAdminApiKeyResponseSchema,
   ValidateAdminApiKeyRequest,
@@ -69,6 +73,18 @@ export class PlayerPublisher extends BasePublisher {
       dto,
       GetUserByIdRequestSchema,
       GetUserByIdResponseSchema,
+    );
+  }
+
+  /**
+   * Get player by player ID
+   */
+  async getPlayer(dto: GetPlayerRequest): Promise<GetPlayerResponse> {
+    return this.sendNonDurable(
+      PlayerSubjects.GET_PLAYER,
+      dto,
+      GetPlayerRequestSchema,
+      GetPlayerResponseSchema,
     );
   }
 

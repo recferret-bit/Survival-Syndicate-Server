@@ -14,6 +14,9 @@ import { UpdateProfileHandler } from '@app/player-service/application/use-cases/
 import { AttachEmailHandler } from '@app/player-service/application/use-cases/attach-email/attach-email.handler';
 import { AttachPhoneHandler } from '@app/player-service/application/use-cases/attach-phone/attach-phone.handler';
 import { ActiveUsersCacheStartupService } from '@app/player-service/infrastructure/services/active-users-cache-startup.service';
+import { CreateProfileHandler } from '@app/player-service/application/use-cases/create-profile/create-profile.handler';
+import { GetPlayerHandler } from '@app/player-service/application/use-cases/get-player/get-player.handler';
+import { GetMyPlayerHandler } from '@app/player-service/application/use-cases/get-my-player/get-my-player.handler';
 
 @Module({
   imports: [
@@ -34,6 +37,9 @@ import { ActiveUsersCacheStartupService } from '@app/player-service/infrastructu
     AttachEmailHandler,
     AttachPhoneHandler,
     ActiveUsersCacheStartupService,
+    CreateProfileHandler,
+    GetPlayerHandler,
+    GetMyPlayerHandler,
   ],
   exports: [
     RegisterUserHandler,
@@ -46,6 +52,9 @@ import { ActiveUsersCacheStartupService } from '@app/player-service/infrastructu
     UpdateProfileHandler,
     AttachEmailHandler,
     AttachPhoneHandler,
+    CreateProfileHandler,
+    GetPlayerHandler,
+    GetMyPlayerHandler,
   ],
 })
 export class ApplicationModule {}

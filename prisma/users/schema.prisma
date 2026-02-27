@@ -78,3 +78,13 @@ model Admin {
 
   @@map("admin")
 }
+
+model Player {
+  id        BigInt   @id @default(autoincrement()) @db.BigInt
+  userId    BigInt   @unique @map("user_id") @db.BigInt
+  username  String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("player")
+}

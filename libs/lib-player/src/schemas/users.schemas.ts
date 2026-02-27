@@ -55,6 +55,26 @@ export const GetUserByIdResponseSchema = z.object({
 export type GetUserByIdRequest = z.infer<typeof GetUserByIdRequestSchema>;
 export type GetUserByIdResponse = z.infer<typeof GetUserByIdResponseSchema>;
 
+export const GetPlayerRequestSchema = z.object({
+  playerId: z
+    .string()
+    .regex(/^\d+$/, 'Player ID must be a positive integer string'),
+});
+
+export const GetPlayerResponseSchema = z.object({
+  playerId: z
+    .string()
+    .regex(/^\d+$/, 'Player ID must be a positive integer string'),
+  userId: z
+    .string()
+    .regex(/^\d+$/, 'User ID must be a positive integer string'),
+  username: z.string().min(1),
+  createdAt: z.string(),
+});
+
+export type GetPlayerRequest = z.infer<typeof GetPlayerRequestSchema>;
+export type GetPlayerResponse = z.infer<typeof GetPlayerResponseSchema>;
+
 export const ValidateAdminApiKeyRequestSchema = z.object({
   apiKey: z.string().min(1, 'API key must not be empty'),
 });
@@ -89,6 +109,7 @@ export const PlayerSubjects = {
   UPDATE_BANNED_USERS_CACHE: 'users.update-banned-users-cache.v1',
   SYNC_ACTIVE_USERS_CACHE: 'users.sync-active-users-cache.v1',
   GET_USER_BY_ID: 'users.get-user-by-id.v1',
+  GET_PLAYER: 'player.get.v1',
   VALIDATE_ADMIN_API_KEY: 'users.validate-admin-api-key.v1',
   USER_REGISTERED: 'users.user-registered.v1',
 } as const;
