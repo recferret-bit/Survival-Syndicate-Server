@@ -1,6 +1,6 @@
 # TASK-1.4: Скаффолдинг MVP-сервисов
 
-## Статус: `PREPARING`
+## Статус: `IN REVIEW`
 
 **Epic:** Epic 1: Базовая инфраструктура
 **Ветка:** `phase_1_4/feature/infra/mvp-service-scaffolding`
