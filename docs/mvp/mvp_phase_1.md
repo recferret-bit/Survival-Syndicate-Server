@@ -33,7 +33,7 @@
 
 | # | ID | Задача | Статус | Зависимости | Каталог |
 |---|-----|--------|--------|-------------|---------|
-| 5 | TASK-2.1 | Auth Service | 🔲 NOT STARTED | 4 | [phase_1_5](phase_1_5/task.md) |
+| 5 | TASK-2.1 | Auth Service | ✅ DONE | 4 | [phase_1_5](phase_1_5/task.md) |
 | 6 | TASK-2.2 | Player Service | 🔲 NOT STARTED | 4, 5 | [phase_1_6](phase_1_6/task.md) |
 | 7 | TASK-2.3 | Matchmaking Service | 🔲 NOT STARTED | 4, 5 | [phase_1_7](phase_1_7/task.md) |
 | 8 | TASK-2.4 | Local Orchestrator | 🔲 NOT STARTED | 4, 7 | [phase_1_8](phase_1_8/task.md) |

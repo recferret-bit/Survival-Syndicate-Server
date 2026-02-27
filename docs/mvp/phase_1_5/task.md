@@ -1,6 +1,6 @@
 # TASK-2.1: Auth Service
 
-## Статус: `NOT STARTED`
+## Статус: `DONE`
 
 **Epic:** Epic 2: Реализация сервисов
 **Ветка:** `phase_1_5/feature/auth/registration-and-login`
@@ -57,3 +57,6 @@ POST /auth/register, POST /auth/login, POST /auth/refresh pipeline
 | Дата | Событие | Агент |
 |------|---------|-------|
 | — | Задача создана | System |
+| 2026-02-27 | Подготовка начата | Cursor |
+| 2026-02-27 | Реализация завершена, отправлено на ревью | Cursor |
+| 2026-02-27 | Задача переведена в DONE | Cursor |

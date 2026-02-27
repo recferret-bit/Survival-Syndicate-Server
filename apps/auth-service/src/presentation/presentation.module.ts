@@ -6,6 +6,7 @@ import { ApplicationModule } from '@app/auth-service/application/application.mod
 import { InfrastructureModule } from '@app/auth-service/infrastructure/infrastructure.module';
 import { BalanceHttpController } from '@app/auth-service/presentation/http/balance.http.controller';
 import { BalanceAdminHttpController } from '@app/auth-service/presentation/http/admin/balance-admin.http.controller';
+import { AuthHttpController } from '@app/auth-service/presentation/http/auth.http.controller';
 import { BalanceNatsController } from '@app/auth-service/presentation/nats/balance.nats.controller';
 
 @Module({
@@ -21,6 +22,7 @@ import { BalanceNatsController } from '@app/auth-service/presentation/nats/balan
   controllers: [
     BalanceHttpController,
     BalanceAdminHttpController,
+    AuthHttpController,
     BalanceNatsController,
   ],
 })
