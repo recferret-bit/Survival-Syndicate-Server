@@ -41,6 +41,30 @@
       "@app/player-service/*": [
         "apps/player-service/src/*"
       ],
+      "@app/matchmaking-service": [
+        "apps/matchmaking-service/src"
+      ],
+      "@app/matchmaking-service/*": [
+        "apps/matchmaking-service/src/*"
+      ],
+      "@app/local-orchestrator": [
+        "apps/local-orchestrator/src"
+      ],
+      "@app/local-orchestrator/*": [
+        "apps/local-orchestrator/src/*"
+      ],
+      "@app/gameplay-service": [
+        "apps/gameplay-service/src"
+      ],
+      "@app/gameplay-service/*": [
+        "apps/gameplay-service/src/*"
+      ],
+      "@app/websocket-service": [
+        "apps/websocket-service/src"
+      ],
+      "@app/websocket-service/*": [
+        "apps/websocket-service/src/*"
+      ],
       "@app/building-service": [
         "apps/building-service/src"
       ],

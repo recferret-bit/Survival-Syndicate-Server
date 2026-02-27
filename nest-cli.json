@@ -35,6 +35,42 @@
         "tsConfigPath": "apps/player-service/tsconfig.app.json"
       }
     },
+    "matchmaking-service": {
+      "type": "application",
+      "root": "apps/matchmaking-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/matchmaking-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/matchmaking-service/tsconfig.app.json"
+      }
+    },
+    "local-orchestrator": {
+      "type": "application",
+      "root": "apps/local-orchestrator",
+      "entryFile": "main",
+      "sourceRoot": "apps/local-orchestrator/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/local-orchestrator/tsconfig.app.json"
+      }
+    },
+    "gameplay-service": {
+      "type": "application",
+      "root": "apps/gameplay-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/gameplay-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/gameplay-service/tsconfig.app.json"
+      }
+    },
+    "websocket-service": {
+      "type": "application",
+      "root": "apps/websocket-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/websocket-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/websocket-service/tsconfig.app.json"
+      }
+    },
     "building-service": {
       "type": "application",
       "root": "apps/building-service",

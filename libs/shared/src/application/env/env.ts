@@ -59,6 +59,10 @@ export const commonSchema = z.object({
   GAMES_APP_HTTP_PREFIX: z.string().default('api/v2'),
   TEST_GAME_PROVIDER_HTTP_PREFIX: z.string().default('api/v2'),
   BONUS_APP_HTTP_PREFIX: z.string().default('api/v2'),
+  MATCHMAKING_APP_HTTP_PREFIX: z.string().default('api/v2'),
+  LOCAL_ORCHESTRATOR_APP_HTTP_PREFIX: z.string().default('api/v2'),
+  GAMEPLAY_APP_HTTP_PREFIX: z.string().default('api/v2'),
+  WEBSOCKET_APP_HTTP_PREFIX: z.string().default('api/v2'),
 
   USERS_APP_HOST: z.string().default('localhost'),
   USERS_APP_PORT: z.string().default('3000'),
@@ -106,6 +110,10 @@ export const commonSchema = z.object({
   BONUS_APP_HOST: z.string().default('localhost'),
   BONUS_APP_PORT: z.string().default('3006'),
   BONUS_HEALTH_PORT: z.string().default('5006'),
+  MATCHMAKING_APP_PORT: z.string().default('3010'),
+  LOCAL_ORCHESTRATOR_APP_PORT: z.string().default('3011'),
+  GAMEPLAY_APP_PORT: z.string().default('3012'),
+  WEBSOCKET_APP_PORT: z.string().default('3013'),
 
   SWAGGER_AGGREGATOR_APP_HOST: z.string().default('localhost'),
   SWAGGER_AGGREGATOR_APP_PORT: z.string().default('3100'),
