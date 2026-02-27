@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { AppModule } from '@app/auth-service/app.module';
-import { BalancePublisher, BalanceSubjects } from '@lib/lib-building';
+import { BuildingPublisher, BuildingSubjects } from '@lib/lib-building';
 import type {
   CreateUserBalanceRequest,
   CreateUserBalanceResponse,
@@ -12,7 +12,7 @@ import { stringToBigNumber } from '@lib/shared';
 
 describe('BalanceNatsController (Integration)', () => {
   let app: INestApplication;
-  let balancePublisher: BalancePublisher;
+  let balancePublisher: BuildingPublisher;
   let prisma: PrismaService;
   let moduleRef: TestingModule;
 
@@ -25,7 +25,7 @@ describe('BalanceNatsController (Integration)', () => {
     app = moduleRef.createNestApplication();
     await app.init();
 
-    balancePublisher = app.get(BalancePublisher);
+    balancePublisher = app.get(BuildingPublisher);
     prisma = app.get(PrismaService);
     await prisma.$connect();
   });
@@ -151,9 +151,9 @@ describe('BalanceNatsController (Integration)', () => {
       ).rejects.toThrow();
     });
 
-    it('should use correct NATS subject from BalanceSubjects', () => {
+    it('should use correct NATS subject from BuildingSubjects', () => {
       // Verify the subject constant is exported correctly
-      expect(BalanceSubjects.CREATE_USER_BALANCE).toBe(
+      expect(BuildingSubjects.CREATE_USER_BALANCE).toBe(
         'balance.create-user-balance.v1',
       );
     });

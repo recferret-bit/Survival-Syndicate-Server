@@ -4,14 +4,14 @@ import {
   NatsClientModule,
   DEFAULT_NATS_CLIENT_STREAM_NAME,
 } from '@lib/shared/nats';
-import { UsersPublisher } from './publishers/users.publisher';
+import { PlayerPublisher } from './publishers/users.publisher';
 
 @Module({
   imports: [
     EnvModule.forRoot(),
     NatsClientModule.forRoot({ streamName: DEFAULT_NATS_CLIENT_STREAM_NAME }),
   ],
-  providers: [UsersPublisher],
-  exports: [UsersPublisher],
+  providers: [PlayerPublisher],
+  exports: [PlayerPublisher],
 })
-export class LibUsersModule {}
+export class LibPlayerModule {}

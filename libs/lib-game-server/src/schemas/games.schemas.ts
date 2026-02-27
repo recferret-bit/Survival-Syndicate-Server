@@ -159,7 +159,7 @@ export type ResetWagerCycleResponse = z.infer<
 /**
  * Subject definitions for NATS
  */
-export const GamesSubjects = {
+export const GameServerSubjects = {
   GAME_EVENT: 'games.event.new',
   SESSION_EVENT: 'games.session.new',
   DELETE_CALLBACK_OLD: 'games.callback.delete.old',
@@ -171,4 +171,5 @@ export const GamesSubjects = {
   RESET_WAGER_CYCLE: 'games.wager-cycle.reset.v1',
 } as const;
 
-export type GamesSubject = (typeof GamesSubjects)[keyof typeof GamesSubjects];
+export type GameServerSubject =
+  (typeof GameServerSubjects)[keyof typeof GameServerSubjects];

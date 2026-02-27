@@ -1,7 +1,7 @@
 import { Injectable, Logger, Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { GamesSubjects } from '@lib/lib-game-server';
+import { GameServerSubjects } from '@lib/lib-game-server';
 import { firstValueFrom } from 'rxjs';
 import { EnvService } from '@lib/shared';
 
@@ -43,7 +43,7 @@ export class ExpireInactiveSessionsService {
       }
 
       const result = await firstValueFrom(
-        this.natsClient.send(GamesSubjects.EXPIRE_INACTIVE_SESSIONS, {
+        this.natsClient.send(GameServerSubjects.EXPIRE_INACTIVE_SESSIONS, {
           inactivityTimeoutMs,
         }),
       );

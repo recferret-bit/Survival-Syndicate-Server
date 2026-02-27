@@ -1,6 +1,6 @@
 # TASK-1.3: Общая libs библиотека
 
-## Статус: `PREPARING`
+## Статус: `IN REVIEW`
 
 **Epic:** Epic 1: Базовая инфраструктура
 **Ветка:** `phase_1_3/feature/infra/shared-libs`

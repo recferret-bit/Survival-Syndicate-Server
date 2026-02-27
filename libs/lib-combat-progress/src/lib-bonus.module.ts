@@ -4,14 +4,14 @@ import {
   NatsClientModule,
   DEFAULT_NATS_CLIENT_STREAM_NAME,
 } from '@lib/shared/nats';
-import { BonusPublisher } from './publishers/bonus.publisher';
+import { CombatProgressPublisher } from './publishers/bonus.publisher';
 
 @Module({
   imports: [
     EnvModule.forRoot(),
     NatsClientModule.forRoot({ streamName: DEFAULT_NATS_CLIENT_STREAM_NAME }),
   ],
-  providers: [BonusPublisher],
-  exports: [BonusPublisher],
+  providers: [CombatProgressPublisher],
+  exports: [CombatProgressPublisher],
 })
-export class LibBonusModule {}
+export class LibCombatProgressModule {}

@@ -1,12 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { UsersPublisher } from '@lib/lib-player';
+import { PlayerPublisher } from '@lib/lib-player';
 
 @Injectable()
 export class SyncActiveUsersCacheService {
   private readonly logger = new Logger(SyncActiveUsersCacheService.name);
 
-  constructor(private readonly usersPublisher: UsersPublisher) {}
+  constructor(private readonly usersPublisher: PlayerPublisher) {}
 
   @Cron(CronExpression.EVERY_HOUR)
   async syncActiveUsersCache(): Promise<void> {

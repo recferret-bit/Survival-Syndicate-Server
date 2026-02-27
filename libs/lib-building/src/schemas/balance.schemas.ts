@@ -85,11 +85,11 @@ export type BalanceDto = z.infer<typeof BalanceDtoSchema>;
 /**
  * Subject definitions for NATS
  */
-export const BalanceSubjects = {
+export const BuildingSubjects = {
   CREATE_USER_BALANCE: 'balance.create-user-balance.v1',
   ADD_BALANCE_ENTRY: 'balance.add-balance-entry.v1',
   GET_USER_BALANCE: 'balance.get-user-balance.v1',
 } as const;
 
-export type BalanceSubject =
-  (typeof BalanceSubjects)[keyof typeof BalanceSubjects];
+export type BuildingSubject =
+  (typeof BuildingSubjects)[keyof typeof BuildingSubjects];

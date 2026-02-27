@@ -1,7 +1,7 @@
 import { Injectable, Logger, Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { PaymentsSubjects } from '@lib/lib-analytics';
+import { AnalyticsSubjects } from '@lib/lib-analytics';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class PollingTransactionsService {
     try {
       this.logger.log('Updating polling transactions...');
       const result = await firstValueFrom(
-        this.natsClient.send(PaymentsSubjects.UPDATE_POLLING_TRANSACTIONS, {}),
+        this.natsClient.send(AnalyticsSubjects.UPDATE_POLLING_TRANSACTIONS, {}),
       );
       this.logger.log(
         `Polling transactions: checked=${result.checked}, updated=${result.updated}, errors=${result.errors}`,

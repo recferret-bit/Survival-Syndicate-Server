@@ -1,7 +1,7 @@
 import { Injectable, Logger, Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { PaymentsSubjects } from '@lib/lib-analytics';
+import { AnalyticsSubjects } from '@lib/lib-analytics';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
@@ -19,7 +19,7 @@ export class ProcessApprovedTransactionsService {
       this.logger.log('Processing approved transactions...');
       const result = await firstValueFrom(
         this.natsClient.send(
-          PaymentsSubjects.PROCESS_APPROVED_TRANSACTIONS,
+          AnalyticsSubjects.PROCESS_APPROVED_TRANSACTIONS,
           {},
         ),
       );

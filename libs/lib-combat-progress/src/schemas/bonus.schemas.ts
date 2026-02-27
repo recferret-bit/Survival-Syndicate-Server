@@ -227,7 +227,7 @@ export type DeleteSelectedBonusRequest = z.infer<
 /**
  * Subject definitions for NATS
  */
-export const BonusSubjects = {
+export const CombatProgressSubjects = {
   CREATE_DEPOSIT_BONUS: 'bonus.deposit.create',
   DECREMENT_WAGER: 'bonus.wager.decrement',
   DEACTIVATE_BONUS_DEPOSIT: 'bonus.deposit.deactivate',
@@ -241,4 +241,5 @@ export const BonusSubjects = {
   DELETE_SELECTED_BONUS: 'bonus.selectedBonus.delete',
 } as const;
 
-export type BonusSubject = (typeof BonusSubjects)[keyof typeof BonusSubjects];
+export type CombatProgressSubject =
+  (typeof CombatProgressSubjects)[keyof typeof CombatProgressSubjects];

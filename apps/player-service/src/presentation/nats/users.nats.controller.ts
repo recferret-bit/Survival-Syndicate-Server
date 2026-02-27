@@ -4,7 +4,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import { NonDurable } from '@lib/shared/nats';
 import { ZodError } from 'zod';
 import {
-  UsersSubjects,
+  PlayerSubjects,
   GetUserByIdRequestSchema,
   GetUserByIdResponseSchema,
   ValidateAdminApiKeyRequestSchema,
@@ -32,7 +32,7 @@ export class UsersNatsController {
     private readonly queryBus: QueryBus,
   ) {}
 
-  @MessagePattern(UsersSubjects.UPDATE_BANNED_USERS_CACHE)
+  @MessagePattern(PlayerSubjects.UPDATE_BANNED_USERS_CACHE)
   @NonDurable()
   async handleUpdateBannedUsersCache(): Promise<UpdateBannedUsersCacheResponseDto> {
     try {
@@ -50,7 +50,7 @@ export class UsersNatsController {
     }
   }
 
-  @MessagePattern(UsersSubjects.SYNC_ACTIVE_USERS_CACHE)
+  @MessagePattern(PlayerSubjects.SYNC_ACTIVE_USERS_CACHE)
   @NonDurable()
   async handleSyncActiveUsersCache(): Promise<SyncActiveUsersCacheResponseDto> {
     try {
@@ -68,7 +68,7 @@ export class UsersNatsController {
     }
   }
 
-  @MessagePattern(UsersSubjects.GET_USER_BY_ID)
+  @MessagePattern(PlayerSubjects.GET_USER_BY_ID)
   @NonDurable()
   async handleGetUserById(
     @Payload() data: GetUserByIdRequest,
@@ -104,7 +104,7 @@ export class UsersNatsController {
     }
   }
 
-  @MessagePattern(UsersSubjects.VALIDATE_ADMIN_API_KEY)
+  @MessagePattern(PlayerSubjects.VALIDATE_ADMIN_API_KEY)
   @NonDurable()
   async handleValidateAdminApiKey(
     @Payload() data: ValidateAdminApiKeyRequest,

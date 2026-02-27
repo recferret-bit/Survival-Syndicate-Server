@@ -85,7 +85,7 @@ export type UserRegisteredEvent = z.infer<typeof UserRegisteredEventSchema>;
 /**
  * Subject definitions for NATS
  */
-export const UsersSubjects = {
+export const PlayerSubjects = {
   UPDATE_BANNED_USERS_CACHE: 'users.update-banned-users-cache.v1',
   SYNC_ACTIVE_USERS_CACHE: 'users.sync-active-users-cache.v1',
   GET_USER_BY_ID: 'users.get-user-by-id.v1',
@@ -93,4 +93,5 @@ export const UsersSubjects = {
   USER_REGISTERED: 'users.user-registered.v1',
 } as const;
 
-export type UsersSubject = (typeof UsersSubjects)[keyof typeof UsersSubjects];
+export type PlayerSubject =
+  (typeof PlayerSubjects)[keyof typeof PlayerSubjects];
