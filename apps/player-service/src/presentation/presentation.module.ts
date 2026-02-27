@@ -9,6 +9,7 @@ import {
 import { ApplicationModule } from '@app/player-service/application/application.module';
 import { InfrastructureModule } from '@app/player-service/infrastructure/infrastructure.module';
 import { UsersHttpController } from './http/users.http.controller';
+import { PlayersHttpController } from './http/players.http.controller';
 import { UsersNatsController } from './nats/users.nats.controller';
 
 @Module({
@@ -20,6 +21,10 @@ import { UsersNatsController } from './nats/users.nats.controller';
     AuthJwtModule,
     NatsClientModule.forRoot({ streamName: DEFAULT_NATS_CLIENT_STREAM_NAME }),
   ],
-  controllers: [UsersHttpController, UsersNatsController],
+  controllers: [
+    UsersHttpController,
+    PlayersHttpController,
+    UsersNatsController,
+  ],
 })
 export class PresentationModule {}

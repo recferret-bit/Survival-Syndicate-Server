@@ -1,20 +1,26 @@
 import { Controller, Logger } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import { NonDurable } from '@lib/shared/nats';
 import { ZodError } from 'zod';
 import {
   PlayerSubjects,
   GetUserByIdRequestSchema,
   GetUserByIdResponseSchema,
+  GetPlayerRequestSchema,
+  GetPlayerResponseSchema,
   ValidateAdminApiKeyRequestSchema,
   ValidateAdminApiKeyResponseSchema,
+  UserRegisteredEventSchema,
 } from '@lib/lib-player';
 import type {
   GetUserByIdRequest,
   GetUserByIdResponse,
+  GetPlayerRequest,
+  GetPlayerResponse,
   ValidateAdminApiKeyRequest,
   ValidateAdminApiKeyResponse,
+  UserRegisteredEvent,
 } from '@lib/lib-player';
 import { UpdateBannedUsersCacheCommand } from '@app/player-service/application/use-cases/update-banned-users-cache/update-banned-users-cache.command';
 import { UpdateBannedUsersCacheResponseDto } from '@app/player-service/application/use-cases/update-banned-users-cache/update-banned-users-cache.dto';
@@ -22,6 +28,8 @@ import { SyncActiveUsersCacheCommand } from '@app/player-service/application/use
 import { SyncActiveUsersCacheResponseDto } from '@app/player-service/application/use-cases/sync-active-users-cache/sync-active-users-cache.dto';
 import { GetUserByIdQuery } from '@app/player-service/application/use-cases/get-user-by-id/get-user-by-id.query';
 import { ValidateAdminApiKeyQuery } from '@app/player-service/application/use-cases/validate-admin-api-key/validate-admin-api-key.query';
+import { CreateProfileCommand } from '@app/player-service/application/use-cases/create-profile/create-profile.command';
+import { GetPlayerQuery } from '@app/player-service/application/use-cases/get-player/get-player.query';
 
 @Controller()
 export class UsersNatsController {
@@ -134,6 +142,55 @@ export class UsersNatsController {
         );
       }
       // Re-throw the error so NestJS can handle it properly
+      throw error;
+    }
+  }
+
+  @MessagePattern(PlayerSubjects.GET_PLAYER)
+  @NonDurable()
+  async handleGetPlayer(
+    @Payload() data: GetPlayerRequest,
+  ): Promise<GetPlayerResponse> {
+    try {
+      const validatedRequest = GetPlayerRequestSchema.parse(data);
+      const result = await this.queryBus.execute(
+        new GetPlayerQuery(validatedRequest.playerId),
+      );
+      return GetPlayerResponseSchema.parse(result);
+    } catch (error) {
+      if (error instanceof ZodError) {
+        this.logger.error(
+          `Error handling get player request: ${JSON.stringify(error.issues)}`,
+        );
+      } else {
+        this.logger.error(
+          `Error handling get player request: ${error.message}`,
+          error.stack,
+        );
+      }
+      throw error;
+    }
+  }
+
+  @EventPattern(PlayerSubjects.USER_REGISTERED)
+  @NonDurable()
+  async handleUserRegistered(
+    @Payload() data: UserRegisteredEvent,
+  ): Promise<void> {
+    try {
+      const event = UserRegisteredEventSchema.parse(data);
+      await this.commandBus.execute(new CreateProfileCommand(event));
+    } catch (error) {
+      if (error instanceof ZodError) {
+        this.logger.error(
+          `Error handling user registered event: ${JSON.stringify(error.issues)}`,
+        );
+      } else {
+        this.logger.error(
+          `Error handling user registered event: ${error.message}`,
+          error.stack,
+        );
+      }
       throw error;
     }
   }

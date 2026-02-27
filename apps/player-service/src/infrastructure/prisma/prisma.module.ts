@@ -3,9 +3,11 @@ import { PrismaService } from './prisma.service';
 import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
 import { TrackingPortRepository } from '@app/player-service/application/ports/tracking.port.repository';
 import { AdminPortRepository } from '@app/player-service/application/ports/admin.port.repository';
+import { PlayerPortRepository } from '@app/player-service/application/ports/player.port.repository';
 import { UserPrismaRepository } from './repositories/user.prisma.repository';
 import { TrackingPrismaRepository } from './repositories/tracking.prisma.repository';
 import { AdminPrismaRepository } from './repositories/admin.prisma.repository';
+import { PlayerPrismaRepository } from './repositories/player.prisma.repository';
 import { EnvModule } from '@lib/shared';
 
 @Module({
@@ -24,12 +26,17 @@ import { EnvModule } from '@lib/shared';
       provide: AdminPortRepository,
       useClass: AdminPrismaRepository,
     },
+    {
+      provide: PlayerPortRepository,
+      useClass: PlayerPrismaRepository,
+    },
   ],
   exports: [
     PrismaService,
     UserPortRepository,
     TrackingPortRepository,
     AdminPortRepository,
+    PlayerPortRepository,
   ],
 })
 export class PrismaModule implements OnApplicationShutdown {
