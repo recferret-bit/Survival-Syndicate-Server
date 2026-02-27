@@ -10,10 +10,10 @@ import { z } from 'zod';
  *
  * @example
  * ```typescript
- * export class BalancePublisher extends BasePublisher {
+ * export class BuildingPublisher extends BasePublisher {
  *   async createUserBalance(dto: CreateUserBalanceRequest): Promise<CreateUserBalanceResponse> {
  *     return this.sendDurable(
- *       BalanceSubjects.CREATE_USER_BALANCE,
+ *       BuildingSubjects.CREATE_USER_BALANCE,
  *       dto,
  *       CreateUserBalanceRequestSchema,
  *       CreateUserBalanceResponseSchema,
@@ -22,7 +22,7 @@ import { z } from 'zod';
  *
  *   async getBalance(dto: GetBalanceRequest): Promise<GetBalanceResponse> {
  *     return this.sendNonDurable(
- *       BalanceSubjects.GET_BALANCE,
+ *       BuildingSubjects.GET_BALANCE,
  *       dto,
  *       GetBalanceRequestSchema,
  *       GetBalanceResponseSchema,

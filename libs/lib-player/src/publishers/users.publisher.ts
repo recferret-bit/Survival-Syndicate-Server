@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import {
-  UsersSubjects,
+  PlayerSubjects,
   UpdateBannedUsersCacheRequestSchema,
   UpdateBannedUsersCacheResponseSchema,
   UpdateBannedUsersCacheRequest,
@@ -24,12 +24,12 @@ import {
 import { BasePublisher } from '@lib/shared/nats';
 
 @Injectable()
-export class UsersPublisher extends BasePublisher {
+export class PlayerPublisher extends BasePublisher {
   constructor(
     @Inject('NATS_CLIENT') durableClient: ClientProxy,
     @Inject('NATS_CLIENT_NON_DURABLE') nonDurableClient: ClientProxy,
   ) {
-    super(durableClient, nonDurableClient, UsersPublisher.name);
+    super(durableClient, nonDurableClient, PlayerPublisher.name);
   }
 
   /**
@@ -39,7 +39,7 @@ export class UsersPublisher extends BasePublisher {
     dto: UpdateBannedUsersCacheRequest,
   ): Promise<UpdateBannedUsersCacheResponse> {
     return this.sendNonDurable(
-      UsersSubjects.UPDATE_BANNED_USERS_CACHE,
+      PlayerSubjects.UPDATE_BANNED_USERS_CACHE,
       dto,
       UpdateBannedUsersCacheRequestSchema,
       UpdateBannedUsersCacheResponseSchema,
@@ -53,7 +53,7 @@ export class UsersPublisher extends BasePublisher {
     dto: SyncActiveUsersCacheRequest,
   ): Promise<SyncActiveUsersCacheResponse> {
     return this.sendNonDurable(
-      UsersSubjects.SYNC_ACTIVE_USERS_CACHE,
+      PlayerSubjects.SYNC_ACTIVE_USERS_CACHE,
       dto,
       SyncActiveUsersCacheRequestSchema,
       SyncActiveUsersCacheResponseSchema,
@@ -65,7 +65,7 @@ export class UsersPublisher extends BasePublisher {
    */
   async getUserById(dto: GetUserByIdRequest): Promise<GetUserByIdResponse> {
     return this.sendNonDurable(
-      UsersSubjects.GET_USER_BY_ID,
+      PlayerSubjects.GET_USER_BY_ID,
       dto,
       GetUserByIdRequestSchema,
       GetUserByIdResponseSchema,
@@ -79,7 +79,7 @@ export class UsersPublisher extends BasePublisher {
     dto: ValidateAdminApiKeyRequest,
   ): Promise<ValidateAdminApiKeyResponse> {
     return this.sendNonDurable(
-      UsersSubjects.VALIDATE_ADMIN_API_KEY,
+      PlayerSubjects.VALIDATE_ADMIN_API_KEY,
       dto,
       ValidateAdminApiKeyRequestSchema,
       ValidateAdminApiKeyResponseSchema,
@@ -92,7 +92,7 @@ export class UsersPublisher extends BasePublisher {
    */
   async publishUserRegistered(dto: UserRegisteredEvent): Promise<void> {
     await this.emitDurable(
-      UsersSubjects.USER_REGISTERED,
+      PlayerSubjects.USER_REGISTERED,
       dto,
       UserRegisteredEventSchema,
     );

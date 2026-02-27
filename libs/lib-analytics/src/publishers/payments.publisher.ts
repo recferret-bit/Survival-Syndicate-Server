@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import {
-  PaymentsSubjects,
+  AnalyticsSubjects,
   DepositCompletedRequestSchema,
   DepositCompletedResponseSchema,
   DepositCompletedRequest,
@@ -10,12 +10,12 @@ import {
 import { BasePublisher } from '@lib/shared/nats';
 
 @Injectable()
-export class PaymentsPublisher extends BasePublisher {
+export class AnalyticsPublisher extends BasePublisher {
   constructor(
     @Inject('NATS_CLIENT') durableClient: ClientProxy,
     @Inject('NATS_CLIENT_NON_DURABLE') nonDurableClient: ClientProxy,
   ) {
-    super(durableClient, nonDurableClient, PaymentsPublisher.name);
+    super(durableClient, nonDurableClient, AnalyticsPublisher.name);
   }
 
   /**
@@ -25,7 +25,7 @@ export class PaymentsPublisher extends BasePublisher {
     dto: DepositCompletedRequest,
   ): Promise<DepositCompletedResponse> {
     const response = await this.sendNonDurable(
-      PaymentsSubjects.DEPOSIT_COMPLETED,
+      AnalyticsSubjects.DEPOSIT_COMPLETED,
       dto,
       DepositCompletedRequestSchema,
       DepositCompletedResponseSchema,

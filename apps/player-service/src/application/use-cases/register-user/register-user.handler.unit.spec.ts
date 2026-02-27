@@ -5,8 +5,8 @@ import { RegisterUserCommand } from './register-user.command';
 import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
 import { AuthJwtService } from '@lib/shared/auth';
 import { EnvService } from '@lib/shared/application';
-import { BalancePublisher } from '@lib/lib-building';
-import { UsersPublisher } from '@lib/lib-player';
+import { BuildingPublisher } from '@lib/lib-building';
+import { PlayerPublisher } from '@lib/lib-player';
 import { PrismaService } from '@app/player-service/infrastructure/prisma/prisma.service';
 import { UserFixtures } from '@app/player-service/__fixtures__/user.fixtures';
 import { bigNumberToBigInt } from '@lib/shared/utils/amount.utils';
@@ -15,8 +15,8 @@ import { BearerTokenHashCacheService } from '@lib/shared/redis';
 describe('RegisterUserHandler', () => {
   let handler: RegisterUserHandler;
   let userRepository: jest.Mocked<UserPortRepository>;
-  let balancePublisher: jest.Mocked<BalancePublisher>;
-  let usersPublisher: jest.Mocked<UsersPublisher>;
+  let balancePublisher: jest.Mocked<BuildingPublisher>;
+  let usersPublisher: jest.Mocked<PlayerPublisher>;
   let authJwtService: jest.Mocked<AuthJwtService>;
   let envService: jest.Mocked<EnvService>;
   let prismaService: jest.Mocked<PrismaService>;
@@ -68,11 +68,11 @@ describe('RegisterUserHandler', () => {
           useValue: userRepository,
         },
         {
-          provide: BalancePublisher,
+          provide: BuildingPublisher,
           useValue: balancePublisher,
         },
         {
-          provide: UsersPublisher,
+          provide: PlayerPublisher,
           useValue: usersPublisher,
         },
         {

@@ -5,14 +5,14 @@ import {
   Logger,
   UnauthorizedException,
 } from '@nestjs/common';
-import { UsersPublisher } from '@lib/lib-player';
+import { PlayerPublisher } from '@lib/lib-player';
 import { ADMIN_API_KEY_NAME } from '@lib/shared/admin';
 
 @Injectable()
 export class AdminApiKeyGuard implements CanActivate {
   private readonly logger = new Logger(AdminApiKeyGuard.name);
 
-  constructor(private readonly usersPublisher: UsersPublisher) {}
+  constructor(private readonly usersPublisher: PlayerPublisher) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();

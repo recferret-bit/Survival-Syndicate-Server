@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AuthJwtModule } from '@lib/shared';
-import { LibBalanceModule } from '@lib/lib-building';
-import { LibUsersModule } from '@lib/lib-player';
+import { LibBuildingModule } from '@lib/lib-building';
+import { LibPlayerModule } from '@lib/lib-player';
 import { InfrastructureModule } from '@app/player-service/infrastructure/infrastructure.module';
 import { RegisterUserHandler } from '@app/player-service/application/use-cases/register-user/register-user.handler';
 import { LoginUserHandler } from '@app/player-service/application/use-cases/login-user/login-user.handler';
@@ -19,8 +19,8 @@ import { ActiveUsersCacheStartupService } from '@app/player-service/infrastructu
   imports: [
     AuthJwtModule,
     InfrastructureModule,
-    LibBalanceModule,
-    LibUsersModule,
+    LibBuildingModule,
+    LibPlayerModule,
   ],
   providers: [
     RegisterUserHandler,

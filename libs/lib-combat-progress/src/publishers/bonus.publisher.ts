@@ -4,19 +4,19 @@ import * as Schemas from '../schemas/bonus.schemas';
 import { BasePublisher } from '@lib/shared/nats';
 
 @Injectable()
-export class BonusPublisher extends BasePublisher {
+export class CombatProgressPublisher extends BasePublisher {
   constructor(
     @Inject('NATS_CLIENT') durableClient: ClientProxy,
     @Inject('NATS_CLIENT_NON_DURABLE') nonDurableClient: ClientProxy,
   ) {
-    super(durableClient, nonDurableClient, BonusPublisher.name);
+    super(durableClient, nonDurableClient, CombatProgressPublisher.name);
   }
 
   async createDepositBonus(
     dto: Schemas.CreateDepositBonusRequest,
   ): Promise<Schemas.CreateDepositBonusResponse> {
     return this.sendNonDurable(
-      Schemas.BonusSubjects.CREATE_DEPOSIT_BONUS,
+      Schemas.CombatProgressSubjects.CREATE_DEPOSIT_BONUS,
       dto,
       Schemas.CreateDepositBonusRequestSchema,
       Schemas.CreateDepositBonusResponseSchema,
@@ -27,7 +27,7 @@ export class BonusPublisher extends BasePublisher {
     dto: Schemas.DecrementWagerRequest,
   ): Promise<Schemas.EmptyResponse> {
     return this.sendNonDurable(
-      Schemas.BonusSubjects.DECREMENT_WAGER,
+      Schemas.CombatProgressSubjects.DECREMENT_WAGER,
       dto,
       Schemas.DecrementWagerRequestSchema,
       Schemas.EmptyResponseSchema,
@@ -38,7 +38,7 @@ export class BonusPublisher extends BasePublisher {
     dto: Schemas.UserIdRequest,
   ): Promise<Schemas.EmptyResponse> {
     return this.sendNonDurable(
-      Schemas.BonusSubjects.DEACTIVATE_BONUS_DEPOSIT,
+      Schemas.CombatProgressSubjects.DEACTIVATE_BONUS_DEPOSIT,
       dto,
       Schemas.UserIdRequestSchema,
       Schemas.EmptyResponseSchema,
@@ -49,7 +49,7 @@ export class BonusPublisher extends BasePublisher {
     dto: Schemas.BonusFreespinBetRequest,
   ): Promise<Schemas.EmptyResponse> {
     return this.sendNonDurable(
-      Schemas.BonusSubjects.BONUS_FREESPIN_BET,
+      Schemas.CombatProgressSubjects.BONUS_FREESPIN_BET,
       dto,
       Schemas.BonusFreespinBetRequestSchema,
       Schemas.EmptyResponseSchema,
@@ -60,7 +60,7 @@ export class BonusPublisher extends BasePublisher {
     dto: Schemas.BonusFreespinWinRequest,
   ): Promise<Schemas.EmptyResponse> {
     return this.sendNonDurable(
-      Schemas.BonusSubjects.BONUS_FREESPIN_WIN,
+      Schemas.CombatProgressSubjects.BONUS_FREESPIN_WIN,
       dto,
       Schemas.BonusFreespinWinRequestSchema,
       Schemas.EmptyResponseSchema,
@@ -71,7 +71,7 @@ export class BonusPublisher extends BasePublisher {
     dto: Schemas.DeactivatedBonusFreespinRequest,
   ): Promise<Schemas.EmptyResponse> {
     return this.sendNonDurable(
-      Schemas.BonusSubjects.DEACTIVATE_BONUS_FREESPIN,
+      Schemas.CombatProgressSubjects.DEACTIVATE_BONUS_FREESPIN,
       dto,
       Schemas.DeactivatedBonusFreespinRequestSchema,
       Schemas.EmptyResponseSchema,
@@ -82,7 +82,7 @@ export class BonusPublisher extends BasePublisher {
     dto: Schemas.UserIdRequest,
   ): Promise<Schemas.CheckActiveBonusesByUserIdResponse> {
     return this.sendNonDurable(
-      Schemas.BonusSubjects.CHECK_ACTIVE_BONUSES,
+      Schemas.CombatProgressSubjects.CHECK_ACTIVE_BONUSES,
       dto,
       Schemas.UserIdRequestSchema,
       Schemas.CheckActiveBonusesByUserIdResponseSchema,
@@ -93,7 +93,7 @@ export class BonusPublisher extends BasePublisher {
     dto: Schemas.SelectBonusRequest,
   ): Promise<Schemas.EmptyResponse> {
     return this.sendNonDurable(
-      Schemas.BonusSubjects.SELECT_BONUS,
+      Schemas.CombatProgressSubjects.SELECT_BONUS,
       dto,
       Schemas.SelectBonusRequestSchema,
       Schemas.EmptyResponseSchema,
@@ -104,7 +104,7 @@ export class BonusPublisher extends BasePublisher {
     dto: Schemas.ReceiveBonusRequest,
   ): Promise<Schemas.EmptyResponse> {
     return this.sendNonDurable(
-      Schemas.BonusSubjects.RECEIVE_BONUS,
+      Schemas.CombatProgressSubjects.RECEIVE_BONUS,
       dto,
       Schemas.ReceiveBonusRequestSchema,
       Schemas.EmptyResponseSchema,
@@ -115,7 +115,7 @@ export class BonusPublisher extends BasePublisher {
     dto: Schemas.GetBonusesRequest,
   ): Promise<Schemas.GetBonusesResponse> {
     return this.sendNonDurable(
-      Schemas.BonusSubjects.GET_BONUSES,
+      Schemas.CombatProgressSubjects.GET_BONUSES,
       dto,
       Schemas.GetBonusesRequestSchema,
       Schemas.GetBonusesResponseSchema,
@@ -126,7 +126,7 @@ export class BonusPublisher extends BasePublisher {
     dto: Schemas.DeleteSelectedBonusRequest,
   ): Promise<Schemas.EmptyResponse> {
     return this.sendNonDurable(
-      Schemas.BonusSubjects.DELETE_SELECTED_BONUS,
+      Schemas.CombatProgressSubjects.DELETE_SELECTED_BONUS,
       dto,
       Schemas.DeleteSelectedBonusRequestSchema,
       Schemas.EmptyResponseSchema,

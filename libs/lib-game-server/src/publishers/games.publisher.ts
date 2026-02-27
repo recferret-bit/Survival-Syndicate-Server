@@ -4,19 +4,19 @@ import * as Schemas from '../schemas/games.schemas';
 import { BasePublisher } from '@lib/shared/nats';
 
 @Injectable()
-export class GamesPublisher extends BasePublisher {
+export class GameServerPublisher extends BasePublisher {
   constructor(
     @Inject('NATS_CLIENT') durableClient: ClientProxy,
     @Inject('NATS_CLIENT_NON_DURABLE') nonDurableClient: ClientProxy,
   ) {
-    super(durableClient, nonDurableClient, GamesPublisher.name);
+    super(durableClient, nonDurableClient, GameServerPublisher.name);
   }
 
   async publishGameEvent(
     dto: Schemas.GameEventRequest,
   ): Promise<Schemas.GameEventResponse> {
     return this.sendNonDurable(
-      Schemas.GamesSubjects.GAME_EVENT,
+      Schemas.GameServerSubjects.GAME_EVENT,
       dto,
       Schemas.GameEventRequestSchema,
       Schemas.GameEventResponseSchema,
@@ -27,7 +27,7 @@ export class GamesPublisher extends BasePublisher {
     dto: Schemas.SessionEventRequest,
   ): Promise<Schemas.SessionEventResponse> {
     return this.sendNonDurable(
-      Schemas.GamesSubjects.SESSION_EVENT,
+      Schemas.GameServerSubjects.SESSION_EVENT,
       dto,
       Schemas.SessionEventRequestSchema,
       Schemas.SessionEventResponseSchema,
@@ -38,7 +38,7 @@ export class GamesPublisher extends BasePublisher {
     dto: Schemas.DeleteCallbackOldRequest,
   ): Promise<Schemas.DeleteCallbackOldResponse> {
     return this.sendNonDurable(
-      Schemas.GamesSubjects.DELETE_CALLBACK_OLD,
+      Schemas.GameServerSubjects.DELETE_CALLBACK_OLD,
       dto,
       Schemas.DeleteCallbackOldRequestSchema,
       Schemas.DeleteCallbackOldResponseSchema,
@@ -49,7 +49,7 @@ export class GamesPublisher extends BasePublisher {
     dto: Schemas.AddCallbackSlotegratorRequest,
   ): Promise<Schemas.AddCallbackSlotegratorResponse> {
     return this.sendNonDurable(
-      Schemas.GamesSubjects.ADD_CALLBACK_SLOTEGRATOR,
+      Schemas.GameServerSubjects.ADD_CALLBACK_SLOTEGRATOR,
       dto,
       Schemas.AddCallbackSlotegratorRequestSchema,
       Schemas.AddCallbackSlotegratorResponseSchema,
@@ -60,7 +60,7 @@ export class GamesPublisher extends BasePublisher {
     dto: Schemas.AddCallbackPaymentRequest,
   ): Promise<Schemas.AddCallbackPaymentResponse> {
     return this.sendNonDurable(
-      Schemas.GamesSubjects.ADD_CALLBACK_PAYMENT,
+      Schemas.GameServerSubjects.ADD_CALLBACK_PAYMENT,
       dto,
       Schemas.AddCallbackPaymentRequestSchema,
       Schemas.AddCallbackPaymentResponseSchema,
@@ -74,7 +74,7 @@ export class GamesPublisher extends BasePublisher {
     dto: Schemas.BetPlacedRequest,
   ): Promise<Schemas.BetPlacedResponse> {
     const response = await this.sendNonDurable(
-      Schemas.GamesSubjects.BET_PLACED,
+      Schemas.GameServerSubjects.BET_PLACED,
       dto,
       Schemas.BetPlacedRequestSchema,
       Schemas.BetPlacedResponseSchema,
@@ -109,7 +109,7 @@ export class GamesPublisher extends BasePublisher {
     dto: Schemas.GetUserStatsRequest,
   ): Promise<Schemas.GetUserStatsResponse> {
     const response = await this.sendNonDurable(
-      Schemas.GamesSubjects.GET_USER_STATS,
+      Schemas.GameServerSubjects.GET_USER_STATS,
       dto,
       Schemas.GetUserStatsRequestSchema,
       Schemas.GetUserStatsResponseSchema,
@@ -144,7 +144,7 @@ export class GamesPublisher extends BasePublisher {
     dto: Schemas.ResetWagerCycleRequest,
   ): Promise<Schemas.ResetWagerCycleResponse> {
     const response = await this.sendNonDurable(
-      Schemas.GamesSubjects.RESET_WAGER_CYCLE,
+      Schemas.GameServerSubjects.RESET_WAGER_CYCLE,
       dto,
       Schemas.ResetWagerCycleRequestSchema,
       Schemas.ResetWagerCycleResponseSchema,

@@ -4,7 +4,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import { NonDurable } from '@lib/shared/nats';
 import { ZodError } from 'zod';
 import {
-  BalanceSubjects,
+  BuildingSubjects,
   CreateUserBalanceRequestSchema,
   CreateUserBalanceResponseSchema,
   AddBalanceEntryRequestSchema,
@@ -39,7 +39,7 @@ export class BalanceNatsController {
     private readonly queryBus: QueryBus,
   ) {}
 
-  @MessagePattern(BalanceSubjects.CREATE_USER_BALANCE)
+  @MessagePattern(BuildingSubjects.CREATE_USER_BALANCE)
   @NonDurable()
   async handleCreateUserBalance(
     @Payload() data: CreateUserBalanceRequest,
@@ -82,7 +82,7 @@ export class BalanceNatsController {
     }
   }
 
-  @MessagePattern(BalanceSubjects.ADD_BALANCE_ENTRY)
+  @MessagePattern(BuildingSubjects.ADD_BALANCE_ENTRY)
   @NonDurable()
   async handleAddBalanceEntry(
     @Payload() data: AddBalanceEntryRequest,
@@ -139,7 +139,7 @@ export class BalanceNatsController {
     }
   }
 
-  @MessagePattern(BalanceSubjects.GET_USER_BALANCE)
+  @MessagePattern(BuildingSubjects.GET_USER_BALANCE)
   @NonDurable()
   async handleGetUserBalance(
     @Payload() data: GetUserBalanceRequest,

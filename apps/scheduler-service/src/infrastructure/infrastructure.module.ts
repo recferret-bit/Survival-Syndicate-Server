@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { NatsClientModule } from '@lib/shared';
-import { LibUsersModule } from '@lib/lib-player';
-import { LibGamesModule } from '@lib/lib-game-server';
+import { LibPlayerModule } from '@lib/lib-player';
+import { LibGameServerModule } from '@lib/lib-game-server';
 import { ProcessApprovedTransactionsService } from '@app/scheduler-service/infrastructure/services/process-approved-transactions.service';
 import { PollingTransactionsService } from '@app/scheduler-service/infrastructure/services/polling-transactions.service';
 import { UpdateBannedUsersCacheService } from '@app/scheduler-service/infrastructure/services/update-banned-users-cache.service';
@@ -14,8 +14,8 @@ import { KvadrixPollingService } from '@app/scheduler-service/infrastructure/ser
   imports: [
     ScheduleModule.forRoot(),
     NatsClientModule.forRoot({ streamName: 'payments', requestTimeout: 3000 }),
-    LibUsersModule,
-    LibGamesModule,
+    LibPlayerModule,
+    LibGameServerModule,
   ],
   providers: [
     ProcessApprovedTransactionsService,

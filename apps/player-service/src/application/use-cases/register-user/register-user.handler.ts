@@ -8,8 +8,8 @@ import { Utils, EnvService } from '@lib/shared/application';
 import { AuthJwtService, UserSession } from '@lib/shared/auth';
 import { User } from '@app/player-service/domain/entities/user/user';
 import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
-import { BalancePublisher } from '@lib/lib-building';
-import { UsersPublisher } from '@lib/lib-player';
+import { BuildingPublisher } from '@lib/lib-building';
+import { PlayerPublisher } from '@lib/lib-player';
 import { PrismaService } from '@app/player-service/infrastructure/prisma/prisma.service';
 import { UserPrismaMapper } from '@app/player-service/infrastructure/prisma/mapper/user.prisma.mapper';
 import { TrackingPrismaMapper } from '@app/player-service/infrastructure/prisma/mapper/tracking.prisma.mapper';
@@ -25,8 +25,8 @@ export class RegisterUserHandler
     private readonly userRepository: UserPortRepository,
     private readonly envService: EnvService,
     private readonly authJwtService: AuthJwtService,
-    private readonly balancePublisher: BalancePublisher,
-    private readonly usersPublisher: UsersPublisher,
+    private readonly balancePublisher: BuildingPublisher,
+    private readonly usersPublisher: PlayerPublisher,
     private readonly prisma: PrismaService,
     private readonly bearerTokenHashCacheService: BearerTokenHashCacheService,
   ) {}

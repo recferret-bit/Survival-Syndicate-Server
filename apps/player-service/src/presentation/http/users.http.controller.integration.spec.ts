@@ -4,19 +4,19 @@ import { ZodValidationPipe } from '@anatine/zod-nestjs';
 import request from 'supertest';
 import { AppModule } from '@app/player-service/app.module';
 import { UserFixtures } from '@app/player-service/__fixtures__/user.fixtures';
-import { BalancePublisher } from '@lib/lib-building';
-import { LibBalanceModule } from '@lib/lib-building';
+import { BuildingPublisher } from '@lib/lib-building';
+import { LibBuildingModule } from '@lib/lib-building';
 import { PrismaService } from '@app/player-service/infrastructure/prisma/prisma.service';
 import {
   ZodExceptionFilter,
   HttpExceptionsFilter,
 } from '@lib/shared/application';
 
-// Mock LibBalanceModule for testing
+// Mock LibBuildingModule for testing
 @Module({
   providers: [
     {
-      provide: BalancePublisher,
+      provide: BuildingPublisher,
       useValue: {
         createUserBalance: jest.fn().mockResolvedValue({
           success: true,
@@ -25,7 +25,7 @@ import {
       },
     },
   ],
-  exports: [BalancePublisher],
+  exports: [BuildingPublisher],
 })
 class MockLibBalanceModule {}
 
@@ -65,7 +65,7 @@ const cleanDto = (dto: any): any => {
 
 describe('UsersHttpController (Integration)', () => {
   let app: INestApplication;
-  let balancePublisher: BalancePublisher;
+  let balancePublisher: BuildingPublisher;
   let prisma: PrismaService;
   let moduleRef: TestingModule;
 
@@ -73,11 +73,11 @@ describe('UsersHttpController (Integration)', () => {
     moduleRef = await Test.createTestingModule({
       imports: [AppModule],
     })
-      .overrideModule(LibBalanceModule)
+      .overrideModule(LibBuildingModule)
       .useModule(MockLibBalanceModule)
       .compile();
 
-    balancePublisher = moduleRef.get<BalancePublisher>(BalancePublisher);
+    balancePublisher = moduleRef.get<BuildingPublisher>(BuildingPublisher);
     prisma = moduleRef.get<PrismaService>(PrismaService);
     await prisma.$connect();
 

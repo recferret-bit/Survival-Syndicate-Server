@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { BalanceNatsController } from './balance.nats.controller';
-import { BalanceSubjects } from '@lib/lib-building';
+import { BuildingSubjects } from '@lib/lib-building';
 import type { CreateUserBalanceRequest } from '@lib/lib-building';
 import { CreateUserBalanceCommand } from '@app/auth-service/application/use-cases/create-user-balance/create-user-balance.command';
 import { CurrencyCode } from '@lib/shared/currency';
@@ -95,9 +95,9 @@ describe('BalanceNatsController (Unit)', () => {
       ).rejects.toThrow();
     });
 
-    it('should use correct NATS subject from BalanceSubjects', () => {
+    it('should use correct NATS subject from BuildingSubjects', () => {
       // Verify the subject constant is exported correctly
-      expect(BalanceSubjects.CREATE_USER_BALANCE).toBe(
+      expect(BuildingSubjects.CREATE_USER_BALANCE).toBe(
         'balance.create-user-balance.v1',
       );
     });

@@ -2,13 +2,13 @@ import { ApplicationBootstrapBuilder } from '@lib/shared';
 import { name, version } from '../package.json';
 import { AppModule } from './app.module';
 import { registerNonDurablePattern } from '@lib/shared/nats';
-import { BalanceSubjects } from '@lib/lib-building';
+import { BuildingSubjects } from '@lib/lib-building';
 
 class App {
   async bootstrap() {
     // Register non-durable patterns before creating app
-    registerNonDurablePattern(BalanceSubjects.CREATE_USER_BALANCE);
-    registerNonDurablePattern(BalanceSubjects.ADD_BALANCE_ENTRY);
+    registerNonDurablePattern(BuildingSubjects.CREATE_USER_BALANCE);
+    registerNonDurablePattern(BuildingSubjects.ADD_BALANCE_ENTRY);
 
     const appBootstrap = await new ApplicationBootstrapBuilder(
       name,

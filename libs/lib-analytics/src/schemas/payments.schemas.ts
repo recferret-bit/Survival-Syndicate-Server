@@ -59,12 +59,12 @@ export type UserStatsItem = z.infer<typeof UserStatsItemSchema>;
 /**
  * Subject definitions for NATS
  */
-export const PaymentsSubjects = {
+export const AnalyticsSubjects = {
   PROCESS_APPROVED_TRANSACTIONS: 'payments.process-approved-transactions.v1',
   UPDATE_POLLING_TRANSACTIONS: 'payments.update-polling-transactions.v1',
   DEPOSIT_COMPLETED: 'payments.deposit.completed.v1',
   GET_USER_STATS: 'payments.user-stats.get.v1',
 } as const;
 
-export type PaymentsSubject =
-  (typeof PaymentsSubjects)[keyof typeof PaymentsSubjects];
+export type AnalyticsSubject =
+  (typeof AnalyticsSubjects)[keyof typeof AnalyticsSubjects];

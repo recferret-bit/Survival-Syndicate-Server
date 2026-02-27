@@ -63,7 +63,7 @@ export function scanAndRegisterPatterns(controllers: any[]) {
  *
  * @example
  * ```typescript
- * @MessagePattern(BalanceSubjects.GET_BALANCE)
+ * @MessagePattern(BuildingSubjects.GET_BALANCE)
  * @NonDurable()
  * async getBalance(@Payload() data: GetBalanceRequest) {
  *   // This handler uses core NATS (non-durable)
