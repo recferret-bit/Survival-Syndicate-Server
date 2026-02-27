@@ -1,6 +1,6 @@
 # TASK-1.4: Скаффолдинг MVP-сервисов
 
-## Статус: `IN REVIEW`
+## Статус: `DONE`
 
 **Epic:** Epic 1: Базовая инфраструктура
 **Ветка:** `phase_1_4/feature/infra/mvp-service-scaffolding`
@@ -58,3 +58,4 @@ docs/architecture/16_project_structure.md, docs/mvp_plan.md (секция TASK-1
 |------|---------|-------|
 | — | Задача создана | System |
 | 2026-02-27 | Подготовка начата | Cursor |
+| 2026-02-27 | Задача завершена | Cursor |
