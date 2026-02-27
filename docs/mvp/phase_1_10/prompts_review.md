@@ -8,7 +8,7 @@
 
 **ID:** TASK-2.6
 **Название:** WebSocket Service — connect
-**Ветка:** `feature/websocket/connect-flow`
+**Ветка:** `phase_1_10/feature/websocket/connect-flow`
 **Scope:** `apps/websocket-service/`
 
 ### Definition of Done (DoD)
@@ -80,8 +80,8 @@ npm run test:e2e
 
 ### Шаг 5: Создание PR
 ```bash
-git push origin feature/websocket/connect-flow
-gh pr create --base main --head feature/websocket/connect-flow \
+git push origin phase_1_10/feature/websocket/connect-flow
+gh pr create --base main --head phase_1_10/feature/websocket/connect-flow \
   --title "TASK-2.6: WebSocket Service — connect" \
   --body "## WebSocket Service — connect
 

@@ -8,7 +8,7 @@
 
 **ID:** TASK-3.2
 **Название:** E2E: реконнект
-**Ветка:** `test/e2e/reconnect-flow`
+**Ветка:** `phase_1_13/test/e2e/reconnect-flow`
 **Scope:** `test/e2e/`
 
 ### Definition of Done (DoD)
@@ -76,8 +76,8 @@ npm run test:e2e
 
 ### Шаг 5: Создание PR
 ```bash
-git push origin test/e2e/reconnect-flow
-gh pr create --base main --head test/e2e/reconnect-flow \
+git push origin phase_1_13/test/e2e/reconnect-flow
+gh pr create --base main --head phase_1_13/test/e2e/reconnect-flow \
   --title "TASK-3.2: E2E: реконнект" \
   --body "## E2E: реконнект
 

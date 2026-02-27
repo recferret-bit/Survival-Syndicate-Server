@@ -8,7 +8,7 @@
 
 **ID:** TASK-2.4
 **Название:** Local Orchestrator
-**Ветка:** `feature/orchestrator/slot-management`
+**Ветка:** `phase_1_8/feature/orchestrator/slot-management`
 **Scope:** `apps/local-orchestrator/`
 
 ### Definition of Done (DoD)
@@ -81,8 +81,8 @@ npm run test:e2e
 
 ### Шаг 5: Создание PR
 ```bash
-git push origin feature/orchestrator/slot-management
-gh pr create --base main --head feature/orchestrator/slot-management \
+git push origin phase_1_8/feature/orchestrator/slot-management
+gh pr create --base main --head phase_1_8/feature/orchestrator/slot-management \
   --title "TASK-2.4: Local Orchestrator" \
   --body "## Local Orchestrator
 

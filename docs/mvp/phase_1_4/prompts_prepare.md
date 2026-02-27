@@ -8,7 +8,7 @@
 
 **ID:** TASK-1.4
 **Название:** Скаффолдинг MVP-сервисов
-**Ветка:** `feature/infra/mvp-service-scaffolding`
+**Ветка:** `phase_1_4/feature/infra/mvp-service-scaffolding`
 **Epic:** Epic 1: Базовая инфраструктура
 **Зависимости:** phase_1_1, phase_1_3
 
@@ -52,12 +52,12 @@ git pull origin main
 
 ### Шаг 3: Создание worktree и ветки
 ```bash
-git worktree add ../worktrees/feature-infra-mvp-service-scaffolding -b feature/infra/mvp-service-scaffolding main
+git worktree add ../worktrees/feature-infra-mvp-service-scaffolding -b phase_1_4/feature/infra/mvp-service-scaffolding main
 cd ../worktrees/feature-infra-mvp-service-scaffolding
 ```
 Или без worktree:
 ```bash
-git checkout -b feature/infra/mvp-service-scaffolding main
+git checkout -b phase_1_4/feature/infra/mvp-service-scaffolding main
 ```
 
 ### Шаг 4: Проверка текущего состояния

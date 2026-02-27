@@ -8,7 +8,7 @@
 
 **ID:** TASK-2.7
 **Название:** WebSocket Service — reconnect
-**Ветка:** `feature/websocket/reconnect-flow`
+**Ветка:** `phase_1_11/feature/websocket/reconnect-flow`
 **Scope:** `apps/websocket-service/`
 
 ### Definition of Done (DoD)
@@ -81,8 +81,8 @@ npm run test:e2e
 
 ### Шаг 5: Создание PR
 ```bash
-git push origin feature/websocket/reconnect-flow
-gh pr create --base main --head feature/websocket/reconnect-flow \
+git push origin phase_1_11/feature/websocket/reconnect-flow
+gh pr create --base main --head phase_1_11/feature/websocket/reconnect-flow \
   --title "TASK-2.7: WebSocket Service — reconnect" \
   --body "## WebSocket Service — reconnect
 

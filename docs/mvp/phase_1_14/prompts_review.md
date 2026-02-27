@@ -8,7 +8,7 @@
 
 **ID:** TASK-3.3
 **Название:** E2E: защита слота
-**Ветка:** `test/e2e/slot-protection`
+**Ветка:** `phase_1_14/test/e2e/slot-protection`
 **Scope:** `test/e2e/`
 
 ### Definition of Done (DoD)
@@ -76,8 +76,8 @@ npm run test:e2e
 
 ### Шаг 5: Создание PR
 ```bash
-git push origin test/e2e/slot-protection
-gh pr create --base main --head test/e2e/slot-protection \
+git push origin phase_1_14/test/e2e/slot-protection
+gh pr create --base main --head phase_1_14/test/e2e/slot-protection \
   --title "TASK-3.3: E2E: защита слота" \
   --body "## E2E: защита слота
 

@@ -8,7 +8,7 @@
 
 **ID:** TASK-2.7
 **Название:** WebSocket Service — reconnect
-**Ветка:** `feature/websocket/reconnect-flow`
+**Ветка:** `phase_1_11/feature/websocket/reconnect-flow`
 **Epic:** Epic 2: Реализация сервисов
 **Зависимости:** phase_1_10
 
@@ -50,12 +50,12 @@ git pull origin main
 
 ### Шаг 3: Создание worktree и ветки
 ```bash
-git worktree add ../worktrees/feature-websocket-reconnect-flow -b feature/websocket/reconnect-flow main
+git worktree add ../worktrees/feature-websocket-reconnect-flow -b phase_1_11/feature/websocket/reconnect-flow main
 cd ../worktrees/feature-websocket-reconnect-flow
 ```
 Или без worktree:
 ```bash
-git checkout -b feature/websocket/reconnect-flow main
+git checkout -b phase_1_11/feature/websocket/reconnect-flow main
 ```
 
 ### Шаг 4: Проверка текущего состояния

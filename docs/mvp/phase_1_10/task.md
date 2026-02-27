@@ -3,7 +3,7 @@
 ## Статус: `NOT STARTED`
 
 **Epic:** Epic 2: Реализация сервисов
-**Ветка:** `feature/websocket/connect-flow`
+**Ветка:** `phase_1_10/feature/websocket/connect-flow`
 **Зависимости:** phase_1_4, phase_1_8
 
 ---

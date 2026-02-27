@@ -8,7 +8,7 @@
 
 **ID:** TASK-4.3
 **Название:** combat-progress-service (шаблон)
-**Ветка:** `chore/scaffold/combat-progress-service`
+**Ветка:** `phase_1_17/chore/scaffold/combat-progress-service`
 **Epic:** Epic 4: Пустые шаблоны
 **Зависимости:** phase_1_1, phase_1_3
 
@@ -39,12 +39,12 @@ git pull origin main
 
 ### Шаг 3: Создание worktree и ветки
 ```bash
-git worktree add ../worktrees/chore-scaffold-combat-progress-service -b chore/scaffold/combat-progress-service main
+git worktree add ../worktrees/chore-scaffold-combat-progress-service -b phase_1_17/chore/scaffold/combat-progress-service main
 cd ../worktrees/chore-scaffold-combat-progress-service
 ```
 Или без worktree:
 ```bash
-git checkout -b chore/scaffold/combat-progress-service main
+git checkout -b phase_1_17/chore/scaffold/combat-progress-service main
 ```
 
 ### Шаг 4: Проверка текущего состояния

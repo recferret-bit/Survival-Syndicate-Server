@@ -8,7 +8,7 @@
 
 **ID:** TASK-2.2
 **Название:** Player Service
-**Ветка:** `feature/player/user-registered-handler`
+**Ветка:** `phase_1_6/feature/player/user-registered-handler`
 **Epic:** Epic 2: Реализация сервисов
 **Зависимости:** phase_1_4, phase_1_5
 
@@ -49,12 +49,12 @@ git pull origin main
 
 ### Шаг 3: Создание worktree и ветки
 ```bash
-git worktree add ../worktrees/feature-player-user-registered-handler -b feature/player/user-registered-handler main
+git worktree add ../worktrees/feature-player-user-registered-handler -b phase_1_6/feature/player/user-registered-handler main
 cd ../worktrees/feature-player-user-registered-handler
 ```
 Или без worktree:
 ```bash
-git checkout -b feature/player/user-registered-handler main
+git checkout -b phase_1_6/feature/player/user-registered-handler main
 ```
 
 ### Шаг 4: Проверка текущего состояния

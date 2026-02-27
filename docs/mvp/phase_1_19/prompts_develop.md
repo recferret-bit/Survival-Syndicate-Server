@@ -8,7 +8,7 @@
 
 **ID:** TASK-4.5
 **Название:** collector-service (шаблон)
-**Ветка:** `chore/scaffold/collector-service`
+**Ветка:** `phase_1_19/chore/scaffold/collector-service`
 **Epic:** Epic 4: Пустые шаблоны
 **Scope:** `apps/collector-service/`
 
@@ -25,7 +25,7 @@
 ## Инструкции для агента
 
 ### Шаг 0: Проверка что подготовка выполнена
-Убедись что ты на ветке `chore/scaffold/collector-service` и статус задачи — `PREPARING` или `IN PROGRESS`.
+Убедись что ты на ветке `phase_1_19/chore/scaffold/collector-service` и статус задачи — `PREPARING` или `IN PROGRESS`.
 ```bash
 git branch --show-current
 ```

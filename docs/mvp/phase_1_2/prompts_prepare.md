@@ -8,7 +8,7 @@
 
 **ID:** TASK-1.2
 **Название:** Docker Compose
-**Ветка:** `feature/infra/docker-compose`
+**Ветка:** `phase_1_2/feature/infra/docker-compose`
 **Epic:** Epic 1: Базовая инфраструктура
 **Зависимости:** phase_1_1
 
@@ -44,12 +44,12 @@ git pull origin main
 
 ### Шаг 3: Создание worktree и ветки
 ```bash
-git worktree add ../worktrees/feature-infra-docker-compose -b feature/infra/docker-compose main
+git worktree add ../worktrees/feature-infra-docker-compose -b phase_1_2/feature/infra/docker-compose main
 cd ../worktrees/feature-infra-docker-compose
 ```
 Или без worktree:
 ```bash
-git checkout -b feature/infra/docker-compose main
+git checkout -b phase_1_2/feature/infra/docker-compose main
 ```
 
 ### Шаг 4: Проверка текущего состояния

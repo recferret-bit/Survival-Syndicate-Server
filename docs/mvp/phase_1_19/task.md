@@ -3,7 +3,7 @@
 ## Статус: `NOT STARTED`
 
 **Epic:** Epic 4: Пустые шаблоны
-**Ветка:** `chore/scaffold/collector-service`
+**Ветка:** `phase_1_19/chore/scaffold/collector-service`
 **Зависимости:** phase_1_1, phase_1_3
 
 ---

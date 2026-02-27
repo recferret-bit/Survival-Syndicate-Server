@@ -3,7 +3,7 @@
 ## Статус: `NOT STARTED`
 
 **Epic:** Epic 2: Реализация сервисов
-**Ветка:** `feature/auth/registration-and-login`
+**Ветка:** `phase_1_5/feature/auth/registration-and-login`
 **Зависимости:** phase_1_4
 
 ---

@@ -8,7 +8,7 @@
 
 **ID:** TASK-4.2
 **Название:** building-service (шаблон)
-**Ветка:** `chore/scaffold/building-service`
+**Ветка:** `phase_1_16/chore/scaffold/building-service`
 **Scope:** `apps/building-service/`
 
 ### Definition of Done (DoD)
@@ -77,8 +77,8 @@ npm run test:e2e
 
 ### Шаг 5: Создание PR
 ```bash
-git push origin chore/scaffold/building-service
-gh pr create --base main --head chore/scaffold/building-service \
+git push origin phase_1_16/chore/scaffold/building-service
+gh pr create --base main --head phase_1_16/chore/scaffold/building-service \
   --title "TASK-4.2: building-service (шаблон)" \
   --body "## building-service (шаблон)
 

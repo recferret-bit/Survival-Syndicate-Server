@@ -8,7 +8,7 @@
 
 **ID:** TASK-4.4
 **Название:** scheduler-service (шаблон)
-**Ветка:** `chore/scaffold/scheduler-service`
+**Ветка:** `phase_1_18/chore/scaffold/scheduler-service`
 **Scope:** `apps/scheduler-service/`
 
 ### Definition of Done (DoD)
@@ -76,8 +76,8 @@ npm run test:e2e
 
 ### Шаг 5: Создание PR
 ```bash
-git push origin chore/scaffold/scheduler-service
-gh pr create --base main --head chore/scaffold/scheduler-service \
+git push origin phase_1_18/chore/scaffold/scheduler-service
+gh pr create --base main --head phase_1_18/chore/scaffold/scheduler-service \
   --title "TASK-4.4: scheduler-service (шаблон)" \
   --body "## scheduler-service (шаблон)
 

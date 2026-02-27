@@ -8,7 +8,7 @@
 
 **ID:** TASK-3.3
 **Название:** E2E: защита слота
-**Ветка:** `test/e2e/slot-protection`
+**Ветка:** `phase_1_14/test/e2e/slot-protection`
 **Epic:** Epic 3: Интеграционное тестирование
 **Зависимости:** phase_1_11, phase_1_12
 
@@ -44,12 +44,12 @@ git pull origin main
 
 ### Шаг 3: Создание worktree и ветки
 ```bash
-git worktree add ../worktrees/test-e2e-slot-protection -b test/e2e/slot-protection main
+git worktree add ../worktrees/test-e2e-slot-protection -b phase_1_14/test/e2e/slot-protection main
 cd ../worktrees/test-e2e-slot-protection
 ```
 Или без worktree:
 ```bash
-git checkout -b test/e2e/slot-protection main
+git checkout -b phase_1_14/test/e2e/slot-protection main
 ```
 
 ### Шаг 4: Проверка текущего состояния

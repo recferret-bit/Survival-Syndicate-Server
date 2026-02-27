@@ -8,7 +8,7 @@
 
 **ID:** TASK-1.4
 **Название:** Скаффолдинг MVP-сервисов
-**Ветка:** `feature/infra/mvp-service-scaffolding`
+**Ветка:** `phase_1_4/feature/infra/mvp-service-scaffolding`
 **Scope:** `apps/auth-service, apps/player-service, apps/matchmaking-service, apps/local-orchestrator, apps/gameplay-service, apps/websocket-service`
 
 ### Definition of Done (DoD)
@@ -80,8 +80,8 @@ npm run test:e2e
 
 ### Шаг 5: Создание PR
 ```bash
-git push origin feature/infra/mvp-service-scaffolding
-gh pr create --base main --head feature/infra/mvp-service-scaffolding \
+git push origin phase_1_4/feature/infra/mvp-service-scaffolding
+gh pr create --base main --head phase_1_4/feature/infra/mvp-service-scaffolding \
   --title "TASK-1.4: Скаффолдинг MVP-сервисов" \
   --body "## Скаффолдинг MVP-сервисов
 

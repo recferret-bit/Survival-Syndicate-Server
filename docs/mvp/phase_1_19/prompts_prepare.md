@@ -8,7 +8,7 @@
 
 **ID:** TASK-4.5
 **Название:** collector-service (шаблон)
-**Ветка:** `chore/scaffold/collector-service`
+**Ветка:** `phase_1_19/chore/scaffold/collector-service`
 **Epic:** Epic 4: Пустые шаблоны
 **Зависимости:** phase_1_1, phase_1_3
 
@@ -39,12 +39,12 @@ git pull origin main
 
 ### Шаг 3: Создание worktree и ветки
 ```bash
-git worktree add ../worktrees/chore-scaffold-collector-service -b chore/scaffold/collector-service main
+git worktree add ../worktrees/chore-scaffold-collector-service -b phase_1_19/chore/scaffold/collector-service main
 cd ../worktrees/chore-scaffold-collector-service
 ```
 Или без worktree:
 ```bash
-git checkout -b chore/scaffold/collector-service main
+git checkout -b phase_1_19/chore/scaffold/collector-service main
 ```
 
 ### Шаг 4: Проверка текущего состояния

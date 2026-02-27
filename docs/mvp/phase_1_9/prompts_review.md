@@ -8,7 +8,7 @@
 
 **ID:** TASK-2.5
 **Название:** Gameplay Service
-**Ветка:** `feature/gameplay/simulation-stubs`
+**Ветка:** `phase_1_9/feature/gameplay/simulation-stubs`
 **Scope:** `apps/gameplay-service/`
 
 ### Definition of Done (DoD)
@@ -79,8 +79,8 @@ npm run test:e2e
 
 ### Шаг 5: Создание PR
 ```bash
-git push origin feature/gameplay/simulation-stubs
-gh pr create --base main --head feature/gameplay/simulation-stubs \
+git push origin phase_1_9/feature/gameplay/simulation-stubs
+gh pr create --base main --head phase_1_9/feature/gameplay/simulation-stubs \
   --title "TASK-2.5: Gameplay Service" \
   --body "## Gameplay Service
 

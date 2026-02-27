@@ -3,7 +3,7 @@
 ## Статус: `NOT STARTED`
 
 **Epic:** Epic 2: Реализация сервисов
-**Ветка:** `feature/player/user-registered-handler`
+**Ветка:** `phase_1_6/feature/player/user-registered-handler`
 **Зависимости:** phase_1_4, phase_1_5
 
 ---

@@ -3,7 +3,7 @@
 ## Статус: `DONE`
 
 **Epic:** Epic 1: Базовая инфраструктура
-**Ветка:** `feature/infra/monorepo-structure`
+**Ветка:** `phase_1_1/feature/infra/monorepo-structure`
 **Зависимости:** Нет
 
 ---

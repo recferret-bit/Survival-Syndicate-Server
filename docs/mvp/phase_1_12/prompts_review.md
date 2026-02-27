@@ -8,7 +8,7 @@
 
 **ID:** TASK-3.1
 **Название:** E2E: базовый флоу
-**Ветка:** `test/e2e/basic-flow`
+**Ветка:** `phase_1_12/test/e2e/basic-flow`
 **Scope:** `test/e2e/`
 
 ### Definition of Done (DoD)
@@ -76,8 +76,8 @@ npm run test:e2e
 
 ### Шаг 5: Создание PR
 ```bash
-git push origin test/e2e/basic-flow
-gh pr create --base main --head test/e2e/basic-flow \
+git push origin phase_1_12/test/e2e/basic-flow
+gh pr create --base main --head phase_1_12/test/e2e/basic-flow \
   --title "TASK-3.1: E2E: базовый флоу" \
   --body "## E2E: базовый флоу
 

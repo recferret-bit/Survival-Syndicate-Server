@@ -3,7 +3,7 @@
 ## Статус: `NOT STARTED`
 
 **Epic:** Epic 2: Реализация сервисов
-**Ветка:** `feature/gameplay/simulation-stubs`
+**Ветка:** `phase_1_9/feature/gameplay/simulation-stubs`
 **Зависимости:** phase_1_4, phase_1_8
 
 ---

@@ -8,7 +8,7 @@
 
 **ID:** TASK-4.1
 **Название:** swagger-aggregator (шаблон)
-**Ветка:** `chore/scaffold/swagger-aggregator`
+**Ветка:** `phase_1_15/chore/scaffold/swagger-aggregator`
 **Epic:** Epic 4: Пустые шаблоны
 **Зависимости:** phase_1_1, phase_1_3
 
@@ -39,12 +39,12 @@ git pull origin main
 
 ### Шаг 3: Создание worktree и ветки
 ```bash
-git worktree add ../worktrees/chore-scaffold-swagger-aggregator -b chore/scaffold/swagger-aggregator main
+git worktree add ../worktrees/chore-scaffold-swagger-aggregator -b phase_1_15/chore/scaffold/swagger-aggregator main
 cd ../worktrees/chore-scaffold-swagger-aggregator
 ```
 Или без worktree:
 ```bash
-git checkout -b chore/scaffold/swagger-aggregator main
+git checkout -b phase_1_15/chore/scaffold/swagger-aggregator main
 ```
 
 ### Шаг 4: Проверка текущего состояния

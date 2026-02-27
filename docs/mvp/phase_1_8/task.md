@@ -3,7 +3,7 @@
 ## Статус: `NOT STARTED`
 
 **Epic:** Epic 2: Реализация сервисов
-**Ветка:** `feature/orchestrator/slot-management`
+**Ветка:** `phase_1_8/feature/orchestrator/slot-management`
 **Зависимости:** phase_1_4, phase_1_7
 
 ---

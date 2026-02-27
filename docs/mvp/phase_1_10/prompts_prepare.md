@@ -8,7 +8,7 @@
 
 **ID:** TASK-2.6
 **Название:** WebSocket Service — connect
-**Ветка:** `feature/websocket/connect-flow`
+**Ветка:** `phase_1_10/feature/websocket/connect-flow`
 **Epic:** Epic 2: Реализация сервисов
 **Зависимости:** phase_1_4, phase_1_8
 
@@ -49,12 +49,12 @@ git pull origin main
 
 ### Шаг 3: Создание worktree и ветки
 ```bash
-git worktree add ../worktrees/feature-websocket-connect-flow -b feature/websocket/connect-flow main
+git worktree add ../worktrees/feature-websocket-connect-flow -b phase_1_10/feature/websocket/connect-flow main
 cd ../worktrees/feature-websocket-connect-flow
 ```
 Или без worktree:
 ```bash
-git checkout -b feature/websocket/connect-flow main
+git checkout -b phase_1_10/feature/websocket/connect-flow main
 ```
 
 ### Шаг 4: Проверка текущего состояния

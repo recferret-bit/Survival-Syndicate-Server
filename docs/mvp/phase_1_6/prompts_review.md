@@ -8,7 +8,7 @@
 
 **ID:** TASK-2.2
 **Название:** Player Service
-**Ветка:** `feature/player/user-registered-handler`
+**Ветка:** `phase_1_6/feature/player/user-registered-handler`
 **Scope:** `apps/player-service/`
 
 ### Definition of Done (DoD)
@@ -80,8 +80,8 @@ npm run test:e2e
 
 ### Шаг 5: Создание PR
 ```bash
-git push origin feature/player/user-registered-handler
-gh pr create --base main --head feature/player/user-registered-handler \
+git push origin phase_1_6/feature/player/user-registered-handler
+gh pr create --base main --head phase_1_6/feature/player/user-registered-handler \
   --title "TASK-2.2: Player Service" \
   --body "## Player Service
 

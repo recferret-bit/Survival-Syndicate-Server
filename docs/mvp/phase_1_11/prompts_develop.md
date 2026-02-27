@@ -8,7 +8,7 @@
 
 **ID:** TASK-2.7
 **Название:** WebSocket Service — reconnect
-**Ветка:** `feature/websocket/reconnect-flow`
+**Ветка:** `phase_1_11/feature/websocket/reconnect-flow`
 **Epic:** Epic 2: Реализация сервисов
 **Scope:** `apps/websocket-service/`
 
@@ -36,7 +36,7 @@
 ## Инструкции для агента
 
 ### Шаг 0: Проверка что подготовка выполнена
-Убедись что ты на ветке `feature/websocket/reconnect-flow` и статус задачи — `PREPARING` или `IN PROGRESS`.
+Убедись что ты на ветке `phase_1_11/feature/websocket/reconnect-flow` и статус задачи — `PREPARING` или `IN PROGRESS`.
 ```bash
 git branch --show-current
 ```

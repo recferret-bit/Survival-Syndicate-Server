@@ -8,7 +8,7 @@
 
 **ID:** TASK-2.2
 **Название:** Player Service
-**Ветка:** `feature/player/user-registered-handler`
+**Ветка:** `phase_1_6/feature/player/user-registered-handler`
 **Epic:** Epic 2: Реализация сервисов
 **Scope:** `apps/player-service/`
 
@@ -33,7 +33,7 @@
 ## Инструкции для агента
 
 ### Шаг 0: Проверка что подготовка выполнена
-Убедись что ты на ветке `feature/player/user-registered-handler` и статус задачи — `PREPARING` или `IN PROGRESS`.
+Убедись что ты на ветке `phase_1_6/feature/player/user-registered-handler` и статус задачи — `PREPARING` или `IN PROGRESS`.
 ```bash
 git branch --show-current
 ```

@@ -3,7 +3,7 @@
 ## Статус: `NOT STARTED`
 
 **Epic:** Epic 1: Базовая инфраструктура
-**Ветка:** `feature/infra/shared-libs`
+**Ветка:** `phase_1_3/feature/infra/shared-libs`
 **Зависимости:** phase_1_1
 
 ---

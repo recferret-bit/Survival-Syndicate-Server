@@ -8,7 +8,7 @@
 
 **ID:** TASK-1.3
 **Название:** Общая libs библиотека
-**Ветка:** `feature/infra/shared-libs`
+**Ветка:** `phase_1_3/feature/infra/shared-libs`
 **Epic:** Epic 1: Базовая инфраструктура
 **Зависимости:** phase_1_1
 
@@ -49,12 +49,12 @@ git pull origin main
 
 ### Шаг 3: Создание worktree и ветки
 ```bash
-git worktree add ../worktrees/feature-infra-shared-libs -b feature/infra/shared-libs main
+git worktree add ../worktrees/feature-infra-shared-libs -b phase_1_3/feature/infra/shared-libs main
 cd ../worktrees/feature-infra-shared-libs
 ```
 Или без worktree:
 ```bash
-git checkout -b feature/infra/shared-libs main
+git checkout -b phase_1_3/feature/infra/shared-libs main
 ```
 
 ### Шаг 4: Проверка текущего состояния

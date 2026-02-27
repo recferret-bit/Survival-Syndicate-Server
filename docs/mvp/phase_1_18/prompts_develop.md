@@ -8,7 +8,7 @@
 
 **ID:** TASK-4.4
 **Название:** scheduler-service (шаблон)
-**Ветка:** `chore/scaffold/scheduler-service`
+**Ветка:** `phase_1_18/chore/scaffold/scheduler-service`
 **Epic:** Epic 4: Пустые шаблоны
 **Scope:** `apps/scheduler-service/`
 
@@ -25,7 +25,7 @@
 ## Инструкции для агента
 
 ### Шаг 0: Проверка что подготовка выполнена
-Убедись что ты на ветке `chore/scaffold/scheduler-service` и статус задачи — `PREPARING` или `IN PROGRESS`.
+Убедись что ты на ветке `phase_1_18/chore/scaffold/scheduler-service` и статус задачи — `PREPARING` или `IN PROGRESS`.
 ```bash
 git branch --show-current
 ```

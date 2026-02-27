@@ -8,7 +8,7 @@
 
 **ID:** TASK-4.1
 **Название:** swagger-aggregator (шаблон)
-**Ветка:** `chore/scaffold/swagger-aggregator`
+**Ветка:** `phase_1_15/chore/scaffold/swagger-aggregator`
 **Epic:** Epic 4: Пустые шаблоны
 **Scope:** `apps/swagger-aggregator/`
 
@@ -25,7 +25,7 @@
 ## Инструкции для агента
 
 ### Шаг 0: Проверка что подготовка выполнена
-Убедись что ты на ветке `chore/scaffold/swagger-aggregator` и статус задачи — `PREPARING` или `IN PROGRESS`.
+Убедись что ты на ветке `phase_1_15/chore/scaffold/swagger-aggregator` и статус задачи — `PREPARING` или `IN PROGRESS`.
 ```bash
 git branch --show-current
 ```

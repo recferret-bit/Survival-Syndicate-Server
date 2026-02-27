@@ -8,7 +8,7 @@
 
 **ID:** TASK-3.2
 **Название:** E2E: реконнект
-**Ветка:** `test/e2e/reconnect-flow`
+**Ветка:** `phase_1_13/test/e2e/reconnect-flow`
 **Epic:** Epic 3: Интеграционное тестирование
 **Scope:** `test/e2e/`
 
@@ -30,7 +30,7 @@ E2E тест — реконнект:
 ## Инструкции для агента
 
 ### Шаг 0: Проверка что подготовка выполнена
-Убедись что ты на ветке `test/e2e/reconnect-flow` и статус задачи — `PREPARING` или `IN PROGRESS`.
+Убедись что ты на ветке `phase_1_13/test/e2e/reconnect-flow` и статус задачи — `PREPARING` или `IN PROGRESS`.
 ```bash
 git branch --show-current
 ```

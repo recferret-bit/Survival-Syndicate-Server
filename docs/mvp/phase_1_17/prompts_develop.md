@@ -8,7 +8,7 @@
 
 **ID:** TASK-4.3
 **Название:** combat-progress-service (шаблон)
-**Ветка:** `chore/scaffold/combat-progress-service`
+**Ветка:** `phase_1_17/chore/scaffold/combat-progress-service`
 **Epic:** Epic 4: Пустые шаблоны
 **Scope:** `apps/combat-progress-service/`
 
@@ -25,7 +25,7 @@
 ## Инструкции для агента
 
 ### Шаг 0: Проверка что подготовка выполнена
-Убедись что ты на ветке `chore/scaffold/combat-progress-service` и статус задачи — `PREPARING` или `IN PROGRESS`.
+Убедись что ты на ветке `phase_1_17/chore/scaffold/combat-progress-service` и статус задачи — `PREPARING` или `IN PROGRESS`.
 ```bash
 git branch --show-current
 ```

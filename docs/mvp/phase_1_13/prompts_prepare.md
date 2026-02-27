@@ -8,7 +8,7 @@
 
 **ID:** TASK-3.2
 **Название:** E2E: реконнект
-**Ветка:** `test/e2e/reconnect-flow`
+**Ветка:** `phase_1_13/test/e2e/reconnect-flow`
 **Epic:** Epic 3: Интеграционное тестирование
 **Зависимости:** phase_1_11, phase_1_12
 
@@ -45,12 +45,12 @@ git pull origin main
 
 ### Шаг 3: Создание worktree и ветки
 ```bash
-git worktree add ../worktrees/test-e2e-reconnect-flow -b test/e2e/reconnect-flow main
+git worktree add ../worktrees/test-e2e-reconnect-flow -b phase_1_13/test/e2e/reconnect-flow main
 cd ../worktrees/test-e2e-reconnect-flow
 ```
 Или без worktree:
 ```bash
-git checkout -b test/e2e/reconnect-flow main
+git checkout -b phase_1_13/test/e2e/reconnect-flow main
 ```
 
 ### Шаг 4: Проверка текущего состояния

@@ -8,7 +8,7 @@
 
 **ID:** TASK-1.4
 **Название:** Скаффолдинг MVP-сервисов
-**Ветка:** `feature/infra/mvp-service-scaffolding`
+**Ветка:** `phase_1_4/feature/infra/mvp-service-scaffolding`
 **Epic:** Epic 1: Базовая инфраструктура
 **Scope:** `apps/auth-service, apps/player-service, apps/matchmaking-service, apps/local-orchestrator, apps/gameplay-service, apps/websocket-service`
 
@@ -37,7 +37,7 @@
 ## Инструкции для агента
 
 ### Шаг 0: Проверка что подготовка выполнена
-Убедись что ты на ветке `feature/infra/mvp-service-scaffolding` и статус задачи — `PREPARING` или `IN PROGRESS`.
+Убедись что ты на ветке `phase_1_4/feature/infra/mvp-service-scaffolding` и статус задачи — `PREPARING` или `IN PROGRESS`.
 ```bash
 git branch --show-current
 ```

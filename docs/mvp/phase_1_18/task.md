@@ -3,7 +3,7 @@
 ## Статус: `NOT STARTED`
 
 **Epic:** Epic 4: Пустые шаблоны
-**Ветка:** `chore/scaffold/scheduler-service`
+**Ветка:** `phase_1_18/chore/scaffold/scheduler-service`
 **Зависимости:** phase_1_1, phase_1_3
 
 ---

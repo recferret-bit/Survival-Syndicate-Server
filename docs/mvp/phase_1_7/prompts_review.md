@@ -8,7 +8,7 @@
 
 **ID:** TASK-2.3
 **Название:** Matchmaking Service
-**Ветка:** `feature/matchmaking/lobby-and-solo`
+**Ветка:** `phase_1_7/feature/matchmaking/lobby-and-solo`
 **Scope:** `apps/matchmaking-service/`
 
 ### Definition of Done (DoD)
@@ -82,8 +82,8 @@ npm run test:e2e
 
 ### Шаг 5: Создание PR
 ```bash
-git push origin feature/matchmaking/lobby-and-solo
-gh pr create --base main --head feature/matchmaking/lobby-and-solo \
+git push origin phase_1_7/feature/matchmaking/lobby-and-solo
+gh pr create --base main --head phase_1_7/feature/matchmaking/lobby-and-solo \
   --title "TASK-2.3: Matchmaking Service" \
   --body "## Matchmaking Service
 

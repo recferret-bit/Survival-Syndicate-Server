@@ -8,7 +8,7 @@
 
 **ID:** TASK-3.1
 **Название:** E2E: базовый флоу
-**Ветка:** `test/e2e/basic-flow`
+**Ветка:** `phase_1_12/test/e2e/basic-flow`
 **Epic:** Epic 3: Интеграционное тестирование
 **Scope:** `test/e2e/`
 
@@ -31,7 +31,7 @@ E2E тест — полный базовый флоу:
 ## Инструкции для агента
 
 ### Шаг 0: Проверка что подготовка выполнена
-Убедись что ты на ветке `test/e2e/basic-flow` и статус задачи — `PREPARING` или `IN PROGRESS`.
+Убедись что ты на ветке `phase_1_12/test/e2e/basic-flow` и статус задачи — `PREPARING` или `IN PROGRESS`.
 ```bash
 git branch --show-current
 ```

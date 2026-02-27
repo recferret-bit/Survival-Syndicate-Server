@@ -8,7 +8,7 @@
 
 **ID:** TASK-4.5
 **Название:** collector-service (шаблон)
-**Ветка:** `chore/scaffold/collector-service`
+**Ветка:** `phase_1_19/chore/scaffold/collector-service`
 **Scope:** `apps/collector-service/`
 
 ### Definition of Done (DoD)
@@ -76,8 +76,8 @@ npm run test:e2e
 
 ### Шаг 5: Создание PR
 ```bash
-git push origin chore/scaffold/collector-service
-gh pr create --base main --head chore/scaffold/collector-service \
+git push origin phase_1_19/chore/scaffold/collector-service
+gh pr create --base main --head phase_1_19/chore/scaffold/collector-service \
   --title "TASK-4.5: collector-service (шаблон)" \
   --body "## collector-service (шаблон)
 
