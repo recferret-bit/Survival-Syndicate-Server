@@ -8,7 +8,7 @@
 
 **ID:** TASK-1.1
 **Название:** Monorepo-структура проекта
-**Ветка:** `feature/infra/monorepo-structure`
+**Ветка:** `phase_1_1/feature/infra/monorepo-structure`
 **Epic:** Epic 1: Базовая инфраструктура
 **Scope:** `apps/, libs/, nest-cli.json, tsconfig.json, package.json`
 
@@ -28,7 +28,7 @@
 ## Инструкции для агента
 
 ### Шаг 0: Проверка что подготовка выполнена
-Убедись что ты на ветке `feature/infra/monorepo-structure` и статус задачи — `PREPARING` или `IN PROGRESS`.
+Убедись что ты на ветке `phase_1_1/feature/infra/monorepo-structure` и статус задачи — `PREPARING` или `IN PROGRESS`.
 ```bash
 git branch --show-current
 ```

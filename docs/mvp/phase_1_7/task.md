@@ -3,7 +3,7 @@
 ## Статус: `NOT STARTED`
 
 **Epic:** Epic 2: Реализация сервисов
-**Ветка:** `feature/matchmaking/lobby-and-solo`
+**Ветка:** `phase_1_7/feature/matchmaking/lobby-and-solo`
 **Зависимости:** phase_1_4, phase_1_5
 
 ---

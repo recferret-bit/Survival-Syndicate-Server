@@ -8,7 +8,7 @@
 
 **ID:** TASK-3.3
 **Название:** E2E: защита слота
-**Ветка:** `test/e2e/slot-protection`
+**Ветка:** `phase_1_14/test/e2e/slot-protection`
 **Epic:** Epic 3: Интеграционное тестирование
 **Scope:** `test/e2e/`
 
@@ -29,7 +29,7 @@ E2E тест — защита слота:
 ## Инструкции для агента
 
 ### Шаг 0: Проверка что подготовка выполнена
-Убедись что ты на ветке `test/e2e/slot-protection` и статус задачи — `PREPARING` или `IN PROGRESS`.
+Убедись что ты на ветке `phase_1_14/test/e2e/slot-protection` и статус задачи — `PREPARING` или `IN PROGRESS`.
 ```bash
 git branch --show-current
 ```

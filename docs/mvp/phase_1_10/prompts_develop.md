@@ -8,7 +8,7 @@
 
 **ID:** TASK-2.6
 **Название:** WebSocket Service — connect
-**Ветка:** `feature/websocket/connect-flow`
+**Ветка:** `phase_1_10/feature/websocket/connect-flow`
 **Epic:** Epic 2: Реализация сервисов
 **Scope:** `apps/websocket-service/`
 
@@ -34,7 +34,7 @@
 ## Инструкции для агента
 
 ### Шаг 0: Проверка что подготовка выполнена
-Убедись что ты на ветке `feature/websocket/connect-flow` и статус задачи — `PREPARING` или `IN PROGRESS`.
+Убедись что ты на ветке `phase_1_10/feature/websocket/connect-flow` и статус задачи — `PREPARING` или `IN PROGRESS`.
 ```bash
 git branch --show-current
 ```

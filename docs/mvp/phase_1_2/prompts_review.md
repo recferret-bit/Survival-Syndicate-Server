@@ -8,7 +8,7 @@
 
 **ID:** TASK-1.2
 **Название:** Docker Compose
-**Ветка:** `feature/infra/docker-compose`
+**Ветка:** `phase_1_2/feature/infra/docker-compose`
 **Scope:** `docker/`
 
 ### Definition of Done (DoD)
@@ -78,8 +78,8 @@ npm run test:e2e
 
 ### Шаг 5: Создание PR
 ```bash
-git push origin feature/infra/docker-compose
-gh pr create --base main --head feature/infra/docker-compose \
+git push origin phase_1_2/feature/infra/docker-compose
+gh pr create --base main --head phase_1_2/feature/infra/docker-compose \
   --title "TASK-1.2: Docker Compose" \
   --body "## Docker Compose
 

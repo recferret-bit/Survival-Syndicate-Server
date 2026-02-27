@@ -8,7 +8,7 @@
 
 **ID:** TASK-4.1
 **Название:** swagger-aggregator (шаблон)
-**Ветка:** `chore/scaffold/swagger-aggregator`
+**Ветка:** `phase_1_15/chore/scaffold/swagger-aggregator`
 **Scope:** `apps/swagger-aggregator/`
 
 ### Definition of Done (DoD)
@@ -76,8 +76,8 @@ npm run test:e2e
 
 ### Шаг 5: Создание PR
 ```bash
-git push origin chore/scaffold/swagger-aggregator
-gh pr create --base main --head chore/scaffold/swagger-aggregator \
+git push origin phase_1_15/chore/scaffold/swagger-aggregator
+gh pr create --base main --head phase_1_15/chore/scaffold/swagger-aggregator \
   --title "TASK-4.1: swagger-aggregator (шаблон)" \
   --body "## swagger-aggregator (шаблон)
 

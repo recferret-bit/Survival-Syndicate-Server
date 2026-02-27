@@ -8,7 +8,7 @@
 
 **ID:** TASK-4.2
 **Название:** building-service (шаблон)
-**Ветка:** `chore/scaffold/building-service`
+**Ветка:** `phase_1_16/chore/scaffold/building-service`
 **Epic:** Epic 4: Пустые шаблоны
 **Scope:** `apps/building-service/`
 
@@ -26,7 +26,7 @@
 ## Инструкции для агента
 
 ### Шаг 0: Проверка что подготовка выполнена
-Убедись что ты на ветке `chore/scaffold/building-service` и статус задачи — `PREPARING` или `IN PROGRESS`.
+Убедись что ты на ветке `phase_1_16/chore/scaffold/building-service` и статус задачи — `PREPARING` или `IN PROGRESS`.
 ```bash
 git branch --show-current
 ```

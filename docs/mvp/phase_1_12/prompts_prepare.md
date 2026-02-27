@@ -8,7 +8,7 @@
 
 **ID:** TASK-3.1
 **Название:** E2E: базовый флоу
-**Ветка:** `test/e2e/basic-flow`
+**Ветка:** `phase_1_12/test/e2e/basic-flow`
 **Epic:** Epic 3: Интеграционное тестирование
 **Зависимости:** phase_1_5, phase_1_6, phase_1_7, phase_1_8, phase_1_9, phase_1_10
 
@@ -47,12 +47,12 @@ git pull origin main
 
 ### Шаг 3: Создание worktree и ветки
 ```bash
-git worktree add ../worktrees/test-e2e-basic-flow -b test/e2e/basic-flow main
+git worktree add ../worktrees/test-e2e-basic-flow -b phase_1_12/test/e2e/basic-flow main
 cd ../worktrees/test-e2e-basic-flow
 ```
 Или без worktree:
 ```bash
-git checkout -b test/e2e/basic-flow main
+git checkout -b phase_1_12/test/e2e/basic-flow main
 ```
 
 ### Шаг 4: Проверка текущего состояния

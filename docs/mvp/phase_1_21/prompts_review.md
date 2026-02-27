@@ -8,7 +8,7 @@
 
 **ID:** TASK-4.7
 **Название:** history-service (шаблон)
-**Ветка:** `chore/scaffold/history-service`
+**Ветка:** `phase_1_21/chore/scaffold/history-service`
 **Scope:** `apps/history-service/`
 
 ### Definition of Done (DoD)
@@ -76,8 +76,8 @@ npm run test:e2e
 
 ### Шаг 5: Создание PR
 ```bash
-git push origin chore/scaffold/history-service
-gh pr create --base main --head chore/scaffold/history-service \
+git push origin phase_1_21/chore/scaffold/history-service
+gh pr create --base main --head phase_1_21/chore/scaffold/history-service \
   --title "TASK-4.7: history-service (шаблон)" \
   --body "## history-service (шаблон)
 

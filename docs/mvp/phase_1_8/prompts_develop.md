@@ -8,7 +8,7 @@
 
 **ID:** TASK-2.4
 **Название:** Local Orchestrator
-**Ветка:** `feature/orchestrator/slot-management`
+**Ветка:** `phase_1_8/feature/orchestrator/slot-management`
 **Epic:** Epic 2: Реализация сервисов
 **Scope:** `apps/local-orchestrator/`
 
@@ -38,7 +38,7 @@
 ## Инструкции для агента
 
 ### Шаг 0: Проверка что подготовка выполнена
-Убедись что ты на ветке `feature/orchestrator/slot-management` и статус задачи — `PREPARING` или `IN PROGRESS`.
+Убедись что ты на ветке `phase_1_8/feature/orchestrator/slot-management` и статус задачи — `PREPARING` или `IN PROGRESS`.
 ```bash
 git branch --show-current
 ```

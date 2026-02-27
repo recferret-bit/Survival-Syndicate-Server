@@ -3,7 +3,7 @@
 ## Статус: `NOT STARTED`
 
 **Epic:** Epic 1: Базовая инфраструктура
-**Ветка:** `feature/infra/mvp-service-scaffolding`
+**Ветка:** `phase_1_4/feature/infra/mvp-service-scaffolding`
 **Зависимости:** phase_1_1, phase_1_3
 
 ---

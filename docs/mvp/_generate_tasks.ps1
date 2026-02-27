@@ -8,7 +8,7 @@ $root = $PSScriptRoot
 $tasks = @(
     @{
         Num=1; Id="TASK-1.1"; Title="Monorepo-структура проекта"; Epic="Epic 1: Базовая инфраструктура"
-        Branch="feature/infra/monorepo-structure"
+        Branch="phase_1_1/feature/infra/monorepo-structure"
         Deps=@()
         Desc=@"
 Создать NestJS monorepo со структурой `apps/` и `libs/`.
@@ -32,7 +32,7 @@ $tasks = @(
     },
     @{
         Num=2; Id="TASK-1.2"; Title="Docker Compose"; Epic="Epic 1: Базовая инфраструктура"
-        Branch="feature/infra/docker-compose"
+        Branch="phase_1_2/feature/infra/docker-compose"
         Deps=@(1)
         Desc=@"
 Настроить `docker-compose.infra.yml` для инфраструктурных сервисов: PostgreSQL (meta + catalog), NATS, Redis.
@@ -57,7 +57,7 @@ $tasks = @(
     },
     @{
         Num=3; Id="TASK-1.3"; Title="Общая libs библиотека"; Epic="Epic 1: Базовая инфраструктура"
-        Branch="feature/infra/shared-libs"
+        Branch="phase_1_3/feature/infra/shared-libs"
         Deps=@(1)
         Desc=@"
 Создать shared библиотеки в `libs/`:
@@ -87,7 +87,7 @@ $tasks = @(
     },
     @{
         Num=4; Id="TASK-1.4"; Title="Скаффолдинг MVP-сервисов"; Epic="Epic 1: Базовая инфраструктура"
-        Branch="feature/infra/mvp-service-scaffolding"
+        Branch="phase_1_4/feature/infra/mvp-service-scaffolding"
         Deps=@(1,3)
         Desc=@"
 Создать Clean Architecture структуру для всех 6 MVP-сервисов:
@@ -121,7 +121,7 @@ $tasks = @(
     },
     @{
         Num=5; Id="TASK-2.1"; Title="Auth Service"; Epic="Epic 2: Реализация сервисов"
-        Branch="feature/auth/registration-and-login"
+        Branch="phase_1_5/feature/auth/registration-and-login"
         Deps=@(4)
         Desc=@"
 Реализовать регистрацию и логин в auth-service:
@@ -154,7 +154,7 @@ $tasks = @(
     },
     @{
         Num=6; Id="TASK-2.2"; Title="Player Service"; Epic="Epic 2: Реализация сервисов"
-        Branch="feature/player/user-registered-handler"
+        Branch="phase_1_6/feature/player/user-registered-handler"
         Deps=@(4,5)
         Desc=@"
 Реализовать Player Service:
@@ -184,7 +184,7 @@ $tasks = @(
     },
     @{
         Num=7; Id="TASK-2.3"; Title="Matchmaking Service"; Epic="Epic 2: Реализация сервисов"
-        Branch="feature/matchmaking/lobby-and-solo"
+        Branch="phase_1_7/feature/matchmaking/lobby-and-solo"
         Deps=@(4,5)
         Desc=@"
 Реализовать Matchmaking Service:
@@ -218,7 +218,7 @@ $tasks = @(
     },
     @{
         Num=8; Id="TASK-2.4"; Title="Local Orchestrator"; Epic="Epic 2: Реализация сервисов"
-        Branch="feature/orchestrator/slot-management"
+        Branch="phase_1_8/feature/orchestrator/slot-management"
         Deps=@(4,7)
         Desc=@"
 Реализовать Local Orchestrator:
@@ -252,7 +252,7 @@ $tasks = @(
     },
     @{
         Num=9; Id="TASK-2.5"; Title="Gameplay Service"; Epic="Epic 2: Реализация сервисов"
-        Branch="feature/gameplay/simulation-stubs"
+        Branch="phase_1_9/feature/gameplay/simulation-stubs"
         Deps=@(4,8)
         Desc=@"
 Реализовать Gameplay Service (MVP — без реального GameLoop):
@@ -281,7 +281,7 @@ $tasks = @(
     },
     @{
         Num=10; Id="TASK-2.6"; Title="WebSocket Service — connect"; Epic="Epic 2: Реализация сервисов"
-        Branch="feature/websocket/connect-flow"
+        Branch="phase_1_10/feature/websocket/connect-flow"
         Deps=@(4,8)
         Desc=@"
 Реализовать WebSocket Service — первое подключение:
@@ -312,7 +312,7 @@ $tasks = @(
     },
     @{
         Num=11; Id="TASK-2.7"; Title="WebSocket Service — reconnect"; Epic="Epic 2: Реализация сервисов"
-        Branch="feature/websocket/reconnect-flow"
+        Branch="phase_1_11/feature/websocket/reconnect-flow"
         Deps=@(10)
         Desc=@"
 Реализовать реконнект в WebSocket Service:
@@ -343,7 +343,7 @@ $tasks = @(
     },
     @{
         Num=12; Id="TASK-3.1"; Title="E2E: базовый флоу"; Epic="Epic 3: Интеграционное тестирование"
-        Branch="test/e2e/basic-flow"
+        Branch="phase_1_12/test/e2e/basic-flow"
         Deps=@(5,6,7,8,9,10)
         Desc=@"
 E2E тест — полный базовый флоу:
@@ -371,7 +371,7 @@ E2E тест — полный базовый флоу:
     },
     @{
         Num=13; Id="TASK-3.2"; Title="E2E: реконнект"; Epic="Epic 3: Интеграционное тестирование"
-        Branch="test/e2e/reconnect-flow"
+        Branch="phase_1_13/test/e2e/reconnect-flow"
         Deps=@(11,12)
         Desc=@"
 E2E тест — реконнект:
@@ -397,7 +397,7 @@ E2E тест — реконнект:
     },
     @{
         Num=14; Id="TASK-3.3"; Title="E2E: защита слота"; Epic="Epic 3: Интеграционное тестирование"
-        Branch="test/e2e/slot-protection"
+        Branch="phase_1_14/test/e2e/slot-protection"
         Deps=@(11,12)
         Desc=@"
 E2E тест — защита слота:
@@ -422,7 +422,7 @@ E2E тест — защита слота:
     },
     @{
         Num=15; Id="TASK-4.1"; Title="swagger-aggregator (шаблон)"; Epic="Epic 4: Пустые шаблоны non-MVP сервисов"
-        Branch="chore/scaffold/swagger-aggregator"
+        Branch="phase_1_15/chore/scaffold/swagger-aggregator"
         Deps=@(1,3)
         Desc=@"
 Создать пустой шаблон swagger-aggregator:
@@ -445,7 +445,7 @@ E2E тест — защита слота:
     },
     @{
         Num=16; Id="TASK-4.2"; Title="building-service (шаблон)"; Epic="Epic 4: Пустые шаблоны non-MVP сервисов"
-        Branch="chore/scaffold/building-service"
+        Branch="phase_1_16/chore/scaffold/building-service"
         Deps=@(1,3)
         Desc=@"
 Создать полный шаблон building-service со всеми базовыми классами:
@@ -468,7 +468,7 @@ E2E тест — защита слота:
     },
     @{
         Num=17; Id="TASK-4.3"; Title="combat-progress-service (шаблон)"; Epic="Epic 4: Пустые шаблоны non-MVP сервисов"
-        Branch="chore/scaffold/combat-progress-service"
+        Branch="phase_1_17/chore/scaffold/combat-progress-service"
         Deps=@(1,3)
         Desc=@"
 Создать полный шаблон combat-progress-service:
@@ -491,7 +491,7 @@ E2E тест — защита слота:
     },
     @{
         Num=18; Id="TASK-4.4"; Title="scheduler-service (шаблон)"; Epic="Epic 4: Пустые шаблоны non-MVP сервисов"
-        Branch="chore/scaffold/scheduler-service"
+        Branch="phase_1_18/chore/scaffold/scheduler-service"
         Deps=@(1,3)
         Desc=@"
 Дополнить существующий скаффолд scheduler-service:
@@ -514,7 +514,7 @@ E2E тест — защита слота:
     },
     @{
         Num=19; Id="TASK-4.5"; Title="collector-service (шаблон)"; Epic="Epic 4: Пустые шаблоны non-MVP сервисов"
-        Branch="chore/scaffold/collector-service"
+        Branch="phase_1_19/chore/scaffold/collector-service"
         Deps=@(1,3)
         Desc=@"
 Создать шаблон collector-service:
@@ -537,7 +537,7 @@ E2E тест — защита слота:
     },
     @{
         Num=20; Id="TASK-4.6"; Title="payment-service (шаблон)"; Epic="Epic 4: Пустые шаблоны non-MVP сервисов"
-        Branch="chore/scaffold/payment-service"
+        Branch="phase_1_20/chore/scaffold/payment-service"
         Deps=@(1,3)
         Desc=@"
 Создать шаблон payment-service:
@@ -560,7 +560,7 @@ E2E тест — защита слота:
     },
     @{
         Num=21; Id="TASK-4.7"; Title="history-service (шаблон)"; Epic="Epic 4: Пустые шаблоны non-MVP сервисов"
-        Branch="chore/scaffold/history-service"
+        Branch="phase_1_21/chore/scaffold/history-service"
         Deps=@(1,3)
         Desc=@"
 Создать шаблон history-service:

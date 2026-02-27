@@ -8,7 +8,7 @@
 
 **ID:** TASK-4.6
 **Название:** payment-service (шаблон)
-**Ветка:** `chore/scaffold/payment-service`
+**Ветка:** `phase_1_20/chore/scaffold/payment-service`
 **Scope:** `apps/payment-service/`
 
 ### Definition of Done (DoD)
@@ -76,8 +76,8 @@ npm run test:e2e
 
 ### Шаг 5: Создание PR
 ```bash
-git push origin chore/scaffold/payment-service
-gh pr create --base main --head chore/scaffold/payment-service \
+git push origin phase_1_20/chore/scaffold/payment-service
+gh pr create --base main --head phase_1_20/chore/scaffold/payment-service \
   --title "TASK-4.6: payment-service (шаблон)" \
   --body "## payment-service (шаблон)
 

@@ -8,7 +8,7 @@
 
 **ID:** TASK-1.1
 **Название:** Monorepo-структура проекта
-**Ветка:** `feature/infra/monorepo-structure`
+**Ветка:** `phase_1_1/feature/infra/monorepo-structure`
 **Epic:** Epic 1: Базовая инфраструктура
 **Зависимости:** Нет
 
@@ -43,12 +43,12 @@ git pull origin main
 
 ### Шаг 3: Создание worktree и ветки
 ```bash
-git worktree add ../worktrees/feature-infra-monorepo-structure -b feature/infra/monorepo-structure main
-cd ../worktrees/feature-infra-monorepo-structure
+git worktree add ../worktrees/phase_1_1 -b phase_1_1/<branch-name> main
+cd ../worktrees/phase_1_1
 ```
 Или без worktree:
 ```bash
-git checkout -b feature/infra/monorepo-structure main
+git checkout -b phase_1_1/<branch-name> main
 ```
 
 ### Шаг 4: Проверка текущего состояния

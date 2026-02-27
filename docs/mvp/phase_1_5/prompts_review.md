@@ -8,7 +8,7 @@
 
 **ID:** TASK-2.1
 **Название:** Auth Service
-**Ветка:** `feature/auth/registration-and-login`
+**Ветка:** `phase_1_5/feature/auth/registration-and-login`
 **Scope:** `apps/auth-service/`
 
 ### Definition of Done (DoD)
@@ -82,8 +82,8 @@ npm run test:e2e
 
 ### Шаг 5: Создание PR
 ```bash
-git push origin feature/auth/registration-and-login
-gh pr create --base main --head feature/auth/registration-and-login \
+git push origin phase_1_5/feature/auth/registration-and-login
+gh pr create --base main --head phase_1_5/feature/auth/registration-and-login \
   --title "TASK-2.1: Auth Service" \
   --body "## Auth Service
 

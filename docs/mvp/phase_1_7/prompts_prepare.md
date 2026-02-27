@@ -8,7 +8,7 @@
 
 **ID:** TASK-2.3
 **Название:** Matchmaking Service
-**Ветка:** `feature/matchmaking/lobby-and-solo`
+**Ветка:** `phase_1_7/feature/matchmaking/lobby-and-solo`
 **Epic:** Epic 2: Реализация сервисов
 **Зависимости:** phase_1_4, phase_1_5
 
@@ -52,12 +52,12 @@ git pull origin main
 
 ### Шаг 3: Создание worktree и ветки
 ```bash
-git worktree add ../worktrees/feature-matchmaking-lobby-and-solo -b feature/matchmaking/lobby-and-solo main
+git worktree add ../worktrees/feature-matchmaking-lobby-and-solo -b phase_1_7/feature/matchmaking/lobby-and-solo main
 cd ../worktrees/feature-matchmaking-lobby-and-solo
 ```
 Или без worktree:
 ```bash
-git checkout -b feature/matchmaking/lobby-and-solo main
+git checkout -b phase_1_7/feature/matchmaking/lobby-and-solo main
 ```
 
 ### Шаг 4: Проверка текущего состояния

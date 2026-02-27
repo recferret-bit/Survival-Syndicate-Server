@@ -8,7 +8,7 @@
 
 **ID:** TASK-1.3
 **Название:** Общая libs библиотека
-**Ветка:** `feature/infra/shared-libs`
+**Ветка:** `phase_1_3/feature/infra/shared-libs`
 **Scope:** `libs/`
 
 ### Definition of Done (DoD)
@@ -79,8 +79,8 @@ npm run test:e2e
 
 ### Шаг 5: Создание PR
 ```bash
-git push origin feature/infra/shared-libs
-gh pr create --base main --head feature/infra/shared-libs \
+git push origin phase_1_3/feature/infra/shared-libs
+gh pr create --base main --head phase_1_3/feature/infra/shared-libs \
   --title "TASK-1.3: Общая libs библиотека" \
   --body "## Общая libs библиотека
 

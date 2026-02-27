@@ -3,7 +3,7 @@
 ## Статус: `DONE`
 
 **Epic:** Epic 1: Базовая инфраструктура
-**Ветка:** `feature/infra/docker-compose`
+**Ветка:** `phase_1_2/feature/infra/docker-compose`
 **Зависимости:** phase_1_1
 
 ---

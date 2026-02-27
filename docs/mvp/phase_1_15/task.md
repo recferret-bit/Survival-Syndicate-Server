@@ -3,7 +3,7 @@
 ## Статус: `NOT STARTED`
 
 **Epic:** Epic 4: Пустые шаблоны
-**Ветка:** `chore/scaffold/swagger-aggregator`
+**Ветка:** `phase_1_15/chore/scaffold/swagger-aggregator`
 **Зависимости:** phase_1_1, phase_1_3
 
 ---

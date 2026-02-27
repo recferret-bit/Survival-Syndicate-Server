@@ -3,7 +3,7 @@
 ## Статус: `NOT STARTED`
 
 **Epic:** Epic 4: Пустые шаблоны
-**Ветка:** `chore/scaffold/history-service`
+**Ветка:** `phase_1_21/chore/scaffold/history-service`
 **Зависимости:** phase_1_1, phase_1_3
 
 ---

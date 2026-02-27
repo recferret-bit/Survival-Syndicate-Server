@@ -8,7 +8,7 @@
 
 **ID:** TASK-2.4
 **Название:** Local Orchestrator
-**Ветка:** `feature/orchestrator/slot-management`
+**Ветка:** `phase_1_8/feature/orchestrator/slot-management`
 **Epic:** Epic 2: Реализация сервисов
 **Зависимости:** phase_1_4, phase_1_7
 
@@ -53,12 +53,12 @@ git pull origin main
 
 ### Шаг 3: Создание worktree и ветки
 ```bash
-git worktree add ../worktrees/feature-orchestrator-slot-management -b feature/orchestrator/slot-management main
+git worktree add ../worktrees/feature-orchestrator-slot-management -b phase_1_8/feature/orchestrator/slot-management main
 cd ../worktrees/feature-orchestrator-slot-management
 ```
 Или без worktree:
 ```bash
-git checkout -b feature/orchestrator/slot-management main
+git checkout -b phase_1_8/feature/orchestrator/slot-management main
 ```
 
 ### Шаг 4: Проверка текущего состояния

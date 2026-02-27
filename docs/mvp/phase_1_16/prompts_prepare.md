@@ -8,7 +8,7 @@
 
 **ID:** TASK-4.2
 **Название:** building-service (шаблон)
-**Ветка:** `chore/scaffold/building-service`
+**Ветка:** `phase_1_16/chore/scaffold/building-service`
 **Epic:** Epic 4: Пустые шаблоны
 **Зависимости:** phase_1_1, phase_1_3
 
@@ -40,12 +40,12 @@ git pull origin main
 
 ### Шаг 3: Создание worktree и ветки
 ```bash
-git worktree add ../worktrees/chore-scaffold-building-service -b chore/scaffold/building-service main
+git worktree add ../worktrees/chore-scaffold-building-service -b phase_1_16/chore/scaffold/building-service main
 cd ../worktrees/chore-scaffold-building-service
 ```
 Или без worktree:
 ```bash
-git checkout -b chore/scaffold/building-service main
+git checkout -b phase_1_16/chore/scaffold/building-service main
 ```
 
 ### Шаг 4: Проверка текущего состояния

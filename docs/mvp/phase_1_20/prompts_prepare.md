@@ -8,7 +8,7 @@
 
 **ID:** TASK-4.6
 **Название:** payment-service (шаблон)
-**Ветка:** `chore/scaffold/payment-service`
+**Ветка:** `phase_1_20/chore/scaffold/payment-service`
 **Epic:** Epic 4: Пустые шаблоны
 **Зависимости:** phase_1_1, phase_1_3
 
@@ -39,12 +39,12 @@ git pull origin main
 
 ### Шаг 3: Создание worktree и ветки
 ```bash
-git worktree add ../worktrees/chore-scaffold-payment-service -b chore/scaffold/payment-service main
+git worktree add ../worktrees/chore-scaffold-payment-service -b phase_1_20/chore/scaffold/payment-service main
 cd ../worktrees/chore-scaffold-payment-service
 ```
 Или без worktree:
 ```bash
-git checkout -b chore/scaffold/payment-service main
+git checkout -b phase_1_20/chore/scaffold/payment-service main
 ```
 
 ### Шаг 4: Проверка текущего состояния

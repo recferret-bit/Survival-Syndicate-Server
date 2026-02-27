@@ -8,7 +8,7 @@
 
 **ID:** TASK-4.7
 **Название:** history-service (шаблон)
-**Ветка:** `chore/scaffold/history-service`
+**Ветка:** `phase_1_21/chore/scaffold/history-service`
 **Epic:** Epic 4: Пустые шаблоны
 **Scope:** `apps/history-service/`
 
@@ -25,7 +25,7 @@
 ## Инструкции для агента
 
 ### Шаг 0: Проверка что подготовка выполнена
-Убедись что ты на ветке `chore/scaffold/history-service` и статус задачи — `PREPARING` или `IN PROGRESS`.
+Убедись что ты на ветке `phase_1_21/chore/scaffold/history-service` и статус задачи — `PREPARING` или `IN PROGRESS`.
 ```bash
 git branch --show-current
 ```

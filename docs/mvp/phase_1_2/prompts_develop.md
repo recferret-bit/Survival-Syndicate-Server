@@ -8,7 +8,7 @@
 
 **ID:** TASK-1.2
 **Название:** Docker Compose
-**Ветка:** `feature/infra/docker-compose`
+**Ветка:** `phase_1_2/feature/infra/docker-compose`
 **Epic:** Epic 1: Базовая инфраструктура
 **Scope:** `docker/`
 
@@ -29,7 +29,7 @@
 ## Инструкции для агента
 
 ### Шаг 0: Проверка что подготовка выполнена
-Убедись что ты на ветке `feature/infra/docker-compose` и статус задачи — `PREPARING` или `IN PROGRESS`.
+Убедись что ты на ветке `phase_1_2/feature/infra/docker-compose` и статус задачи — `PREPARING` или `IN PROGRESS`.
 ```bash
 git branch --show-current
 ```

@@ -8,7 +8,7 @@
 
 **ID:** TASK-1.3
 **Название:** Общая libs библиотека
-**Ветка:** `feature/infra/shared-libs`
+**Ветка:** `phase_1_3/feature/infra/shared-libs`
 **Epic:** Epic 1: Базовая инфраструктура
 **Scope:** `libs/`
 
@@ -34,7 +34,7 @@
 ## Инструкции для агента
 
 ### Шаг 0: Проверка что подготовка выполнена
-Убедись что ты на ветке `feature/infra/shared-libs` и статус задачи — `PREPARING` или `IN PROGRESS`.
+Убедись что ты на ветке `phase_1_3/feature/infra/shared-libs` и статус задачи — `PREPARING` или `IN PROGRESS`.
 ```bash
 git branch --show-current
 ```

@@ -8,7 +8,7 @@
 
 **ID:** TASK-1.1
 **Название:** Monorepo-структура проекта
-**Ветка:** `feature/infra/monorepo-structure`
+**Ветка:** `phase_1_1/feature/infra/monorepo-structure`
 **Scope:** `apps/, libs/, nest-cli.json, tsconfig.json, package.json`
 
 ### Definition of Done (DoD)
@@ -78,8 +78,8 @@ npm run test:e2e
 
 ### Шаг 5: Создание PR
 ```bash
-git push origin feature/infra/monorepo-structure
-gh pr create --base main --head feature/infra/monorepo-structure \
+git push origin phase_1_1/<branch-name>
+gh pr create --base main --head phase_1_1/<branch-name> \
   --title "TASK-1.1: Monorepo-структура проекта" \
   --body "## Monorepo-структура проекта
 

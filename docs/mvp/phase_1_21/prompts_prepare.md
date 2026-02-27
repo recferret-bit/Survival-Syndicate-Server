@@ -8,7 +8,7 @@
 
 **ID:** TASK-4.7
 **Название:** history-service (шаблон)
-**Ветка:** `chore/scaffold/history-service`
+**Ветка:** `phase_1_21/chore/scaffold/history-service`
 **Epic:** Epic 4: Пустые шаблоны
 **Зависимости:** phase_1_1, phase_1_3
 
@@ -39,12 +39,12 @@ git pull origin main
 
 ### Шаг 3: Создание worktree и ветки
 ```bash
-git worktree add ../worktrees/chore-scaffold-history-service -b chore/scaffold/history-service main
+git worktree add ../worktrees/chore-scaffold-history-service -b phase_1_21/chore/scaffold/history-service main
 cd ../worktrees/chore-scaffold-history-service
 ```
 Или без worktree:
 ```bash
-git checkout -b chore/scaffold/history-service main
+git checkout -b phase_1_21/chore/scaffold/history-service main
 ```
 
 ### Шаг 4: Проверка текущего состояния

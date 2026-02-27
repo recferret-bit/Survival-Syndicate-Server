@@ -8,7 +8,7 @@
 
 **ID:** TASK-2.3
 **Название:** Matchmaking Service
-**Ветка:** `feature/matchmaking/lobby-and-solo`
+**Ветка:** `phase_1_7/feature/matchmaking/lobby-and-solo`
 **Epic:** Epic 2: Реализация сервисов
 **Scope:** `apps/matchmaking-service/`
 
@@ -36,7 +36,7 @@
 ## Инструкции для агента
 
 ### Шаг 0: Проверка что подготовка выполнена
-Убедись что ты на ветке `feature/matchmaking/lobby-and-solo` и статус задачи — `PREPARING` или `IN PROGRESS`.
+Убедись что ты на ветке `phase_1_7/feature/matchmaking/lobby-and-solo` и статус задачи — `PREPARING` или `IN PROGRESS`.
 ```bash
 git branch --show-current
 ```

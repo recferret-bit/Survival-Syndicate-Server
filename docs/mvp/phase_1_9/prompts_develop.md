@@ -8,7 +8,7 @@
 
 **ID:** TASK-2.5
 **Название:** Gameplay Service
-**Ветка:** `feature/gameplay/simulation-stubs`
+**Ветка:** `phase_1_9/feature/gameplay/simulation-stubs`
 **Epic:** Epic 2: Реализация сервисов
 **Scope:** `apps/gameplay-service/`
 
@@ -33,7 +33,7 @@
 ## Инструкции для агента
 
 ### Шаг 0: Проверка что подготовка выполнена
-Убедись что ты на ветке `feature/gameplay/simulation-stubs` и статус задачи — `PREPARING` или `IN PROGRESS`.
+Убедись что ты на ветке `phase_1_9/feature/gameplay/simulation-stubs` и статус задачи — `PREPARING` или `IN PROGRESS`.
 ```bash
 git branch --show-current
 ```

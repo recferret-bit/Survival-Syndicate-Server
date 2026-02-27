@@ -3,7 +3,7 @@
 ## Статус: `NOT STARTED`
 
 **Epic:** Epic 4: Пустые шаблоны
-**Ветка:** `chore/scaffold/combat-progress-service`
+**Ветка:** `phase_1_17/chore/scaffold/combat-progress-service`
 **Зависимости:** phase_1_1, phase_1_3
 
 ---

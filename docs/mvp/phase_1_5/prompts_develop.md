@@ -8,7 +8,7 @@
 
 **ID:** TASK-2.1
 **Название:** Auth Service
-**Ветка:** `feature/auth/registration-and-login`
+**Ветка:** `phase_1_5/feature/auth/registration-and-login`
 **Epic:** Epic 2: Реализация сервисов
 **Scope:** `apps/auth-service/`
 
@@ -36,7 +36,7 @@
 ## Инструкции для агента
 
 ### Шаг 0: Проверка что подготовка выполнена
-Убедись что ты на ветке `feature/auth/registration-and-login` и статус задачи — `PREPARING` или `IN PROGRESS`.
+Убедись что ты на ветке `phase_1_5/feature/auth/registration-and-login` и статус задачи — `PREPARING` или `IN PROGRESS`.
 ```bash
 git branch --show-current
 ```

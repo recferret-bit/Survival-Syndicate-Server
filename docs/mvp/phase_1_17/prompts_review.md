@@ -8,7 +8,7 @@
 
 **ID:** TASK-4.3
 **Название:** combat-progress-service (шаблон)
-**Ветка:** `chore/scaffold/combat-progress-service`
+**Ветка:** `phase_1_17/chore/scaffold/combat-progress-service`
 **Scope:** `apps/combat-progress-service/`
 
 ### Definition of Done (DoD)
@@ -76,8 +76,8 @@ npm run test:e2e
 
 ### Шаг 5: Создание PR
 ```bash
-git push origin chore/scaffold/combat-progress-service
-gh pr create --base main --head chore/scaffold/combat-progress-service \
+git push origin phase_1_17/chore/scaffold/combat-progress-service
+gh pr create --base main --head phase_1_17/chore/scaffold/combat-progress-service \
   --title "TASK-4.3: combat-progress-service (шаблон)" \
   --body "## combat-progress-service (шаблон)
 

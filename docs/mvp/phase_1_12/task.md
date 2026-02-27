@@ -3,7 +3,7 @@
 ## Статус: `NOT STARTED`
 
 **Epic:** Epic 3: Интеграционное тестирование
-**Ветка:** `test/e2e/basic-flow`
+**Ветка:** `phase_1_12/test/e2e/basic-flow`
 **Зависимости:** phase_1_5, phase_1_6, phase_1_7, phase_1_8, phase_1_9, phase_1_10
 
 ---

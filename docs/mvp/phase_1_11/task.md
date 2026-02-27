@@ -3,7 +3,7 @@
 ## Статус: `NOT STARTED`
 
 **Epic:** Epic 2: Реализация сервисов
-**Ветка:** `feature/websocket/reconnect-flow`
+**Ветка:** `phase_1_11/feature/websocket/reconnect-flow`
 **Зависимости:** phase_1_10
 
 ---

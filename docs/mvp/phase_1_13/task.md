@@ -3,7 +3,7 @@
 ## Статус: `NOT STARTED`
 
 **Epic:** Epic 3: Интеграционное тестирование
-**Ветка:** `test/e2e/reconnect-flow`
+**Ветка:** `phase_1_13/test/e2e/reconnect-flow`
 **Зависимости:** phase_1_11, phase_1_12
 
 ---

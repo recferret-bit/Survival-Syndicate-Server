@@ -8,7 +8,7 @@
 
 **ID:** TASK-2.1
 **Название:** Auth Service
-**Ветка:** `feature/auth/registration-and-login`
+**Ветка:** `phase_1_5/feature/auth/registration-and-login`
 **Epic:** Epic 2: Реализация сервисов
 **Зависимости:** phase_1_4
 
@@ -52,12 +52,12 @@ git pull origin main
 
 ### Шаг 3: Создание worktree и ветки
 ```bash
-git worktree add ../worktrees/feature-auth-registration-and-login -b feature/auth/registration-and-login main
+git worktree add ../worktrees/feature-auth-registration-and-login -b phase_1_5/feature/auth/registration-and-login main
 cd ../worktrees/feature-auth-registration-and-login
 ```
 Или без worktree:
 ```bash
-git checkout -b feature/auth/registration-and-login main
+git checkout -b phase_1_5/feature/auth/registration-and-login main
 ```
 
 ### Шаг 4: Проверка текущего состояния

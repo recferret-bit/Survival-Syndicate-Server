@@ -8,7 +8,7 @@
 
 **ID:** TASK-2.5
 **Название:** Gameplay Service
-**Ветка:** `feature/gameplay/simulation-stubs`
+**Ветка:** `phase_1_9/feature/gameplay/simulation-stubs`
 **Epic:** Epic 2: Реализация сервисов
 **Зависимости:** phase_1_4, phase_1_8
 
@@ -48,12 +48,12 @@ git pull origin main
 
 ### Шаг 3: Создание worktree и ветки
 ```bash
-git worktree add ../worktrees/feature-gameplay-simulation-stubs -b feature/gameplay/simulation-stubs main
+git worktree add ../worktrees/feature-gameplay-simulation-stubs -b phase_1_9/feature/gameplay/simulation-stubs main
 cd ../worktrees/feature-gameplay-simulation-stubs
 ```
 Или без worktree:
 ```bash
-git checkout -b feature/gameplay/simulation-stubs main
+git checkout -b phase_1_9/feature/gameplay/simulation-stubs main
 ```
 
 ### Шаг 4: Проверка текущего состояния
