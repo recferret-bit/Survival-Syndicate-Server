@@ -1,6 +1,6 @@
 # TASK-1.3: Общая libs библиотека
 
-## Статус: `IN REVIEW`
+## Статус: `DONE`
 
 **Epic:** Epic 1: Базовая инфраструктура
 **Ветка:** `phase_1_3/feature/infra/shared-libs`
@@ -55,3 +55,4 @@ Zod schema validation, subject string constants
 |------|---------|-------|
 | — | Задача создана | System |
 | 2026-02-27 | Подготовка начата | Cursor |
+| 2026-02-27 | Задача завершена | Cursor |
