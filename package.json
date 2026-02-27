@@ -70,10 +70,10 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/swagger-aggregator/test/jest-e2e.json",
 
-    "docker:infra": "docker compose -f docker-compose.yml up -d",
-    "docker:infra:down": "docker compose -f docker-compose.yml down",
-    "docker:full": "docker compose -f docker-compose.yml up -d",
-    "docker:full:down": "docker compose -f docker-compose.yml down"
+    "docker:infra": "docker compose --env-file docker/.env.example -f docker/docker-compose.infra.yml up -d",
+    "docker:infra:down": "docker compose --env-file docker/.env.example -f docker/docker-compose.infra.yml down",
+    "docker:full": "docker compose --env-file docker/.env.example -f docker/docker-compose.full.yml up -d",
+    "docker:full:down": "docker compose --env-file docker/.env.example -f docker/docker-compose.full.yml down"
   },
   "dependencies": {
     "@anatine/zod-nestjs": "2.0.12",
