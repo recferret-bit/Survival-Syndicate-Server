@@ -1,6 +1,6 @@
 # TASK-2.4: Local Orchestrator
 
-## Статус: `IN REVIEW`
+## Статус: `DONE`
 
 **Epic:** Epic 2: Реализация сервисов
 **Ветка:** `phase_1_8/feature/orchestrator/slot-management`
@@ -60,3 +60,4 @@ NATS reconnect_request request/reply
 | — | Задача создана | System |
 | 2026-02-28 | Подготовка начата | Cursor |
 | 2026-02-28 | Переведено в IN REVIEW после прохождения format/lint/test/test:cov/build | Cursor |
+| 2026-02-28 | Задача завершена, статус переведен в DONE | Cursor |
