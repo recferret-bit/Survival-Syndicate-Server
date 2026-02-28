@@ -45,5 +45,8 @@ describe('lib-game-server games schemas', () => {
     expect(GameServerSubjects.MATCHMAKING_FOUND_MATCH).toBe(
       'matchmaking.found_match.v1',
     );
+    expect(GameServerSubjects.ORCHESTRATOR_PLAYER_RECONNECT_REQUEST).toBe(
+      'orchestrator.player.reconnect_request.v1',
+    );
   });
 });

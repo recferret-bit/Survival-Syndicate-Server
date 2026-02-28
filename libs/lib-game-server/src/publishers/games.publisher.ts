@@ -181,4 +181,45 @@ export class GameServerPublisher extends BasePublisher {
       Schemas.MatchmakingFoundMatchEventSchema,
     );
   }
+
+  async publishOrchestratorZoneHeartbeat(
+    dto: Schemas.OrchestratorZoneHeartbeatEvent,
+  ): Promise<void> {
+    await this.emitDurable(
+      Schemas.GameServerSubjects.ORCHESTRATOR_ZONE_HEARTBEAT,
+      dto,
+      Schemas.OrchestratorZoneHeartbeatEventSchema,
+    );
+  }
+
+  async publishGameplayStartSimulation(
+    dto: Schemas.GameplayStartSimulationEvent,
+  ): Promise<void> {
+    await this.emitDurable(
+      Schemas.GameServerSubjects.GAMEPLAY_START_SIMULATION,
+      dto,
+      Schemas.GameplayStartSimulationEventSchema,
+    );
+  }
+
+  async publishGameplayRemovePlayer(
+    dto: Schemas.GameplayRemovePlayerEvent,
+  ): Promise<void> {
+    await this.emitDurable(
+      Schemas.GameServerSubjects.GAMEPLAY_REMOVE_PLAYER,
+      dto,
+      Schemas.GameplayRemovePlayerEventSchema,
+    );
+  }
+
+  async requestOrchestratorPlayerReconnect(
+    dto: Schemas.OrchestratorPlayerReconnectRequest,
+  ): Promise<Schemas.OrchestratorPlayerReconnectResponse> {
+    return this.sendNonDurable(
+      Schemas.GameServerSubjects.ORCHESTRATOR_PLAYER_RECONNECT_REQUEST,
+      dto,
+      Schemas.OrchestratorPlayerReconnectRequestSchema,
+      Schemas.OrchestratorPlayerReconnectResponseSchema,
+    );
+  }
 }
