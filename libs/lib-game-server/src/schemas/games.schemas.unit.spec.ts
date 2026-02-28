@@ -3,6 +3,7 @@ import {
   BetPlacedRequestSchema,
   GameServerSubjects,
   ResetWagerCycleRequestSchema,
+  WorldStateStubSchema,
 } from './games.schemas';
 
 describe('lib-game-server games schemas', () => {
@@ -48,5 +49,18 @@ describe('lib-game-server games schemas', () => {
     expect(GameServerSubjects.ORCHESTRATOR_PLAYER_RECONNECT_REQUEST).toBe(
       'orchestrator.player.reconnect_request.v1',
     );
+    expect(GameServerSubjects.GAMEPLAY_WORLD_STATE_PREFIX).toBe(
+      'gameplay.world_state',
+    );
+  });
+
+  it('validates WorldStateStubSchema', () => {
+    expect(
+      WorldStateStubSchema.parse({
+        serverTick: 0,
+        entities_full: [],
+        events: [],
+      }),
+    ).toEqual({ serverTick: 0, entities_full: [], events: [] });
   });
 });

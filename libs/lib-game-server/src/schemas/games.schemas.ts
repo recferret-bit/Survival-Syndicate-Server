@@ -255,6 +255,15 @@ export type OrchestratorPlayerReconnectResponse = z.infer<
   typeof OrchestratorPlayerReconnectResponseSchema
 >;
 
+/** Stub WorldState for MVP (no real entities) */
+export const WorldStateStubSchema = z.object({
+  serverTick: z.number().int().nonnegative(),
+  entities_full: z.array(z.unknown()),
+  events: z.array(z.unknown()),
+});
+
+export type WorldStateStub = z.infer<typeof WorldStateStubSchema>;
+
 /**
  * Subject definitions for NATS
  */
@@ -277,6 +286,8 @@ export const GameServerSubjects = {
   GAMEPLAY_REMOVE_PLAYER: 'gameplay.remove_player.v1',
   ORCHESTRATOR_PLAYER_RECONNECT_REQUEST:
     'orchestrator.player.reconnect_request.v1',
+  /** Prefix for per-match world state; full subject: gameplay.world_state.{matchId} */
+  GAMEPLAY_WORLD_STATE_PREFIX: 'gameplay.world_state',
 } as const;
 
 export type GameServerSubject =
