@@ -188,6 +188,73 @@ export type MatchmakingFoundMatchEvent = z.infer<
   typeof MatchmakingFoundMatchEventSchema
 >;
 
+export const GameplayServiceHeartbeatEventSchema = z.object({
+  serviceId: z.string().min(1),
+  reportedAt: z.string().datetime().optional(),
+});
+
+export const GameplayStartSimulationEventSchema = z.object({
+  matchId: z.string().min(1),
+  lobbyId: z.string().optional(),
+  playerIds: z
+    .array(
+      z.string().regex(/^\d+$/, 'Player ID must be a positive integer string'),
+    )
+    .min(1),
+  zoneId: z.string().min(1),
+});
+
+export const GameplayRemovePlayerEventSchema = z.object({
+  matchId: z.string().min(1),
+  playerId: z
+    .string()
+    .regex(/^\d+$/, 'Player ID must be a positive integer string'),
+  reason: z.enum(['grace_period_expired']),
+});
+
+export const PlayerConnectionStatusEventSchema = z.object({
+  matchId: z.string().min(1),
+  playerId: z
+    .string()
+    .regex(/^\d+$/, 'Player ID must be a positive integer string'),
+  status: z.enum(['connected', 'disconnected']),
+});
+
+export const OrchestratorPlayerReconnectRequestSchema = z.object({
+  matchId: z.string().min(1),
+  playerId: z
+    .string()
+    .regex(/^\d+$/, 'Player ID must be a positive integer string'),
+});
+
+export const OrchestratorPlayerReconnectResponseSchema = z.object({
+  status: z.enum([
+    'success',
+    'SLOT_NOT_AVAILABLE',
+    'GRACE_EXPIRED',
+    'MATCH_NOT_FOUND',
+  ]),
+});
+
+export type GameplayServiceHeartbeatEvent = z.infer<
+  typeof GameplayServiceHeartbeatEventSchema
+>;
+export type GameplayStartSimulationEvent = z.infer<
+  typeof GameplayStartSimulationEventSchema
+>;
+export type GameplayRemovePlayerEvent = z.infer<
+  typeof GameplayRemovePlayerEventSchema
+>;
+export type PlayerConnectionStatusEvent = z.infer<
+  typeof PlayerConnectionStatusEventSchema
+>;
+export type OrchestratorPlayerReconnectRequest = z.infer<
+  typeof OrchestratorPlayerReconnectRequestSchema
+>;
+export type OrchestratorPlayerReconnectResponse = z.infer<
+  typeof OrchestratorPlayerReconnectResponseSchema
+>;
+
 /**
  * Subject definitions for NATS
  */
@@ -202,8 +269,14 @@ export const GameServerSubjects = {
   GET_USER_STATS: 'games.user-stats.get.v1',
   RESET_WAGER_CYCLE: 'games.wager-cycle.reset.v1',
   ORCHESTRATOR_ZONE_HEARTBEAT: 'orchestrator.zone.heartbeat.v1',
+  GAMEPLAY_SERVICE_HEARTBEAT: 'gameplay.service.heartbeat.v1',
   MATCH_FINISHED: 'match.finished.v1',
   MATCHMAKING_FOUND_MATCH: 'matchmaking.found_match.v1',
+  GAMEPLAY_START_SIMULATION: 'gameplay.start_simulation.v1',
+  PLAYER_CONNECTION_STATUS: 'player.connection.status.v1',
+  GAMEPLAY_REMOVE_PLAYER: 'gameplay.remove_player.v1',
+  ORCHESTRATOR_PLAYER_RECONNECT_REQUEST:
+    'orchestrator.player.reconnect_request.v1',
 } as const;
 
 export type GameServerSubject =
