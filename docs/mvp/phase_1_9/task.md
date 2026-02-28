@@ -1,6 +1,6 @@
 # TASK-2.5: Gameplay Service
 
-## Статус: `PREPARING`
+## Статус: `IN REVIEW`
 
 **Epic:** Epic 2: Реализация сервисов
 **Ветка:** `phase_1_9/feature/gameplay/simulation-stubs`
@@ -54,3 +54,4 @@ NATS start_simulation -> simulation created
 |------|---------|-------|
 | — | Задача создана | System |
 | 2026-02-28 | Подготовка начата | Cursor |
+| 2026-02-28 | Реализация завершена, переведено в IN REVIEW | Cursor |

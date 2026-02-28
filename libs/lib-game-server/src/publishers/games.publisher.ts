@@ -222,4 +222,22 @@ export class GameServerPublisher extends BasePublisher {
       Schemas.OrchestratorPlayerReconnectResponseSchema,
     );
   }
+
+  async publishGameplayServiceHeartbeat(
+    dto: Schemas.GameplayServiceHeartbeatEvent,
+  ): Promise<void> {
+    await this.emitDurable(
+      Schemas.GameServerSubjects.GAMEPLAY_SERVICE_HEARTBEAT,
+      dto,
+      Schemas.GameplayServiceHeartbeatEventSchema,
+    );
+  }
+
+  async publishWorldState(
+    matchId: string,
+    dto: Schemas.WorldStateStub,
+  ): Promise<void> {
+    const subject = `${Schemas.GameServerSubjects.GAMEPLAY_WORLD_STATE_PREFIX}.${matchId}`;
+    await this.emitDurable(subject, dto, Schemas.WorldStateStubSchema);
+  }
 }
