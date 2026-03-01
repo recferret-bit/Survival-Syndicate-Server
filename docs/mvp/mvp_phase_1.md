@@ -38,7 +38,7 @@
 | 7 | TASK-2.3 | Matchmaking Service | ✅ DONE | 4, 5 | [phase_1_7](phase_1_7/task.md) |
 | 8 | TASK-2.4 | Local Orchestrator | ✅ DONE | 4, 7 | [phase_1_8](phase_1_8/task.md) |
 | 9 | TASK-2.5 | Gameplay Service | ✅ DONE | 4, 8 | [phase_1_9](phase_1_9/task.md) |
-| 10 | TASK-2.6 | WebSocket Service — connect | 🔲 NOT STARTED | 4, 8 | [phase_1_10](phase_1_10/task.md) |
+| 10 | TASK-2.6 | WebSocket Service — connect | 🔄 PREPARING | 4, 8 | [phase_1_10](phase_1_10/task.md) |
 | 11 | TASK-2.7 | WebSocket Service — reconnect | 🔲 NOT STARTED | 10 | [phase_1_11](phase_1_11/task.md) |
 
 ### Epic 3: Интеграционное тестирование
