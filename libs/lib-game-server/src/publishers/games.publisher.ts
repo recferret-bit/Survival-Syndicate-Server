@@ -240,4 +240,14 @@ export class GameServerPublisher extends BasePublisher {
     const subject = `${Schemas.GameServerSubjects.GAMEPLAY_WORLD_STATE_PREFIX}.${matchId}`;
     await this.emitDurable(subject, dto, Schemas.WorldStateStubSchema);
   }
+
+  async publishPlayerConnectionStatus(
+    dto: Schemas.PlayerConnectionStatusEvent,
+  ): Promise<void> {
+    await this.emitDurable(
+      Schemas.GameServerSubjects.PLAYER_CONNECTION_STATUS,
+      dto,
+      Schemas.PlayerConnectionStatusEventSchema,
+    );
+  }
 }
