@@ -71,7 +71,10 @@ describe('BalanceNatsController (Integration)', () => {
           currencyIsoCodes: [CurrencyCode.USD],
         }),
         new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error('NATS request-reply timeout')), 4000),
+          setTimeout(
+            () => reject(new Error('NATS request-reply timeout')),
+            4000,
+          ),
         ),
       ]);
     } catch {
@@ -102,7 +105,9 @@ describe('BalanceNatsController (Integration)', () => {
   describe('handleCreateUserBalance', () => {
     it('should create user balance via real NATS using publisher', async () => {
       if (!natsAvailable) {
-        console.warn('Skipping: NATS not reachable (start with npm run docker:infra)');
+        console.warn(
+          'Skipping: NATS not reachable (start with npm run docker:infra)',
+        );
         return;
       }
       const request: CreateUserBalanceRequest = {

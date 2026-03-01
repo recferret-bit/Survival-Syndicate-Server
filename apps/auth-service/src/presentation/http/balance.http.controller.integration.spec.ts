@@ -3,7 +3,6 @@ import {
   INestApplication,
   ValidationPipe,
   ExecutionContext,
-  CanActivate,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
@@ -36,9 +35,10 @@ describe('BalanceHttpController (Integration)', () => {
       process.env.PASSWORD_SECRET || 'test-password-secret';
     moduleRef = await Test.createTestingModule({
       imports: [AppModule],
-    }).overrideGuard(AuthJwtGuard)
+    })
+      .overrideGuard(AuthJwtGuard)
       .useValue({
-        canActivate: async (context: ExecutionContext) => {
+        canActivate: (context: ExecutionContext) => {
           const req = context.switchToHttp().getRequest();
           const auth = req.headers?.authorization;
           const token = auth?.startsWith('Bearer ') ? auth.slice(7) : null;

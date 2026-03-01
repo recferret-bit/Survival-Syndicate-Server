@@ -42,9 +42,7 @@ export class HeartbeatService implements OnModuleInit, OnModuleDestroy {
       });
     } catch (err: unknown) {
       const code =
-        err &&
-        typeof err === 'object' &&
-        'code' in err
+        err && typeof err === 'object' && 'code' in err
           ? (err as { code?: string }).code
           : undefined;
       if (code === '503') {

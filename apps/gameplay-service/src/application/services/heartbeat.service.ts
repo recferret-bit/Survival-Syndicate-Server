@@ -36,13 +36,19 @@ export class HeartbeatService implements OnModuleInit, OnModuleDestroy {
         reportedAt: new Date().toISOString(),
       });
     } catch (err: unknown) {
-      const code = err && typeof err === 'object' && 'code' in err ? (err as { code?: string }).code : undefined;
+      const code =
+        err && typeof err === 'object' && 'code' in err
+          ? (err as { code?: string }).code
+          : undefined;
       if (code === '503') {
         this.logger.warn(
           'NATS JetStream unavailable (503). Is JetStream enabled and stream ready? Will retry.',
         );
       } else {
-        this.logger.warn('Heartbeat publish failed, will retry: %s', String(err));
+        this.logger.warn(
+          'Heartbeat publish failed, will retry: %s',
+          String(err),
+        );
       }
     }
   }

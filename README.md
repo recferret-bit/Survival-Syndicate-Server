@@ -215,8 +215,8 @@ natsClient.send('player.get-character.v1', data);
 
 ## 📦 Алиасы путей
 
-```typescript
-// Приложения
+```plaintext
+# Приложения
 @app/swagger-aggregator/*
 @app/auth-service/*
 @app/player-service/*
@@ -226,7 +226,7 @@ natsClient.send('player.get-character.v1', data);
 @app/game-server/*
 @app/analytics-service/*
 
-// Библиотеки
+# Библиотеки
 @lib/shared/*
 @lib/lib-player/*
 @lib/lib-building/*
@@ -234,7 +234,7 @@ natsClient.send('player.get-character.v1', data);
 @lib/lib-combat-progress/*
 @lib/lib-analytics/*
 
-// Prisma
+# Prisma
 @prisma/meta
 @prisma/catalog
 ```
