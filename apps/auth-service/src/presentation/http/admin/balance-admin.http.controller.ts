@@ -23,7 +23,7 @@ import {
   IncreaseFiatBalanceResponseDto,
 } from '@app/auth-service/application/use-cases/increase-fiat-balance/increase-fiat-balance.dto';
 
-@Controller('admin')
+@Controller('admin/balance')
 @ApiTags('Balance Admin')
 @UseGuards(AdminApiKeyGuard)
 export class BalanceAdminHttpController {

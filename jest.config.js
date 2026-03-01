@@ -6,6 +6,7 @@ module.exports = {
   testEnvironment: 'node',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
   testMatch: ['**/*.unit.spec.ts'],
+  // Integration tests (need DB/NATS) run via: npx jest --testMatch='**/*.integration.spec.ts'
   transform: {
     '^.+\\.(ts|tsx)$': [
       'ts-jest',

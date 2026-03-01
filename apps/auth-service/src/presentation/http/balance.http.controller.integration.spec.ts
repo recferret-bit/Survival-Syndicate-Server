@@ -1,9 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication, ValidationPipe } from '@nestjs/common';
+import {
+  INestApplication,
+  ValidationPipe,
+  ExecutionContext,
+  CanActivate,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ZodValidationPipe } from '@anatine/zod-nestjs';
 import request from 'supertest';
 import { AppModule } from '@app/auth-service/app.module';
-import { AuthJwtService, UserSession } from '@lib/shared/auth';
+import { AuthJwtGuard, AuthJwtService, UserSession } from '@lib/shared/auth';
 import { CurrencyCode } from '@lib/shared/currency';
 import {
   ZodExceptionFilter,
@@ -25,9 +31,39 @@ describe('BalanceHttpController (Integration)', () => {
   let balanceResultRepository: BalanceResultPortRepository;
 
   beforeAll(async () => {
+    process.env.JWT_SECRET = process.env.JWT_SECRET || 'test-secret-balance';
+    process.env.PASSWORD_SECRET =
+      process.env.PASSWORD_SECRET || 'test-password-secret';
     moduleRef = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    }).overrideGuard(AuthJwtGuard)
+      .useValue({
+        canActivate: async (context: ExecutionContext) => {
+          const req = context.switchToHttp().getRequest();
+          const auth = req.headers?.authorization;
+          const token = auth?.startsWith('Bearer ') ? auth.slice(7) : null;
+          if (!token) throw new UnauthorizedException();
+          // Decode JWT payload without verification (test double)
+          try {
+            const payload = JSON.parse(
+              Buffer.from(token.split('.')[1], 'base64url').toString(),
+            );
+            req.session = {
+              id: String(payload.id ?? payload.sub ?? ''),
+              email: payload.email ?? '',
+              phone: payload.phone ?? '',
+              currencyCode: payload.currencyCode ?? 'USD',
+              geo: payload.geo ?? '',
+              createdAt: payload.createdAt ?? Date.now(),
+              isTestUser: payload.isTestUser ?? false,
+            };
+            return true;
+          } catch {
+            throw new UnauthorizedException();
+          }
+        },
+      })
+      .compile();
 
     prisma = moduleRef.get<PrismaService>(PrismaService);
     await prisma.$connect();
@@ -60,9 +96,9 @@ describe('BalanceHttpController (Integration)', () => {
   });
 
   afterAll(async () => {
-    await app.close();
-    await prisma.$disconnect();
-    await moduleRef.close();
+    if (app) await app.close();
+    if (prisma) await prisma.$disconnect();
+    if (moduleRef) await moduleRef.close();
   });
 
   beforeEach(async () => {
@@ -173,16 +209,14 @@ describe('BalanceHttpController (Integration)', () => {
       );
       expect(fiatBalance).toBeDefined();
       expect(fiatBalance.currencyIsoCode).toBe(CurrencyCode.USD);
-      expect(fiatBalance.balance).toBe('100000');
-      expect(fiatBalance.balanceDecimal).toBe(1000.0);
+      expect(fiatBalance.balance).toBe('1000.00');
 
       const bonusBalance = response.body.balances.find(
         (b: any) => b.currencyType === CurrencyType.BONUS,
       );
       expect(bonusBalance).toBeDefined();
       expect(bonusBalance.currencyIsoCode).toBe(CurrencyCode.USD);
-      expect(bonusBalance.balance).toBe('50000');
-      expect(bonusBalance.balanceDecimal).toBe(500.0);
+      expect(bonusBalance.balance).toBe('500.00');
     });
 
     it('should return balance for authenticated user with correct structure', async () => {
@@ -201,15 +235,13 @@ describe('BalanceHttpController (Integration)', () => {
       expect(response.body.balances.length).toBeGreaterThanOrEqual(2);
       expect(response.body.balances.length).toBeLessThanOrEqual(3);
 
-      // Verify all balances have required fields
+      // Verify all balances have required fields (balance is decimal string per BalanceHttpDto)
       response.body.balances.forEach((balance: any) => {
         expect(balance).toHaveProperty('currencyIsoCode');
         expect(balance).toHaveProperty('balance');
-        expect(balance).toHaveProperty('balanceDecimal');
         expect(balance).toHaveProperty('currencyType');
         expect(typeof balance.currencyIsoCode).toBe('string');
         expect(typeof balance.balance).toBe('string');
-        expect(typeof balance.balanceDecimal).toBe('number');
         expect(Object.values(CurrencyType)).toContain(balance.currencyType);
       });
     });

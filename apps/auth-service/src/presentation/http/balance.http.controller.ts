@@ -17,7 +17,7 @@ interface RequestWithSession extends Request {
   session?: UserSession;
 }
 
-@Controller()
+@Controller('balance')
 @ApiTags('Balance')
 @UseGuards(AuthJwtGuard)
 @ApiBearerAuth()

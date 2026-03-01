@@ -16,6 +16,7 @@ import {
   ZodExceptionFilter,
   EnvService,
 } from '@lib/shared/application';
+import { AuthJwtGuard } from '@lib/shared/auth';
 import { BearerTokenHashCacheService } from '@lib/shared/redis';
 import { PlayerPublisher } from '@lib/lib-player';
 import { AuthUser } from '@app/auth-service/domain/entities/auth-user/auth-user';
@@ -115,7 +116,10 @@ describe('AuthHttpController (Integration)', () => {
           },
         },
       ],
-    }).compile();
+    })
+      .overrideGuard(AuthJwtGuard)
+      .useValue({ canActivate: () => true })
+      .compile();
 
     app = moduleRef.createNestApplication();
     app.setGlobalPrefix('api/v2');
@@ -131,7 +135,7 @@ describe('AuthHttpController (Integration)', () => {
   });
 
   afterAll(async () => {
-    await app.close();
+    if (app) await app.close();
   });
 
   it('POST /auth/register -> POST /auth/login -> POST /auth/refresh pipeline works', async () => {

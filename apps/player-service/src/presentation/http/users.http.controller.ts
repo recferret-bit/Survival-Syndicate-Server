@@ -55,7 +55,7 @@ interface RequestWithSession extends Request {
   session?: UserSession;
 }
 
-@Controller()
+@Controller('users')
 @ApiTags('Users')
 export class UsersHttpController {
   private readonly logger = new Logger(UsersHttpController.name);

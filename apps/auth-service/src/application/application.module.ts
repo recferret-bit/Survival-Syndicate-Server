@@ -12,9 +12,10 @@ import { LogoutHandler } from '@app/auth-service/application/use-cases/logout/lo
 import { TokenService } from '@app/auth-service/application/services/token.service';
 import { RefreshTokenStoreService } from '@app/auth-service/application/services/refresh-token-store.service';
 import { LibPlayerModule } from '@lib/lib-player';
+import { RedisModule } from '@lib/shared';
 
 @Module({
-  imports: [InfrastructureModule, LibPlayerModule],
+  imports: [InfrastructureModule, LibPlayerModule, RedisModule],
   providers: [
     GetUserBalanceHandler,
     CreateUserBalanceHandler,

@@ -81,6 +81,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/swagger-aggregator/test/jest-e2e.json",
+    "test:integration": "jest --testMatch='**/*.integration.spec.ts' --runInBand",
+    "test:integration:setup": "node scripts/create-test-databases.mjs && NODE_ENV=local TEST_DIRECT_USERS_DATABASE_URL=postgresql://postgres:postgres@localhost:5432/users_test TEST_DIRECT_BALANCE_DATABASE_URL=postgresql://postgres:postgres@localhost:5432/balance_test npm run prisma:migrate:deploy",
 
     "docker:infra": "docker compose --env-file docker/.env.example -f docker/docker-compose.infra.yml up -d",
     "docker:infra:down": "docker compose --env-file docker/.env.example -f docker/docker-compose.infra.yml down",

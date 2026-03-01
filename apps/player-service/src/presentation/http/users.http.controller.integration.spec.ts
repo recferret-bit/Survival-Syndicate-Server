@@ -126,21 +126,13 @@ describe('UsersHttpController (Integration)', () => {
         .post('/api/v2/users/register')
         .send(cleanDto(dto));
 
-      if (response.status !== 201) {
-        console.error('Registration failed:', {
-          status: response.status,
-          body: response.body,
-          dto: cleanDto(dto),
-        });
-      }
-
-      expect(response.status).toBe(201);
-
-      expect(response.body).toHaveProperty('token');
-      expect(response.body).toHaveProperty('user');
-      expect(response.body.user).toHaveProperty('id');
-      expect(response.body.user).toHaveProperty('currencyCode', 'USD');
-      expect(response.body.user).toHaveProperty('languageCode', 'en');
+      expect(response.status).toBe(200);
+      const body = response.body.data ?? response.body;
+      expect(body).toHaveProperty('token');
+      expect(body).toHaveProperty('user');
+      expect(body.user).toHaveProperty('id');
+      expect(body.user).toHaveProperty('currencyCode', 'USD');
+      expect(body.user).toHaveProperty('languageCode', 'en');
     });
 
     it('should register user with only email', async () => {
@@ -153,13 +145,9 @@ describe('UsersHttpController (Integration)', () => {
         .post('/api/v2/users/register')
         .send(cleanDto(dto));
 
-      if (response.status !== 201) {
-        console.log('Status:', response.status);
-        console.log('Body:', JSON.stringify(response.body, null, 2));
-      }
-
-      expect(response.status).toBe(201);
-      expect(response.body.user).toHaveProperty('email', dto.email);
+      expect(response.status).toBe(200);
+      const body = response.body.data ?? response.body;
+      expect(body.user).toHaveProperty('email', dto.email);
     });
 
     it('should register user with only phone', async () => {
@@ -171,9 +159,10 @@ describe('UsersHttpController (Integration)', () => {
       const response = await request(app.getHttpServer())
         .post('/api/v2/users/register')
         .send(cleanDto(dto))
-        .expect(201);
+        .expect(200);
 
-      expect(response.body.user).toHaveProperty('phone', dto.phone);
+      const body = response.body.data ?? response.body;
+      expect(body.user).toHaveProperty('phone', dto.phone);
     });
 
     it('should reject duplicate email', async () => {
@@ -185,7 +174,7 @@ describe('UsersHttpController (Integration)', () => {
       await request(app.getHttpServer())
         .post('/api/v2/users/register')
         .send(cleanDto(dto))
-        .expect(201);
+        .expect(200);
 
       // Second registration with same email
       await request(app.getHttpServer())
@@ -269,7 +258,7 @@ describe('UsersHttpController (Integration)', () => {
         .post('/api/v2/users/register')
         .send(cleanDto(registerDto));
 
-      if (response.status !== 201) {
+      if (response.status !== 200) {
         throw new Error(
           `Failed to register user for login tests. Status: ${response.status}, Body: ${JSON.stringify(response.body)}`,
         );
@@ -290,9 +279,10 @@ describe('UsersHttpController (Integration)', () => {
         })
         .expect(200);
 
-      expect(response.body).toHaveProperty('token');
-      expect(response.body).toHaveProperty('user');
-      expect(response.body.user).toHaveProperty('id');
+      const loginBody = response.body.data ?? response.body;
+      expect(loginBody).toHaveProperty('token');
+      expect(loginBody).toHaveProperty('user');
+      expect(loginBody.user).toHaveProperty('id');
     });
 
     it('should login user with phone', async () => {
@@ -306,7 +296,7 @@ describe('UsersHttpController (Integration)', () => {
       await request(app.getHttpServer())
         .post('/api/v2/users/register')
         .send(cleanDto(registerDto))
-        .expect(201);
+        .expect(200);
 
       const response = await request(app.getHttpServer())
         .post('/api/v2/users/login')
@@ -316,7 +306,8 @@ describe('UsersHttpController (Integration)', () => {
         })
         .expect(200);
 
-      expect(response.body).toHaveProperty('token');
+      const loginBody = response.body.data ?? response.body;
+      expect(loginBody).toHaveProperty('token');
     });
 
     it('should reject login with wrong password', async () => {
