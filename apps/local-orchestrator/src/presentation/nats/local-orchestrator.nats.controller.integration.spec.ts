@@ -31,6 +31,9 @@ describe('LocalOrchestratorNatsController (Integration)', () => {
       ],
     }).compile();
 
+    const app = moduleRef.createNestApplication();
+    await app.init();
+
     const controller = moduleRef.get(LocalOrchestratorNatsController);
     await controller.handleFoundMatch({
       matchId: 'match-1',
@@ -46,5 +49,7 @@ describe('LocalOrchestratorNatsController (Integration)', () => {
     });
     expect(response.status).toBe('success');
     expect(publisher.publishGameplayStartSimulation).toHaveBeenCalled();
+
+    await app.close();
   });
 });

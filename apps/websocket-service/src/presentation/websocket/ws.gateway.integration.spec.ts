@@ -5,7 +5,7 @@ import { GameServerPublisher, LibGameServerModule } from '@lib/lib-game-server';
 import { ConnectionManagerService } from '@app/websocket-service/application/services/connection-manager.service';
 import { WsGateway } from './ws.gateway';
 
-describe('WsGateway', () => {
+describe('WsGateway (Integration)', () => {
   const mockReconnect = jest.fn().mockResolvedValue({ status: 'success' });
   const mockPublish = jest.fn().mockResolvedValue(undefined);
 
@@ -19,30 +19,25 @@ describe('WsGateway', () => {
     mockPublish.mockClear();
   });
 
-  it('creates with mocked dependencies', () => {
-    const connectionManager = {
-      register: jest.fn(),
-      unregister: jest.fn(),
-      get: jest.fn(),
-      getOtherClientsInMatch: jest.fn().mockReturnValue([]),
-    };
-    const authenticateService = { authenticate: jest.fn() };
-    const reconnectService = { reconnect: jest.fn() };
-    const lobbyStateSync = {
-      getStubState: jest.fn().mockReturnValue({ lobbyId: '', players: [] }),
-    };
-    const gameServerPublisher = {
-      publishPlayerConnectionStatus: jest.fn(),
-    };
-    const gateway = new WsGateway(
-      connectionManager as never,
-      authenticateService as never,
-      reconnectService as never,
-      lobbyStateSync as never,
-      gameServerPublisher as never,
-    );
-    expect(gateway).toBeDefined();
-  });
+  async function createGateway() {
+    const moduleRef = await Test.createTestingModule({
+      imports: [ApplicationModule, LibGameServerModule],
+      providers: [WsGateway],
+    })
+      .overrideProvider(GameServerPublisher)
+      .useValue(mockGameServerPublisher)
+      .compile();
+
+    const gateway = moduleRef.get(WsGateway);
+    const connectionManager = moduleRef.get(ConnectionManagerService);
+    const authJwt = moduleRef.get(AuthJwtService);
+    if (authJwt && typeof authJwt.verifyAsync === 'function') {
+      jest
+        .spyOn(authJwt, 'verifyAsync')
+        .mockResolvedValue({ id: '10' } as never);
+    }
+    return { gateway, connectionManager };
+  }
 
   it('authenticate pipeline with mock NATS returns success', async () => {
     const { gateway, connectionManager } = await createGateway();
@@ -141,24 +136,4 @@ describe('WsGateway', () => {
     expect(data.type).toBe('reconnect_error');
     expect(data.code).toBe('SLOT_NOT_AVAILABLE');
   });
-
-  async function createGateway() {
-    const moduleRef = await Test.createTestingModule({
-      imports: [ApplicationModule, LibGameServerModule],
-      providers: [WsGateway],
-    })
-      .overrideProvider(GameServerPublisher)
-      .useValue(mockGameServerPublisher)
-      .compile();
-
-    const gateway = moduleRef.get(WsGateway);
-    const connectionManager = moduleRef.get(ConnectionManagerService);
-    const authJwt = moduleRef.get(AuthJwtService);
-    if (authJwt && typeof authJwt.verifyAsync === 'function') {
-      jest
-        .spyOn(authJwt, 'verifyAsync')
-        .mockResolvedValue({ id: '10' } as never);
-    }
-    return { gateway, connectionManager };
-  }
 });

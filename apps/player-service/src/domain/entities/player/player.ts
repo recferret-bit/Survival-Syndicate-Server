@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { ValidationException } from '@lib/shared/application';
-import { Entity } from '@app/player-service/domain/entities/entity';
+import { Entity } from '@lib/shared';
 import { PlayerProps } from './player.type';
 
 export class Player extends Entity<PlayerProps> {

@@ -2,6 +2,7 @@
 
 ## Гайды
 - **[01_serverDevelopmentGuide.md](./01_serverDevelopmentGuide.md)** - Полный гайд по разработке сервера (22 части)
+- **[INTEGRATION_TESTS.md](./INTEGRATION_TESTS.md)** - Запуск интеграционных тестов (БД, NATS)
 
 ---
 

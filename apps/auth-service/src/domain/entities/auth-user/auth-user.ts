@@ -1,4 +1,4 @@
-import { Entity } from '@app/auth-service/domain/entities/entity';
+import { Entity } from '@lib/shared';
 import { AuthUserProps } from './auth-user.type';
 
 export class AuthUser extends Entity<AuthUserProps> {

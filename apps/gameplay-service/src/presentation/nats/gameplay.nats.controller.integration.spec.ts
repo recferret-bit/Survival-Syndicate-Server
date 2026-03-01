@@ -29,6 +29,9 @@ describe('GameplayNatsController (Integration)', () => {
       ],
     }).compile();
 
+    const app = moduleRef.createNestApplication();
+    await app.init();
+
     const controller = moduleRef.get(GameplayNatsController);
     simulationManager = moduleRef.get(SimulationManagerService);
 
@@ -42,5 +45,7 @@ describe('GameplayNatsController (Integration)', () => {
     expect(sim).toBeDefined();
     expect(sim?.matchId).toBe('match-1');
     expect(sim?.playerIds).toEqual(['10', '11']);
+
+    await app.close();
   });
 });

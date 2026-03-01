@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Entity } from '../entity';
+import { Entity } from '@lib/shared';
 import { BalanceLedgerEntryProps } from './balance-ledger-entry.type';
 import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
 import { OperationType } from '@app/auth-service/domain/value-objects/operation-type';

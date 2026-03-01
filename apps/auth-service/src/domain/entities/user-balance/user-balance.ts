@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Entity } from '../entity';
+import { Entity } from '@lib/shared';
 import { UserBalanceProps } from './user-balance.type';
 import { BalanceResult } from '../balance-result/balance-result';
 

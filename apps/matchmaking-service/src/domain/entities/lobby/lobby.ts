@@ -1,4 +1,4 @@
-import { Entity } from '@app/matchmaking-service/domain/entities/entity';
+import { Entity } from '@lib/shared';
 import { LobbyProps, ZoneSelection } from './lobby.type';
 
 export class Lobby extends Entity<LobbyProps> {
