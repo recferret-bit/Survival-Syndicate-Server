@@ -1,6 +1,6 @@
 # TASK-2.7: WebSocket Service — reconnect
 
-## Статус: `NOT STARTED`
+## Статус: `DONE`
 
 **Epic:** Epic 2: Реализация сервисов
 **Ветка:** `phase_1_11/feature/websocket/reconnect-flow`
@@ -55,3 +55,6 @@ WS reconnect pipeline
 | Дата | Событие | Агент |
 |------|---------|-------|
 | — | Задача создана | System |
+| 2026-03-01 | Подготовка начата | Cursor |
+| 2026-03-01 | Reconnect flow, LobbyStateSync, integration tests, статус IN REVIEW | Cursor |
+| 2026-03-01 | Задача завершена, статус DONE | Cursor |

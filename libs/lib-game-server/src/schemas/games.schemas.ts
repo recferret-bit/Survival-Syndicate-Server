@@ -217,7 +217,7 @@ export const PlayerConnectionStatusEventSchema = z.object({
   playerId: z
     .string()
     .regex(/^\d+$/, 'Player ID must be a positive integer string'),
-  status: z.enum(['connected', 'disconnected']),
+  status: z.enum(['connected', 'disconnected', 'reconnected']),
 });
 
 export const OrchestratorPlayerReconnectRequestSchema = z.object({
