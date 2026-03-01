@@ -5,6 +5,7 @@ import {
   NatsClientModule,
   DEFAULT_NATS_CLIENT_STREAM_NAME,
 } from '@lib/shared';
+import { LibGameServerModule } from '@lib/lib-game-server';
 import { ApplicationModule } from '@app/websocket-service/application/application.module';
 import { InfrastructureModule } from '@app/websocket-service/infrastructure/infrastructure.module';
 import { WebsocketHttpController } from './http/websocket.http.controller';
@@ -17,6 +18,7 @@ import { WsGateway } from './websocket/ws.gateway';
     CqrsModule.forRoot(),
     ApplicationModule,
     InfrastructureModule,
+    LibGameServerModule,
     NatsClientModule.forRoot({ streamName: DEFAULT_NATS_CLIENT_STREAM_NAME }),
   ],
   controllers: [WebsocketHttpController, WebsocketNatsController],

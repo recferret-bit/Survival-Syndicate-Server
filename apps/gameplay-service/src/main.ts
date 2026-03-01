@@ -18,7 +18,6 @@ class App {
     await appBootstrap.setupHealthCheckApp(healthPort);
     await appBootstrap.setupMetricsApp(metricsPort);
     await appBootstrap.startNatsMicroservice('gameplay');
-    await appBootstrap.startAllMicroservices();
   }
 }
 

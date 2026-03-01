@@ -110,15 +110,18 @@ npm run prisma:generate
 
 # Запустить миграции
 npm run prisma:migrate:dev
+
+# Для start:local скопировать порты (чтобы каждый сервис слушал свой порт)
+cp .env.example .env
 ```
 
 ### Запуск сервисов
 
 ```bash
-# Запустить все сервисы локально
+# Запустить все сервисы локально (нужен .env с уникальными *_APP_PORT, см. .env.example)
 npm run start:local
 
-# Или конкретный сервис в режиме watch
+# Или один сервис в режиме watch
 npm run start:player-service:dev
 npm run start:building-service:dev
 npm run start:game-server:dev

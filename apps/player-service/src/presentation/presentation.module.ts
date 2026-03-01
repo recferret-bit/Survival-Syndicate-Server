@@ -4,6 +4,7 @@ import {
   AuthJwtModule,
   EnvModule,
   NatsClientModule,
+  RedisModule,
   DEFAULT_NATS_CLIENT_STREAM_NAME,
 } from '@lib/shared';
 import { ApplicationModule } from '@app/player-service/application/application.module';
@@ -18,6 +19,7 @@ import { UsersNatsController } from './nats/users.nats.controller';
     CqrsModule.forRoot(),
     ApplicationModule,
     InfrastructureModule,
+    RedisModule,
     AuthJwtModule,
     NatsClientModule.forRoot({ streamName: DEFAULT_NATS_CLIENT_STREAM_NAME }),
   ],

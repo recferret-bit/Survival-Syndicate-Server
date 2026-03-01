@@ -53,11 +53,17 @@ export class SyncActiveUsersCacheHandler
         updated: syncedCount > 0,
       };
     } catch (error) {
+      const err = error instanceof Error ? error : new Error(String(error));
       this.logger.error(
-        `Error syncing bearer token hashes: ${error.message}`,
-        error.stack,
+        `Error syncing bearer token hashes: ${err.message}`,
+        err.stack,
       );
-      throw error;
+      return {
+        success: false,
+        totalUsers: 0,
+        cacheSize: 0,
+        updated: false,
+      };
     }
   }
 }

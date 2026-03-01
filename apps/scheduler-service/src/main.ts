@@ -17,7 +17,6 @@ class App {
     await appBootstrap.startNatsMicroservice('cron');
     await appBootstrap.setupHealthCheckApp(healthPort);
     await appBootstrap.setupMetricsApp(metricsPort);
-    await appBootstrap.startAllMicroservices();
   }
 }
 

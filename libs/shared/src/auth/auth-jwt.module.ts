@@ -7,6 +7,6 @@ import { AuthJwtGuard } from './auth-jwt.guard';
 @Module({
   imports: [EnvModule.forRoot(), RedisModule],
   providers: [AuthJwtService, AuthJwtGuard],
-  exports: [AuthJwtService, AuthJwtGuard],
+  exports: [AuthJwtService, AuthJwtGuard, RedisModule],
 })
 export class AuthJwtModule {}

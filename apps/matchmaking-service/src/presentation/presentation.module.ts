@@ -4,6 +4,7 @@ import {
   AuthJwtModule,
   EnvModule,
   NatsClientModule,
+  RedisModule,
   DEFAULT_NATS_CLIENT_STREAM_NAME,
 } from '@lib/shared';
 import { ApplicationModule } from '@app/matchmaking-service/application/application.module';
@@ -17,6 +18,7 @@ import { MatchmakingNatsController } from './nats/matchmaking.nats.controller';
     CqrsModule.forRoot(),
     ApplicationModule,
     InfrastructureModule,
+    RedisModule,
     AuthJwtModule,
     NatsClientModule.forRoot({ streamName: DEFAULT_NATS_CLIENT_STREAM_NAME }),
   ],

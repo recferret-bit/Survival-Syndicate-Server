@@ -47,7 +47,7 @@
     "start:analytics-service": "nest start analytics-service",
     "start:analytics-service:dev": "nest start analytics-service --watch",
     "start:analytics-service:debug": "nest start analytics-service --debug --watch",
-    "start:local": "concurrently -n auth,player,scheduler \"npx dotenv-cli -e .env -- nest start auth-service\" \"npx dotenv-cli -e .env -- nest start player-service\" \"npx dotenv-cli -e .env -- nest start scheduler-service\"",
+    "start:local": "concurrently -n swagger,auth,player,match,orch,gameplay,ws,building,combat,scheduler,game,analytics \"npx dotenv-cli -e .env -- nest start swagger-aggregator\" \"npx dotenv-cli -e .env -- nest start auth-service\" \"npx dotenv-cli -e .env -- nest start player-service\" \"npx dotenv-cli -e .env -- nest start matchmaking-service\" \"npx dotenv-cli -e .env -- nest start local-orchestrator\" \"npx dotenv-cli -e .env -- nest start gameplay-service\" \"npx dotenv-cli -e .env -- nest start websocket-service\" \"npx dotenv-cli -e .env -- nest start building-service\" \"npx dotenv-cli -e .env -- nest start combat-progress-service\" \"npx dotenv-cli -e .env -- nest start scheduler-service\" \"npx dotenv-cli -e .env -- nest start game-server\" \"npx dotenv-cli -e .env -- nest start analytics-service\"",
     "start:prod": "node dist/apps/swagger-aggregator/main",
 
     "prisma:generate": "npm run prisma:generate:users && npm run prisma:generate:balance",
