@@ -1,6 +1,6 @@
 # TASK-2.6: WebSocket Service — connect
 
-## Статус: `PREPARING`
+## Статус: `IN REVIEW`
 
 **Epic:** Epic 2: Реализация сервисов
 **Ветка:** `phase_1_10/feature/websocket/connect-flow`
@@ -55,3 +55,4 @@ WS connect + authenticate flow (mock)
 |------|---------|-------|
 | — | Задача создана | System |
 | 2026-03-01 | Подготовка начата | Cursor |
+| 2026-03-01 | Реализация завершена, переведено в IN REVIEW | Cursor |

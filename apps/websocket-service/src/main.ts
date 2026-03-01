@@ -1,4 +1,5 @@
 import { ApplicationBootstrapBuilder } from '@lib/shared';
+import { WsAdapter } from '@nestjs/platform-ws';
 import { name, version } from '../package.json';
 import { AppModule } from './app.module';
 
@@ -8,6 +9,10 @@ class App {
       name,
       version,
     ).createApp(AppModule);
+
+    appBootstrap.application.useWebSocketAdapter(
+      new WsAdapter(appBootstrap.application),
+    );
 
     const servicePort = appBootstrap.envService.get('WEBSOCKET_APP_PORT');
     const healthPort = appBootstrap.envService.getHealthPort(servicePort);
