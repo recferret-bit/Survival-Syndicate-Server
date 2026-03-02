@@ -124,6 +124,10 @@ npm run test:cov
 npm run test:e2e
 ```
 
+**Mandatory test docs sync:**
+- Every new test must be reflected in `apps/{service}/TESTS.md` for the relevant app.
+- The documented commands must use this pattern: `test:{service}:(unit/integration/e2e)`.
+
 ## Architecture
 
 ### Clean Architecture Layers
@@ -166,6 +170,9 @@ apps/{service}/src/
 - Business logic lives in domain entities/services only
 - Handlers are thin orchestrators (<50 lines)
 - Use CQRS pattern: Commands for writes, Queries for reads
+- HTTP/NATS/WebSocket controllers and gateways are orchestration-only: route to dedicated use-cases/services instead of embedding business flow logic
+- WebSocket flows (`authenticate`, `reconnect`, `disconnect`, `input`) should each have a dedicated use-case/service entry point
+- Hardcoded values (magic strings/numbers) are prohibited in application code; use enums/constants/config/contracts
 
 ### Game Server Architecture
 
@@ -272,6 +279,8 @@ Two shared PostgreSQL databases:
 - **DO NOT** hardcode NATS subjects — always use library contracts
 - **DO NOT** define ports as interfaces — use abstract classes for NestJS DI
 - **DO NOT** import framework code in domain layer
+- **DO NOT** implement websocket authenticate/reconnect/disconnect/input flow directly inside gateway methods
+- **DO NOT** leave magic strings/numbers inline when they can be represented by enums/constants/config
 - **DO NOT** skip running `npm run lint` after code changes
 
 ## Documentation References

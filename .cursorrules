@@ -58,6 +58,9 @@ apps/{service}/src/
 - Application ports: MUST be abstract classes (not interfaces) for NestJS DI
 - Handlers: Thin orchestrators (<50 lines)
 - CQRS: Commands for writes, Queries for reads
+- Controllers and gateways (HTTP/NATS/WebSocket): only route/validate/map and then call dedicated use-cases/services
+- WebSocket flows (`authenticate`, `reconnect`, `disconnect`, `input`) must be implemented as dedicated use-cases/services, not in gateway bodies
+- Hardcoded values (magic strings/numbers) are prohibited in application code; use constants, enums, configs, and shared contracts
 
 ## Path Aliases - USE THESE
 
@@ -230,6 +233,10 @@ npm run test:cov      # Coverage
 npm run test:e2e      # E2E tests
 ```
 
+**Test Documentation Rule (MANDATORY):**
+- Every new test MUST be reflected in `TESTS.md` of the corresponding app (`apps/{service}/TESTS.md`).
+- Each app-level `TESTS.md` MUST document test run commands using this naming pattern: `test:{service}:(unit/integration/e2e)`.
+
 **Test Pyramid:** 70% unit, 20% integration, 10% E2E
 **Quality First:** Test business logic and real-world scenarios, NOT trivial getters/setters.
 
@@ -254,11 +261,14 @@ npm run test:e2e      # E2E tests
 - Hardcode NATS subjects (use library contracts)
 - Define ports as interfaces (use abstract classes for NestJS DI)
 - Import framework code in domain layer
+- Implement websocket authenticate/reconnect/disconnect/input flow directly inside gateway methods
+- Leave magic strings or magic numbers inline when a constant/enum/config value is available
 - Skip running `npm run lint` after code changes
 
 **DO:**
 - Keep handlers thin (<50 lines)
 - Use CQRS (Commands for writes, Queries for reads)
+- Keep controllers/gateways orchestration-only and delegate to explicit use-cases/services
 - Use path aliases (@app/*, @lib/*, @prisma/*)
 - Follow test pyramid
 - Run `npm run lint` after EVERY code change

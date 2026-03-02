@@ -69,6 +69,10 @@ npm run test:cov
 npm run test:e2e
 ```
 
+**Mandatory test docs sync:**
+- Every newly added test must be documented in `TESTS.md` for the corresponding app (`apps/{service}/TESTS.md`).
+- Commands in that file must follow: `test:{service}:(unit/integration/e2e)`.
+
 ### Infrastructure (Docker Compose)
 ```bash
 # Start all infrastructure (PostgreSQL, NATS, Redis)
@@ -110,6 +114,9 @@ apps/{service}/src/
 - Application ports: MUST be abstract classes (not interfaces) for NestJS DI
 - Business logic: ONLY in domain entities/services
 - Handlers: Thin orchestrators (<50 lines)
+- Presentation layer (HTTP/NATS/WebSocket): controllers and gateways only route/validate/map and delegate to dedicated use-cases/services
+- WebSocket flows (`authenticate`, `reconnect`, `disconnect`, `input`) must be implemented in dedicated use-cases/services, not inside gateway methods
+- Hardcoded values (magic strings/numbers) are prohibited in application code; use constants, enums, configuration, and shared contracts
 
 ### Game Server Architecture
 
@@ -206,11 +213,13 @@ Two shared PostgreSQL databases (not per-service):
 - Hardcode NATS subjects (use library contracts)
 - Define ports as interfaces (use abstract classes for NestJS DI)
 - Import framework code in domain layer
+- Introduce magic strings or magic numbers when a constant/enum/config value can be used
 - Skip running `npm run lint` after code changes
 
 **DO:**
 - Keep handlers thin (<50 lines)
 - Use CQRS pattern (Commands for writes, Queries for reads)
+- Keep controllers/gateways orchestration-only and route requests to explicit use-cases/services
 - Use path aliases (@app/*, @lib/*, @prisma/*)
 - Follow test pyramid (70% unit, 20% integration, 10% E2E)
 - Run `npm run lint` after EVERY code change
