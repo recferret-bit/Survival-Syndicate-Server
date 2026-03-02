@@ -15,17 +15,17 @@ class App {
       version,
     ).createApp(AppModule);
 
-    const balancePort = appBootstrap.envService.get('BALANCE_APP_PORT');
-    const healthPort = appBootstrap.envService.getHealthPort(balancePort);
-    const metricsPort = appBootstrap.envService.getMetricsPort(balancePort);
-    const balanceApiPrefix = appBootstrap.envService.get(
-      'BALANCE_APP_HTTP_PREFIX',
+    const authPort = appBootstrap.envService.get('AUTH_APP_PORT');
+    const healthPort = appBootstrap.envService.getHealthPort(authPort);
+    const metricsPort = appBootstrap.envService.getMetricsPort(authPort);
+    const authApiPrefix = appBootstrap.envService.get(
+      'AUTH_APP_HTTP_PREFIX',
     );
 
-    await appBootstrap.startHttpServer(balancePort, balanceApiPrefix);
+    await appBootstrap.startHttpServer(authPort, authApiPrefix);
     await appBootstrap.setupHealthCheckApp(healthPort);
     await appBootstrap.setupMetricsApp(metricsPort);
-    await appBootstrap.startNatsMicroservice('balance');
+    await appBootstrap.startNatsMicroservice('auth');
   }
 }
 

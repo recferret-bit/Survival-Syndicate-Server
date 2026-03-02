@@ -53,7 +53,10 @@ export const commonSchema = z.object({
   TEST_DIRECT_CURRENCY_RATE_DATABASE_URL: z.string().optional(),
 
   USERS_APP_HTTP_PREFIX: z.string().default('api/v2'),
+  PLAYER_APP_HTTP_PREFIX: z.string().default('api/v2'),
+
   BALANCE_APP_HTTP_PREFIX: z.string().default('api/v2'),
+  AUTH_APP_HTTP_PREFIX: z.string().default('api/v2'),
   PAYMENTS_APP_HTTP_PREFIX: z.string().default('api/v2'),
   TEST_PAYMENT_PROVIDER_HTTP_PREFIX: z.string().default('api/v2'),
   GAMES_APP_HTTP_PREFIX: z.string().default('api/v2'),
@@ -68,9 +71,17 @@ export const commonSchema = z.object({
   USERS_APP_PORT: z.string().default('3000'),
   USERS_HEALTH_PORT: z.string().default('5000'),
 
+  PLAYER_APP_HOST: z.string().default('localhost'),
+  PLAYER_APP_PORT: z.string().default('3000'),
+  PLAYER_HEALTH_PORT: z.string().default('5000'),
+
   BALANCE_APP_HOST: z.string().default('localhost'),
   BALANCE_APP_PORT: z.string().default('3001'),
   BALANCE_HEALTH_PORT: z.string().default('5001'),
+
+  AUTH_APP_HOST: z.string().default('localhost'),
+  AUTH_APP_PORT: z.string().default('3001'),
+  AUTH_HEALTH_PORT: z.string().default('5001'),
 
   PAYMENTS_APP_HOST: z.string().default('localhost'),
   PAYMENTS_APP_PORT: z.string().default('3002'),
@@ -122,6 +133,9 @@ export const commonSchema = z.object({
 
   CRON_APP_PORT: z.string().default('5200'),
   CRON_HEALTH_PORT: z.string().default('5200'),
+
+  SCHEDULER_APP_PORT: z.string().default('5200'),
+  SCHEDULER_HEALTH_PORT: z.string().default('5200'),
 
   CURRENCY_RATE_APP_PORT: z.string().default('3007'),
   CURRENCY_RATE_CRON_EXPRESSION: z.string().default('* * * * *'),

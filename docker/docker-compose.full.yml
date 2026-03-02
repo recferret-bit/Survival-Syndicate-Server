@@ -59,7 +59,7 @@ services:
     command: sh -c "npm install && npm run start:auth-service"
     environment:
       NODE_ENV: ${NODE_ENV:-development}
-      BALANCE_APP_PORT: 3001
+      AUTH_APP_PORT: 3001
       NATS_SERVERS: nats://nats:4222
       REDIS_URL: redis://redis:6379
       JWT_SECRET: ${JWT_SECRET:-local-jwt-secret}
@@ -94,7 +94,7 @@ services:
     command: sh -c "npm install && npm run start:player-service"
     environment:
       NODE_ENV: ${NODE_ENV:-development}
-      USERS_APP_PORT: 3002
+      PLAYER_APP_PORT: 3002
       NATS_SERVERS: nats://nats:4222
       REDIS_URL: redis://redis:6379
       JWT_SECRET: ${JWT_SECRET:-local-jwt-secret}
@@ -129,7 +129,7 @@ services:
     command: sh -c "npm install && npm run start:scheduler-service"
     environment:
       NODE_ENV: ${NODE_ENV:-development}
-      CRON_APP_PORT: 5200
+      SCHEDULER_APP_PORT: 5200
       NATS_SERVERS: nats://nats:4222
       REDIS_URL: redis://redis:6379
       JWT_SECRET: ${JWT_SECRET:-local-jwt-secret}
@@ -191,28 +191,6 @@ services:
       REDIS_URL: redis://redis:6379
     ports:
       - "3004:3004"
-    volumes:
-      - ..:/app
-      - root_node_modules:/app/node_modules
-    depends_on:
-      nats:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    restart: unless-stopped
-
-  game-server:
-    image: node:22-alpine
-    container_name: ss-game-server
-    working_dir: /app
-    command: sh -c "npm install && npm run start:game-server"
-    environment:
-      NODE_ENV: ${NODE_ENV:-development}
-      PORT: 3005
-      NATS_SERVERS: nats://nats:4222
-      REDIS_URL: redis://redis:6379
-    ports:
-      - "3005:3005"
     volumes:
       - ..:/app
       - root_node_modules:/app/node_modules

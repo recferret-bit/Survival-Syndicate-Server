@@ -1,6 +1,5 @@
 {
-  "name": "@casino/cron",
+  "name": "@survival-syndicate/scheduler-service",
   "version": "1.0.3",
-  "private": true,
-  "description": "Cron jobs microservice for casino platform"
+  "private": true
 }

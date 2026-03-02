@@ -5,7 +5,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "nest build --all",
-    "build:all": "npm run build swagger-aggregator && npm run build auth-service && npm run build player-service && npm run build matchmaking-service && npm run build local-orchestrator && npm run build gameplay-service && npm run build websocket-service && npm run build building-service && npm run build combat-progress-service && npm run build scheduler-service && npm run build game-server && npm run build analytics-service",
+    "build:all": "npm run build swagger-aggregator && npm run build auth-service && npm run build player-service && npm run build matchmaking-service && npm run build local-orchestrator && npm run build gameplay-service && npm run build websocket-service && npm run build building-service && npm run build combat-progress-service && npm run build scheduler-service && npm run build analytics-service",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "lint": "eslint \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "lint:fix": "eslint \"apps/**/*.ts\" \"libs/**/*.ts\" --fix",
@@ -41,13 +41,10 @@
     "start:scheduler-service": "nest start scheduler-service",
     "start:scheduler-service:dev": "nest start scheduler-service --watch",
     "start:scheduler-service:debug": "nest start scheduler-service --debug --watch",
-    "start:game-server": "nest start game-server",
-    "start:game-server:dev": "nest start game-server --watch",
-    "start:game-server:debug": "nest start game-server --debug --watch",
     "start:analytics-service": "nest start analytics-service",
     "start:analytics-service:dev": "nest start analytics-service --watch",
     "start:analytics-service:debug": "nest start analytics-service --debug --watch",
-    "start:local": "concurrently -n swagger,auth,player,match,orch,gameplay,ws,building,combat,scheduler,game,analytics \"npx dotenv-cli -e .env -- nest start swagger-aggregator\" \"npx dotenv-cli -e .env -- nest start auth-service\" \"npx dotenv-cli -e .env -- nest start player-service\" \"npx dotenv-cli -e .env -- nest start matchmaking-service\" \"npx dotenv-cli -e .env -- nest start local-orchestrator\" \"npx dotenv-cli -e .env -- nest start gameplay-service\" \"npx dotenv-cli -e .env -- nest start websocket-service\" \"npx dotenv-cli -e .env -- nest start building-service\" \"npx dotenv-cli -e .env -- nest start combat-progress-service\" \"npx dotenv-cli -e .env -- nest start scheduler-service\" \"npx dotenv-cli -e .env -- nest start game-server\" \"npx dotenv-cli -e .env -- nest start analytics-service\"",
+    "start:local": "concurrently -n swagger,auth,player,match,orch,gameplay,ws,building,combat,scheduler,analytics \"npx dotenv-cli -e .env -- nest start swagger-aggregator\" \"npx dotenv-cli -e .env -- nest start auth-service\" \"npx dotenv-cli -e .env -- nest start player-service\" \"npx dotenv-cli -e .env -- nest start matchmaking-service\" \"npx dotenv-cli -e .env -- nest start local-orchestrator\" \"npx dotenv-cli -e .env -- nest start gameplay-service\" \"npx dotenv-cli -e .env -- nest start websocket-service\" \"npx dotenv-cli -e .env -- nest start building-service\" \"npx dotenv-cli -e .env -- nest start combat-progress-service\" \"npx dotenv-cli -e .env -- nest start scheduler-service\" \"npx dotenv-cli -e .env -- nest start analytics-service\"",
     "start:prod": "node dist/apps/swagger-aggregator/main",
 
     "prisma:generate": "npm run prisma:generate:users && npm run prisma:generate:balance",

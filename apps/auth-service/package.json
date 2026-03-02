@@ -1,6 +1,5 @@
 {
-  "name": "@casino/balance",
+  "name": "@survival-syndicate/auth-service",
   "version": "1.0.18",
-  "private": true,
-  "description": "Balance microservice for casino platform"
+  "private": true
 }

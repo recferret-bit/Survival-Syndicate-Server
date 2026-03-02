@@ -83,12 +83,6 @@
       "@app/scheduler-service/*": [
         "apps/scheduler-service/src/*"
       ],
-      "@app/game-server": [
-        "apps/game-server/src"
-      ],
-      "@app/game-server/*": [
-        "apps/game-server/src/*"
-      ],
       "@app/analytics-service": [
         "apps/analytics-service/src"
       ],

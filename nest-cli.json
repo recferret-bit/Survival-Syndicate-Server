@@ -98,15 +98,6 @@
         "tsConfigPath": "apps/scheduler-service/tsconfig.app.json"
       }
     },
-    "game-server": {
-      "type": "application",
-      "root": "apps/game-server",
-      "entryFile": "main",
-      "sourceRoot": "apps/game-server/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/game-server/tsconfig.app.json"
-      }
-    },
     "analytics-service": {
       "type": "application",
       "root": "apps/analytics-service",
