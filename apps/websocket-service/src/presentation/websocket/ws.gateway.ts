@@ -10,59 +10,57 @@ import {
 import { Logger } from '@nestjs/common';
 import { WsResponse } from '@nestjs/websockets';
 import type { WebSocket } from 'ws';
-import { ConnectionManagerService } from '@app/websocket-service/application/services/connection-manager.service';
-import { AuthenticateService } from '@app/websocket-service/application/services/authenticate.service';
-import { ReconnectService } from '@app/websocket-service/application/services/reconnect.service';
-import { LobbyStateSyncService } from '@app/websocket-service/application/services/lobby-state-sync.service';
-import { GameServerPublisher } from '@lib/lib-game-server';
-import {
-  ClientAuthenticateSchema,
-  ClientReconnectSchema,
-  ClientInputSchema,
-} from '@app/websocket-service/application/schemas/ws-messages.schema';
+import { HandleAuthenticateUseCase } from '@app/websocket-service/application/use-cases/websocket/handle-authenticate.use-case';
+import { HandleDisconnectUseCase } from '@app/websocket-service/application/use-cases/websocket/handle-disconnect.use-case';
+import { HandleInputUseCase } from '@app/websocket-service/application/use-cases/websocket/handle-input.use-case';
+import { HandleReconnectUseCase } from '@app/websocket-service/application/use-cases/websocket/handle-reconnect.use-case';
+import { WsGatewayResult } from '@app/websocket-service/application/use-cases/websocket/ws-gateway-result.type';
+import { ClientMessageType } from '@app/websocket-service/application/schemas/ws-messages.schema';
 
-const GRACE_PERIOD_SECONDS = 60;
+type WsClient = WebSocket & { id?: string };
+enum WsReadyState {
+  Connecting = 0,
+  Open = 1,
+  Closing = 2,
+  Closed = 3,
+}
+const WS_EVENT_MESSAGE = 'message';
+const WS_RESPONSE_ERROR_TYPE = 'error';
+const WS_RESPONSE_INVALID_JSON_MESSAGE = 'Invalid JSON';
+const CLIENT_ID_PREFIX = 'conn';
 
 @WebSocketGateway({ path: '/ws' })
 export class WsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private readonly logger = new Logger(WsGateway.name);
 
   @WebSocketServer()
-  server!: { clients: Set<WebSocket & { id?: string }> };
+  server!: { clients: Set<WsClient> };
 
   constructor(
-    private readonly connectionManager: ConnectionManagerService,
-    private readonly authenticateService: AuthenticateService,
-    private readonly reconnectService: ReconnectService,
-    private readonly lobbyStateSync: LobbyStateSyncService,
-    private readonly gameServerPublisher: GameServerPublisher,
+    private readonly handleAuthenticateUseCase: HandleAuthenticateUseCase,
+    private readonly handleReconnectUseCase: HandleReconnectUseCase,
+    private readonly handleDisconnectUseCase: HandleDisconnectUseCase,
+    private readonly handleInputUseCase: HandleInputUseCase,
   ) {}
 
-  handleConnection(client: WebSocket & { id?: string }): void {
+  handleConnection(client: WsClient): void {
     client.id =
       (client as unknown as { id?: string }).id ??
-      `conn-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      `${CLIENT_ID_PREFIX}-${Date.now()}-${Math.random().toString(36).slice(2)}`;
     this.logger.log(`Client connected: ${client.id}`);
   }
 
-  handleDisconnect(client: WebSocket & { id?: string }): void {
+  handleDisconnect(client: WsClient): void {
     const clientId = client.id ?? '';
-    const info = this.connectionManager.unregister(clientId);
-    if (info) {
-      this.broadcastPlayerDisconnected(clientId, info.matchId, info.playerId);
-      void this.gameServerPublisher.publishPlayerConnectionStatus({
-        matchId: info.matchId,
-        playerId: info.playerId,
-        status: 'disconnected',
-      });
-    }
+    const result = this.handleDisconnectUseCase.execute({ clientId });
+    this.dispatchResult(client, result);
     this.logger.log(`Client disconnected: ${clientId}`);
   }
 
-  @SubscribeMessage('message')
+  @SubscribeMessage(WS_EVENT_MESSAGE)
   async handleMessage(
     @MessageBody() data: string | Record<string, unknown>,
-    @ConnectedSocket() client: WebSocket & { id?: string },
+    @ConnectedSocket() client: WsClient,
   ): Promise<WsResponse<Record<string, unknown>> | undefined> {
     const raw = typeof data === 'string' ? data : JSON.stringify(data ?? {});
     let payload: Record<string, unknown>;
@@ -70,225 +68,110 @@ export class WsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       payload = JSON.parse(raw) as Record<string, unknown>;
     } catch {
       return {
-        event: 'message',
-        data: { type: 'error', message: 'Invalid JSON' },
-      };
-    }
-    const type = payload?.type as string | undefined;
-    if (type === 'authenticate') {
-      return this.handleAuthenticate(client, payload);
-    }
-    if (type === 'reconnect') {
-      return this.handleReconnect(client, payload);
-    }
-    if (type === 'input') {
-      return this.handleInput(client, payload);
-    }
-    return undefined;
-  }
-
-  private async handleAuthenticate(
-    client: WebSocket & { id?: string },
-    payload: Record<string, unknown>,
-  ): Promise<WsResponse<Record<string, unknown>>> {
-    const parsed = ClientAuthenticateSchema.safeParse(payload);
-    if (!parsed.success) {
-      return {
-        event: 'message',
-        data: { type: 'authenticate_error', code: 'INVALID_PAYLOAD' },
-      };
-    }
-    const { token, matchId } = parsed.data;
-    try {
-      const result = await this.authenticateService.authenticate({
-        token,
-        matchId,
-      });
-      if (!result.success) {
-        return {
-          event: 'message',
-          data: { type: 'authenticate_error', code: result.code },
-        };
-      }
-      const clientId = client.id ?? '';
-      this.connectionManager.register(
-        clientId,
-        result.playerId,
-        result.matchId,
-      );
-      void this.gameServerPublisher.publishPlayerConnectionStatus({
-        matchId: result.matchId,
-        playerId: result.playerId,
-        status: 'connected',
-      });
-      return {
-        event: 'message',
+        event: WS_EVENT_MESSAGE,
         data: {
-          type: 'authenticate_success',
-          matchId: result.matchId,
-          playerId: result.playerId,
+          type: WS_RESPONSE_ERROR_TYPE,
+          message: WS_RESPONSE_INVALID_JSON_MESSAGE,
         },
       };
-    } catch {
-      return {
-        event: 'message',
-        data: { type: 'authenticate_error', code: 'UNAUTHORIZED' },
-      };
     }
-  }
 
-  private async handleReconnect(
-    client: WebSocket & { id?: string },
-    payload: Record<string, unknown>,
-  ): Promise<WsResponse<Record<string, unknown>>> {
-    const parsed = ClientReconnectSchema.safeParse(payload);
-    if (!parsed.success) {
-      return {
-        event: 'message',
-        data: { type: 'reconnect_error', code: 'INVALID_PAYLOAD' },
-      };
-    }
-    const { token, matchId } = parsed.data;
-    try {
-      const result = await this.reconnectService.reconnect({ token, matchId });
-      if (!result.success) {
-        setImmediate(() => {
-          try {
-            if (client.readyState === 1) client.close();
-          } catch {
-            /* ignore */
-          }
+    const type = payload.type;
+    let result: WsGatewayResult | undefined;
+    switch (type) {
+      case ClientMessageType.Authenticate:
+        result = await this.handleAuthenticateUseCase.execute({
+          clientId: client.id ?? '',
+          payload,
         });
-        return {
-          event: 'message',
-          data: { type: 'reconnect_error', code: result.code },
-        };
+        break;
+      case ClientMessageType.Reconnect:
+        result = await this.handleReconnectUseCase.execute({
+          clientId: client.id ?? '',
+          payload,
+        });
+        break;
+      case ClientMessageType.Input:
+        result = this.handleInputUseCase.execute({
+          clientId: client.id ?? '',
+          payload,
+        });
+        break;
+      default:
+        result = undefined;
+        break;
+    }
+
+    if (!result) return undefined;
+
+    this.dispatchResult(client, result);
+    if (!result.response) return undefined;
+
+    return { event: WS_EVENT_MESSAGE, data: result.response };
+  }
+
+  private dispatchResult(client: WsClient, result: WsGatewayResult): void {
+    if (result.notifyClientIds && result.notifyPayload) {
+      this.broadcast(result.notifyClientIds, result.notifyPayload);
+    }
+
+    if (result.selfPayloads && result.selfPayloads.length > 0) {
+      for (const payload of result.selfPayloads) {
+        setImmediate(() => {
+          this.sendIfOpen(client, payload);
+        });
       }
-      const clientId = client.id ?? '';
-      this.connectionManager.register(
-        clientId,
-        result.playerId,
-        result.matchId,
-      );
-      void this.gameServerPublisher.publishPlayerConnectionStatus({
-        matchId: result.matchId,
-        playerId: result.playerId,
-        status: 'reconnected',
-      });
-      this.broadcastPlayerReconnected(
-        clientId,
-        result.matchId,
-        result.playerId,
-      );
-      const lobbyState = this.lobbyStateSync.getStubState(result.matchId);
-      const worldState = {
-        serverTick: 0,
-        serverTimestamp: Date.now(),
-        entities_full: [],
-        entities_delta: [],
-        entities_removed: [],
-      };
-      setImmediate(() => {
-        if (client.readyState === 1) {
-          client.send(
-            JSON.stringify({
-              type: 'lobby_state_update',
-              lobbyId: lobbyState.lobbyId,
-              players: lobbyState.players,
-            }),
-          );
-        }
-      });
-      return {
-        event: 'message',
-        data: {
-          type: 'reconnect_success',
-          matchId: result.matchId,
-          playerId: result.playerId,
-          worldState,
-        },
-      };
-    } catch {
+    }
+
+    if (result.closeClient) {
       setImmediate(() => {
         try {
-          if (client.readyState === 1) client.close();
+          this.closeIfOpen(client);
         } catch {
           /* ignore */
         }
       });
-      return {
-        event: 'message',
-        data: { type: 'reconnect_error', code: 'UNAUTHORIZED' },
-      };
     }
   }
 
-  private handleInput(
-    client: WebSocket & { id?: string },
+  private broadcast(
+    clientIds: string[],
     payload: Record<string, unknown>,
-  ): WsResponse<Record<string, unknown>> | undefined {
-    const info = this.connectionManager.get(client.id ?? '');
-    if (!info) return undefined;
-    ClientInputSchema.safeParse(payload);
-    const state = {
-      type: 'state',
-      serverTick: 0,
-      serverTimestamp: Date.now(),
-      lastProcessedInput: (payload.sequenceNumber as number) ?? 0,
-      entities_full: [],
-      entities_delta: [],
-      entities_removed: [],
-      events: [],
-    };
-    return { event: 'message', data: state };
-  }
-
-  private broadcastPlayerReconnected(
-    excludeClientId: string,
-    matchId: string,
-    playerId: string,
   ): void {
-    const others = this.connectionManager.getOtherClientsInMatch(
-      matchId,
-      excludeClientId,
-    );
-    const payload = JSON.stringify({
-      type: 'player_reconnected',
-      playerId,
-    });
-    const clients = this.server?.clients as
-      | Set<WebSocket & { id?: string }>
-      | undefined;
+    const serializedPayload = JSON.stringify(payload);
+    const clients = this.server?.clients as Set<WsClient> | undefined;
     if (!clients) return;
+
     for (const ws of clients) {
-      if (ws.id && others.includes(ws.id) && ws.readyState === 1) {
-        ws.send(payload);
+      if (ws.id && clientIds.includes(ws.id)) {
+        switch (ws.readyState) {
+          case WsReadyState.Open:
+            ws.send(serializedPayload);
+            break;
+          default:
+            break;
+        }
       }
     }
   }
 
-  private broadcastPlayerDisconnected(
-    excludeClientId: string,
-    matchId: string,
-    playerId: string,
-  ): void {
-    const others = this.connectionManager.getOtherClientsInMatch(
-      matchId,
-      excludeClientId,
-    );
-    const payload = JSON.stringify({
-      type: 'player_disconnected',
-      playerId,
-      gracePeriodSeconds: GRACE_PERIOD_SECONDS,
-    });
-    const clients = this.server?.clients as
-      | Set<WebSocket & { id?: string }>
-      | undefined;
-    if (!clients) return;
-    for (const ws of clients) {
-      if (ws.id && others.includes(ws.id) && ws.readyState === 1) {
-        ws.send(payload);
-      }
+  private sendIfOpen(client: WsClient, payload: Record<string, unknown>): void {
+    switch (client.readyState) {
+      case WsReadyState.Open:
+        client.send(JSON.stringify(payload));
+        break;
+      default:
+        break;
+    }
+  }
+
+  private closeIfOpen(client: WsClient): void {
+    switch (client.readyState) {
+      case WsReadyState.Open:
+        client.close();
+        break;
+      default:
+        break;
     }
   }
 }

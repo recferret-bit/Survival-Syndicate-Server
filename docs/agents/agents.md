@@ -29,6 +29,9 @@
 
 ## Ненарушаемые правила проекта (кратко)
 - **Clean Architecture:** Domain без NestJS/Prisma; ports = abstract classes; handlers тонкие.
+- **Presentation как оркестратор:** HTTP/NATS/WebSocket контроллеры и gateway только роутят/валидируют/маппят и делегируют в конкретный use-case/service.
+- **WebSocket use-cases:** `authenticate`, `reconnect`, `disconnect`, `input` должны жить в отдельных use-case/service, а не в методах gateway.
+- **Без magic values:** не оставлять захардкоженные строки/числа в прикладном коде; выносить в constants/enums/config/contracts.
 - **DTO/схемы:** валидация через Zod (`@anatine/zod-nestjs` / `createZodDto`) + Swagger аннотации.
 - **NATS:** никогда не хардкодить subjects; использовать контракты из `libs/lib-*` и Zod schemas.
 - **Деньги/ID:**

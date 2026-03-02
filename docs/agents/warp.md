@@ -31,6 +31,9 @@ npm run test:e2e
 
 ## Чек-лист финального ревью
 - Clean Architecture соблюдена (Domain не зависит от NestJS/Prisma).
+- Controllers/gateways в presentation-слое являются thin orchestrators и делегируют в use-cases/services.
+- WebSocket-логика `authenticate`/`reconnect`/`disconnect`/`input` вынесена в отдельные use-case/service.
+- В прикладном коде нет magic strings/numbers: используются enums/constants/config/contracts.
 - DTO/схемы валидируются через Zod.
 - NATS subjects не хардкодятся, используются `libs/lib-*`.
 - `bigint` не появляется в прикладном коде.

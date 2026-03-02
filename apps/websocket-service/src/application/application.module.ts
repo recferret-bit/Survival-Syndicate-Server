@@ -6,6 +6,10 @@ import { ConnectionManagerService } from './services/connection-manager.service'
 import { AuthenticateService } from './services/authenticate.service';
 import { ReconnectService } from './services/reconnect.service';
 import { LobbyStateSyncService } from './services/lobby-state-sync.service';
+import { HandleAuthenticateUseCase } from './use-cases/websocket/handle-authenticate.use-case';
+import { HandleReconnectUseCase } from './use-cases/websocket/handle-reconnect.use-case';
+import { HandleDisconnectUseCase } from './use-cases/websocket/handle-disconnect.use-case';
+import { HandleInputUseCase } from './use-cases/websocket/handle-input.use-case';
 
 @Module({
   imports: [InfrastructureModule, AuthJwtModule, LibGameServerModule],
@@ -14,12 +18,20 @@ import { LobbyStateSyncService } from './services/lobby-state-sync.service';
     AuthenticateService,
     ReconnectService,
     LobbyStateSyncService,
+    HandleAuthenticateUseCase,
+    HandleReconnectUseCase,
+    HandleDisconnectUseCase,
+    HandleInputUseCase,
   ],
   exports: [
     ConnectionManagerService,
     AuthenticateService,
     ReconnectService,
     LobbyStateSyncService,
+    HandleAuthenticateUseCase,
+    HandleReconnectUseCase,
+    HandleDisconnectUseCase,
+    HandleInputUseCase,
   ],
 })
 export class ApplicationModule {}

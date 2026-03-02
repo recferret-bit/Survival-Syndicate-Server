@@ -1,7 +1,12 @@
 import { z } from 'zod';
+export enum ClientMessageType {
+  Authenticate = 'authenticate',
+  Reconnect = 'reconnect',
+  Input = 'input',
+}
 
 export const ClientAuthenticateSchema = z.object({
-  type: z.literal('authenticate'),
+  type: z.literal(ClientMessageType.Authenticate),
   token: z.string().min(1),
   matchId: z.string().min(1),
 });
@@ -9,7 +14,7 @@ export const ClientAuthenticateSchema = z.object({
 export type ClientAuthenticate = z.infer<typeof ClientAuthenticateSchema>;
 
 export const ClientReconnectSchema = z.object({
-  type: z.literal('reconnect'),
+  type: z.literal(ClientMessageType.Reconnect),
   token: z.string().min(1),
   matchId: z.string().min(1),
 });
@@ -17,7 +22,7 @@ export const ClientReconnectSchema = z.object({
 export type ClientReconnect = z.infer<typeof ClientReconnectSchema>;
 
 export const ClientInputSchema = z.object({
-  type: z.literal('input'),
+  type: z.literal(ClientMessageType.Input),
   clientTimestamp: z.number().optional(),
   sequenceNumber: z.number().optional(),
   movement: z.object({ x: z.number(), y: z.number() }).optional(),
