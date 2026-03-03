@@ -6,8 +6,7 @@ import { UserBalancePortRepository } from '@app/auth-service/application/ports/u
 import { BalanceResultPortRepository } from '@app/auth-service/application/ports/balance-result.port.repository';
 import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
 import { BalanceAmount } from '@app/auth-service/domain/value-objects/balance-amount';
-import { ConflictException } from '@nestjs/common';
-import { stringToBigNumber } from '@lib/shared';
+import { stringToBigNumber, HttpAlreadyExistsException } from '@lib/shared';
 
 @CommandHandler(CreateUserBalanceCommand)
 export class CreateUserBalanceHandler
@@ -37,7 +36,7 @@ export class CreateUserBalanceHandler
       this.logger.log(
         `User balance already exists for userId: ${userId}, throwing ConflictException`,
       );
-      throw new ConflictException(
+      throw new HttpAlreadyExistsException(
         `User balance already exists for userId: ${userId}`,
       );
     }

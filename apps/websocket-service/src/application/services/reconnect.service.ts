@@ -1,6 +1,10 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthJwtService } from '@lib/shared/auth';
-import { GameServerPublisher } from '@lib/lib-game-server';
+import {
+  GameServerPublisher,
+  OrchestratorPlayerReconnectResponse,
+} from '@lib/lib-game-server';
+import { WsErrorCode } from '@app/websocket-service/application/use-cases/websocket/ws-error.enums';
 
 export type ReconnectInput = {
   token: string;
@@ -9,7 +13,21 @@ export type ReconnectInput = {
 
 export type ReconnectResult =
   | { success: true; playerId: string; matchId: string }
-  | { success: false; code: string };
+  | { success: false; code: WsErrorCode };
+
+type OrchestratorReconnectErrorStatus = Exclude<
+  OrchestratorPlayerReconnectResponse['status'],
+  'success'
+>;
+
+const ORCHESTRATOR_RECONNECT_ERROR_CODE_MAP: Record<
+  OrchestratorReconnectErrorStatus,
+  WsErrorCode
+> = {
+  [WsErrorCode.SlotNotAvailable]: WsErrorCode.SlotNotAvailable,
+  [WsErrorCode.GraceExpired]: WsErrorCode.GraceExpired,
+  [WsErrorCode.MatchNotFound]: WsErrorCode.MatchNotFound,
+};
 
 @Injectable()
 export class ReconnectService {
@@ -32,12 +50,21 @@ export class ReconnectService {
         playerId,
       });
     if (response.status !== 'success') {
-      return { success: false, code: response.status };
+      return {
+        success: false,
+        code: this.mapReconnectStatusToErrorCode(response.status),
+      };
     }
     return {
       success: true,
       playerId,
       matchId: input.matchId,
     };
+  }
+
+  private mapReconnectStatusToErrorCode(
+    status: OrchestratorReconnectErrorStatus,
+  ): WsErrorCode {
+    return ORCHESTRATOR_RECONNECT_ERROR_CODE_MAP[status];
   }
 }

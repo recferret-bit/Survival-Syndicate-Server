@@ -9,6 +9,7 @@ export class PrismaService
   extends PrismaClient
   implements OnModuleInit, OnModuleDestroy
 {
+  declare $transaction: PrismaClient['$transaction'];
   constructor(envService: EnvService) {
     const connectionString = envService.getUsersDatabaseUrl();
     const poolConfig = envService.getPoolConfig(connectionString);

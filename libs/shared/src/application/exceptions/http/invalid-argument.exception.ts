@@ -1,9 +1,14 @@
 import { HttpStatus } from '@nestjs/common';
 import { BaseHttpException } from './base.exception';
-import { ErrorCode } from '../error-code.enum';
+import { HttpErrorCode, HttpErrorType } from '@lib/shared/http';
 
 export class HttpInvalidArgumentException extends BaseHttpException {
   constructor(message = 'Invalid argument') {
-    super(ErrorCode.InvalidArgument, message, HttpStatus.BAD_REQUEST);
+    super(
+      HttpErrorType.BadRequest,
+      HttpErrorCode.InvalidArgument,
+      message,
+      HttpStatus.BAD_REQUEST,
+    );
   }
 }

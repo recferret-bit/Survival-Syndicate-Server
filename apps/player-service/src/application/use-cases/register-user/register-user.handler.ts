@@ -1,10 +1,15 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { BadRequestException, ConflictException, Logger } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { RegisterUserCommand } from './register-user.command';
 import { RegisterUserResponseDto } from './register-user.dto';
 import { Currencies } from '@lib/shared/currency/currency';
 import { Languages } from '@lib/shared/language/language';
-import { Utils, EnvService } from '@lib/shared/application';
+import {
+  Utils,
+  EnvService,
+  HttpAlreadyExistsException,
+  HttpInvalidArgumentException,
+} from '@lib/shared/application';
 import { AuthJwtService, UserSession } from '@lib/shared/auth';
 import { User } from '@app/player-service/domain/entities/user/user';
 import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
@@ -53,7 +58,7 @@ export class RegisterUserHandler
     // Validate currency ISO code (Zod schema validates format, but we need the Currency object)
     const currency = Currencies.find((c) => c.getIsoCode() === currencyIsoCode);
     if (!currency) {
-      throw new BadRequestException(
+      throw new HttpInvalidArgumentException(
         `Invalid currency ISO code: ${currencyIsoCode}`,
       );
     }
@@ -61,7 +66,7 @@ export class RegisterUserHandler
     // Validate language ISO code (Zod schema validates format, but we need the Language object)
     const language = Languages.find((l) => l.getIsoCode() === languageIsoCode);
     if (!language) {
-      throw new BadRequestException(
+      throw new HttpInvalidArgumentException(
         `Invalid language ISO code: ${languageIsoCode}`,
       );
     }
@@ -72,7 +77,7 @@ export class RegisterUserHandler
       phone,
     );
     if (existingUser) {
-      throw new ConflictException(
+      throw new HttpAlreadyExistsException(
         'User with this email or phone already exists',
       );
     }
@@ -87,8 +92,8 @@ export class RegisterUserHandler
 
     // Parse birthday if provided
     let birthdayDate: Date | undefined;
-    if (request.birthday) {
-      birthdayDate = new Date(request.birthday);
+    if (birthday) {
+      birthdayDate = new Date(birthday);
     }
 
     // Use Prisma transaction to ensure atomicity: user creation, tracking creation, and balance creation

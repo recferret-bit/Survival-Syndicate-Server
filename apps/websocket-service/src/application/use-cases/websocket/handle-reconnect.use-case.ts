@@ -5,6 +5,10 @@ import { LobbyStateSyncService } from '@app/websocket-service/application/servic
 import { ClientReconnectSchema } from '@app/websocket-service/application/schemas/ws-messages.schema';
 import { GameServerPublisher } from '@lib/lib-game-server';
 import { WsGatewayResult } from './ws-gateway-result.type';
+import {
+  WsErrorCode,
+  WsErrorType,
+} from '@app/websocket-service/application/use-cases/websocket/ws-error.enums';
 
 type HandleReconnectInput = {
   clientId: string;
@@ -25,8 +29,8 @@ export class HandleReconnectUseCase {
     if (!parsed.success) {
       return {
         response: {
-          type: 'reconnect_error',
-          code: 'INVALID_PAYLOAD',
+          type: WsErrorType.Reconnect,
+          code: WsErrorCode.InvalidPayload,
         },
       };
     }
@@ -37,7 +41,7 @@ export class HandleReconnectUseCase {
       if (!result.success) {
         return {
           response: {
-            type: 'reconnect_error',
+            type: WsErrorType.Reconnect,
             code: result.code,
           },
           closeClient: true,
@@ -90,8 +94,8 @@ export class HandleReconnectUseCase {
     } catch {
       return {
         response: {
-          type: 'reconnect_error',
-          code: 'UNAUTHORIZED',
+          type: WsErrorType.Reconnect,
+          code: WsErrorCode.Unauthorized,
         },
         closeClient: true,
       };

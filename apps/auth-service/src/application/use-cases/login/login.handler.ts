@@ -1,11 +1,14 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { UnauthorizedException } from '@nestjs/common';
 import { LoginQuery } from './login.query';
 import { LoginResponseDto } from './login.dto';
 import { AuthUserPortRepository } from '@app/auth-service/application/ports/auth-user.port.repository';
 import { TokenService } from '@app/auth-service/application/services/token.service';
 import { RefreshTokenStoreService } from '@app/auth-service/application/services/refresh-token-store.service';
-import { Utils, EnvService } from '@lib/shared/application';
+import {
+  Utils,
+  EnvService,
+  HttpUnauthorizedException,
+} from '@lib/shared/application';
 import { BearerTokenHashCacheService } from '@lib/shared/redis';
 
 @QueryHandler(LoginQuery)
@@ -22,7 +25,7 @@ export class LoginHandler implements IQueryHandler<LoginQuery> {
     const { email, password } = query.request;
     const user = await this.authUserRepository.findByEmail(email);
     if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new HttpUnauthorizedException('Invalid credentials');
     }
 
     const passwordSecret =
@@ -32,7 +35,7 @@ export class LoginHandler implements IQueryHandler<LoginQuery> {
       password,
     );
     if (!user.verifyPasswordHash(passwordHash)) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new HttpUnauthorizedException('Invalid credentials');
     }
 
     const roles = ['user'];

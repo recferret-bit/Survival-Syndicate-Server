@@ -1,14 +1,14 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import {
-  BadRequestException,
-  ConflictException,
-  Logger,
-  NotFoundException,
-} from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { AttachEmailCommand } from './attach-email.command';
 import { AttachEmailResponseDto } from './attach-email.dto';
 import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
 import { stringToBigNumber } from '@lib/shared';
+import {
+  HttpAlreadyExistsException,
+  HttpInvalidArgumentException,
+  HttpNotFoundException,
+} from '@lib/shared/application';
 
 @CommandHandler(AttachEmailCommand)
 export class AttachEmailHandler implements ICommandHandler<AttachEmailCommand> {
@@ -27,18 +27,22 @@ export class AttachEmailHandler implements ICommandHandler<AttachEmailCommand> {
     // Find user
     const user = await this.userRepository.findById(userIdNumber);
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new HttpNotFoundException('User not found');
     }
 
     // Check if user already has email
     if (user.email) {
-      throw new BadRequestException('User already has an email address');
+      throw new HttpInvalidArgumentException(
+        'User already has an email address',
+      );
     }
 
     // Check if email is already taken by another user
     const existingUser = await this.userRepository.findByEmail(request.email);
     if (existingUser) {
-      throw new ConflictException('Email is already taken by another user');
+      throw new HttpAlreadyExistsException(
+        'Email is already taken by another user',
+      );
     }
 
     // Update user with email

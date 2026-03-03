@@ -2,13 +2,13 @@ import { HttpStatus } from '@nestjs/common';
 import { BaseHttpException } from './base.exception';
 import { HttpErrorCode, HttpErrorType } from '@lib/shared/http';
 
-export class HttpNotFoundException extends BaseHttpException {
-  constructor(message = 'Not found') {
+export class HttpForbiddenException extends BaseHttpException {
+  constructor(message = 'Forbidden') {
     super(
-      HttpErrorType.NotFound,
-      HttpErrorCode.NotFound,
+      HttpErrorType.Forbidden,
+      HttpErrorCode.Forbidden,
       message,
-      HttpStatus.NOT_FOUND,
+      HttpStatus.FORBIDDEN,
     );
   }
 }

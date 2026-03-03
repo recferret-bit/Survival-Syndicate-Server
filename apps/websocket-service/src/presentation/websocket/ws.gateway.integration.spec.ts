@@ -3,6 +3,11 @@ import { AuthJwtService } from '@lib/shared/auth';
 import { ApplicationModule } from '@app/websocket-service/application/application.module';
 import { GameServerPublisher, LibGameServerModule } from '@lib/lib-game-server';
 import { ConnectionManagerService } from '@app/websocket-service/application/services/connection-manager.service';
+import { ClientMessageType } from '@app/websocket-service/application/schemas/ws-messages.schema';
+import {
+  WsErrorCode,
+  WsErrorType,
+} from '@app/websocket-service/application/use-cases/websocket/ws-error.enums';
 import { WsGateway } from './ws.gateway';
 
 describe('WsGateway (Integration)', () => {
@@ -45,7 +50,7 @@ describe('WsGateway (Integration)', () => {
     const mockClient = { id: 'test-client-1' };
     const result = await gateway.handleMessage(
       JSON.stringify({
-        type: 'authenticate',
+        type: ClientMessageType.Authenticate,
         token: 'any',
         matchId: 'match-1',
       }),
@@ -78,7 +83,7 @@ describe('WsGateway (Integration)', () => {
     const mockClient = { id: 'reconnect-client-1' };
     const result = await gateway.handleMessage(
       JSON.stringify({
-        type: 'reconnect',
+        type: ClientMessageType.Reconnect,
         token: 'any',
         matchId: 'match-2',
       }),
@@ -124,7 +129,7 @@ describe('WsGateway (Integration)', () => {
     };
     const result = await gateway.handleMessage(
       JSON.stringify({
-        type: 'reconnect',
+        type: ClientMessageType.Reconnect,
         token: 'any',
         matchId: 'match-3',
       }),
@@ -133,7 +138,7 @@ describe('WsGateway (Integration)', () => {
 
     expect(result?.data).toBeDefined();
     const data = result?.data as Record<string, unknown>;
-    expect(data.type).toBe('reconnect_error');
-    expect(data.code).toBe('SLOT_NOT_AVAILABLE');
+    expect(data.type).toBe(WsErrorType.Reconnect);
+    expect(data.code).toBe(WsErrorCode.SlotNotAvailable);
   });
 });

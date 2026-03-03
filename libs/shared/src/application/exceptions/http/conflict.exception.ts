@@ -2,13 +2,13 @@ import { HttpStatus } from '@nestjs/common';
 import { BaseHttpException } from './base.exception';
 import { HttpErrorCode, HttpErrorType } from '@lib/shared/http';
 
-export class HttpNotFoundException extends BaseHttpException {
-  constructor(message = 'Not found') {
+export class HttpConflictException extends BaseHttpException {
+  constructor(message = 'Conflict') {
     super(
-      HttpErrorType.NotFound,
-      HttpErrorCode.NotFound,
+      HttpErrorType.Conflict,
+      HttpErrorCode.Conflict,
       message,
-      HttpStatus.NOT_FOUND,
+      HttpStatus.CONFLICT,
     );
   }
 }

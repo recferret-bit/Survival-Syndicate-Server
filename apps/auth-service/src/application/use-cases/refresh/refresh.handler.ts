@@ -1,10 +1,13 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { UnauthorizedException } from '@nestjs/common';
 import { RefreshCommand } from './refresh.command';
 import { RefreshResponseDto } from './refresh.dto';
 import { TokenService } from '@app/auth-service/application/services/token.service';
 import { RefreshTokenStoreService } from '@app/auth-service/application/services/refresh-token-store.service';
-import { Utils, EnvService } from '@lib/shared/application';
+import {
+  Utils,
+  EnvService,
+  HttpUnauthorizedException,
+} from '@lib/shared/application';
 import { AuthUserPortRepository } from '@app/auth-service/application/ports/auth-user.port.repository';
 import { BearerTokenHashCacheService } from '@lib/shared/redis';
 
@@ -30,12 +33,12 @@ export class RefreshHandler implements ICommandHandler<RefreshCommand> {
 
     const storedHash = await this.refreshTokenStore.get(payload.id);
     if (!storedHash || storedHash !== incomingHash) {
-      throw new UnauthorizedException('Invalid refresh token');
+      throw new HttpUnauthorizedException('Invalid refresh token');
     }
 
     const user = await this.authUserRepository.findById(payload.id);
     if (!user) {
-      throw new UnauthorizedException('User not found');
+      throw new HttpUnauthorizedException('User not found');
     }
 
     const tokens = await this.tokenService.generateTokenPair({

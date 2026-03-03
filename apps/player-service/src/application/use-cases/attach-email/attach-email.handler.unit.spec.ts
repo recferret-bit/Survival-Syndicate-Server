@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import {
-  BadRequestException,
-  ConflictException,
-  NotFoundException,
-} from '@nestjs/common';
+  HttpAlreadyExistsException,
+  HttpInvalidArgumentException,
+  HttpNotFoundException,
+} from '@lib/shared/application';
 import { AttachEmailHandler } from './attach-email.handler';
 import { AttachEmailCommand } from './attach-email.command';
 import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
@@ -23,7 +23,7 @@ describe('AttachEmailHandler (Unit)', () => {
       create: jest.fn(),
       update: jest.fn(),
       findAllBanned: jest.fn(),
-    } as any;
+    } as unknown as jest.Mocked<UserPortRepository>;
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -72,7 +72,7 @@ describe('AttachEmailHandler (Unit)', () => {
       expect(userRepository.update).toHaveBeenCalledWith(12345, { email });
     });
 
-    it('should throw NotFoundException when user not found', async () => {
+    it('should throw HttpNotFoundException when user not found', async () => {
       const userId = '99999';
       const email = 'newemail@example.com';
 
@@ -80,14 +80,14 @@ describe('AttachEmailHandler (Unit)', () => {
 
       await expect(
         handler.execute(new AttachEmailCommand(userId, { email })),
-      ).rejects.toThrow(NotFoundException);
+      ).rejects.toThrow(HttpNotFoundException);
 
       expect(userRepository.findById).toHaveBeenCalledWith(99999);
       expect(userRepository.findByEmail).not.toHaveBeenCalled();
       expect(userRepository.update).not.toHaveBeenCalled();
     });
 
-    it('should throw BadRequestException when user already has email', async () => {
+    it('should throw HttpInvalidArgumentException when user already has email', async () => {
       const userId = '12345';
       const email = 'newemail@example.com';
       const user = UserFixtures.createUser({
@@ -100,7 +100,7 @@ describe('AttachEmailHandler (Unit)', () => {
 
       await expect(
         handler.execute(new AttachEmailCommand(userId, { email })),
-      ).rejects.toThrow(BadRequestException);
+      ).rejects.toThrow(HttpInvalidArgumentException);
       await expect(
         handler.execute(new AttachEmailCommand(userId, { email })),
       ).rejects.toThrow('User already has an email address');
@@ -110,7 +110,7 @@ describe('AttachEmailHandler (Unit)', () => {
       expect(userRepository.update).not.toHaveBeenCalled();
     });
 
-    it('should throw ConflictException when email is already taken', async () => {
+    it('should throw HttpAlreadyExistsException when email is already taken', async () => {
       const userId = '12345';
       const email = 'taken@example.com';
       const user = UserFixtures.createUser({
@@ -128,7 +128,7 @@ describe('AttachEmailHandler (Unit)', () => {
 
       await expect(
         handler.execute(new AttachEmailCommand(userId, { email })),
-      ).rejects.toThrow(ConflictException);
+      ).rejects.toThrow(HttpAlreadyExistsException);
       await expect(
         handler.execute(new AttachEmailCommand(userId, { email })),
       ).rejects.toThrow('Email is already taken by another user');

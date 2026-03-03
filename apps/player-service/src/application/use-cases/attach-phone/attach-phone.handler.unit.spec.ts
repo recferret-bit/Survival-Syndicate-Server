@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import {
-  BadRequestException,
-  ConflictException,
-  NotFoundException,
-} from '@nestjs/common';
+  HttpAlreadyExistsException,
+  HttpInvalidArgumentException,
+  HttpNotFoundException,
+} from '@lib/shared/application';
 import { AttachPhoneHandler } from './attach-phone.handler';
 import { AttachPhoneCommand } from './attach-phone.command';
 import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
@@ -23,7 +23,7 @@ describe('AttachPhoneHandler (Unit)', () => {
       create: jest.fn(),
       update: jest.fn(),
       findAllBanned: jest.fn(),
-    } as any;
+    } as unknown as jest.Mocked<UserPortRepository>;
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -72,7 +72,7 @@ describe('AttachPhoneHandler (Unit)', () => {
       expect(userRepository.update).toHaveBeenCalledWith(12345, { phone });
     });
 
-    it('should throw NotFoundException when user not found', async () => {
+    it('should throw HttpNotFoundException when user not found', async () => {
       const userId = '99999';
       const phone = '+9876543210';
 
@@ -80,14 +80,14 @@ describe('AttachPhoneHandler (Unit)', () => {
 
       await expect(
         handler.execute(new AttachPhoneCommand(userId, { phone })),
-      ).rejects.toThrow(NotFoundException);
+      ).rejects.toThrow(HttpNotFoundException);
 
       expect(userRepository.findById).toHaveBeenCalledWith(99999);
       expect(userRepository.findByPhone).not.toHaveBeenCalled();
       expect(userRepository.update).not.toHaveBeenCalled();
     });
 
-    it('should throw BadRequestException when user already has phone', async () => {
+    it('should throw HttpInvalidArgumentException when user already has phone', async () => {
       const userId = '12345';
       const phone = '+9876543210';
       const user = UserFixtures.createUser({
@@ -100,7 +100,7 @@ describe('AttachPhoneHandler (Unit)', () => {
 
       await expect(
         handler.execute(new AttachPhoneCommand(userId, { phone })),
-      ).rejects.toThrow(BadRequestException);
+      ).rejects.toThrow(HttpInvalidArgumentException);
       await expect(
         handler.execute(new AttachPhoneCommand(userId, { phone })),
       ).rejects.toThrow('User already has a phone number');
@@ -110,7 +110,7 @@ describe('AttachPhoneHandler (Unit)', () => {
       expect(userRepository.update).not.toHaveBeenCalled();
     });
 
-    it('should throw ConflictException when phone is already taken', async () => {
+    it('should throw HttpAlreadyExistsException when phone is already taken', async () => {
       const userId = '12345';
       const phone = '+9876543210';
       const user = UserFixtures.createUser({
@@ -128,7 +128,7 @@ describe('AttachPhoneHandler (Unit)', () => {
 
       await expect(
         handler.execute(new AttachPhoneCommand(userId, { phone })),
-      ).rejects.toThrow(ConflictException);
+      ).rejects.toThrow(HttpAlreadyExistsException);
       await expect(
         handler.execute(new AttachPhoneCommand(userId, { phone })),
       ).rejects.toThrow('Phone is already taken by another user');

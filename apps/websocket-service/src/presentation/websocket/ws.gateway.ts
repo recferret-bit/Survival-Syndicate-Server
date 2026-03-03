@@ -16,6 +16,7 @@ import { HandleInputUseCase } from '@app/websocket-service/application/use-cases
 import { HandleReconnectUseCase } from '@app/websocket-service/application/use-cases/websocket/handle-reconnect.use-case';
 import { WsGatewayResult } from '@app/websocket-service/application/use-cases/websocket/ws-gateway-result.type';
 import { ClientMessageType } from '@app/websocket-service/application/schemas/ws-messages.schema';
+import { WsErrorType } from '@app/websocket-service/application/use-cases/websocket/ws-error.enums';
 
 type WsClient = WebSocket & { id?: string };
 enum WsReadyState {
@@ -25,7 +26,6 @@ enum WsReadyState {
   Closed = 3,
 }
 const WS_EVENT_MESSAGE = 'message';
-const WS_RESPONSE_ERROR_TYPE = 'error';
 const WS_RESPONSE_INVALID_JSON_MESSAGE = 'Invalid JSON';
 const CLIENT_ID_PREFIX = 'conn';
 
@@ -70,7 +70,7 @@ export class WsGateway implements OnGatewayConnection, OnGatewayDisconnect {
       return {
         event: WS_EVENT_MESSAGE,
         data: {
-          type: WS_RESPONSE_ERROR_TYPE,
+          type: WsErrorType.Generic,
           message: WS_RESPONSE_INVALID_JSON_MESSAGE,
         },
       };

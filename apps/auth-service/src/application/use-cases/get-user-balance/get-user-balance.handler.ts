@@ -1,10 +1,14 @@
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
-import { Logger, NotFoundException } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { GetUserBalanceQuery } from './get-user-balance.query';
 import { GetUserBalanceResponseDto, BalanceDto } from './get-user-balance.dto';
 import { UserBalancePortRepository } from '@app/auth-service/application/ports/user-balance.port.repository';
 import { CurrencyType } from '@app/auth-service/domain/value-objects/currency-type';
-import { getCurrencyVelueByStringCode, stringToBigNumber } from '@lib/shared';
+import {
+  getCurrencyVelueByStringCode,
+  stringToBigNumber,
+  HttpNotFoundException,
+} from '@lib/shared';
 
 @QueryHandler(GetUserBalanceQuery)
 export class GetUserBalanceHandler
@@ -26,7 +30,9 @@ export class GetUserBalanceHandler
       await this.userBalanceRepository.findByUserId(userIdBigNumber);
 
     if (!userBalance) {
-      throw new NotFoundException(`Balance not found for userId: ${userId}`);
+      throw new HttpNotFoundException(
+        `Balance not found for userId: ${userId}`,
+      );
     }
 
     const balances: BalanceDto[] = [];

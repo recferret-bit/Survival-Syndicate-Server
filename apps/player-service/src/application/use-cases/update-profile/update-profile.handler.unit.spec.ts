@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { NotFoundException } from '@nestjs/common';
+import { HttpNotFoundException } from '@lib/shared/application';
 import { UpdateProfileHandler } from './update-profile.handler';
 import { UpdateProfileCommand } from './update-profile.command';
 import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
@@ -19,7 +19,7 @@ describe('UpdateProfileHandler (Unit)', () => {
       create: jest.fn(),
       update: jest.fn(),
       findAllBanned: jest.fn(),
-    } as any;
+    } as unknown as jest.Mocked<UserPortRepository>;
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -123,7 +123,7 @@ describe('UpdateProfileHandler (Unit)', () => {
       });
     });
 
-    it('should throw NotFoundException when user not found', async () => {
+    it('should throw HttpNotFoundException when user not found', async () => {
       const userId = '99999';
       const newName = 'Updated Name';
 
@@ -131,7 +131,7 @@ describe('UpdateProfileHandler (Unit)', () => {
 
       await expect(
         handler.execute(new UpdateProfileCommand(userId, { name: newName })),
-      ).rejects.toThrow(NotFoundException);
+      ).rejects.toThrow(HttpNotFoundException);
 
       expect(userRepository.findById).toHaveBeenCalledWith(99999);
       expect(userRepository.update).not.toHaveBeenCalled();

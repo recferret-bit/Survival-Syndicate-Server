@@ -4,6 +4,10 @@ import { ConnectionManagerService } from '@app/websocket-service/application/ser
 import { ClientAuthenticateSchema } from '@app/websocket-service/application/schemas/ws-messages.schema';
 import { GameServerPublisher } from '@lib/lib-game-server';
 import { WsGatewayResult } from './ws-gateway-result.type';
+import {
+  WsErrorCode,
+  WsErrorType,
+} from '@app/websocket-service/application/use-cases/websocket/ws-error.enums';
 
 type HandleAuthenticateInput = {
   clientId: string;
@@ -23,8 +27,8 @@ export class HandleAuthenticateUseCase {
     if (!parsed.success) {
       return {
         response: {
-          type: 'authenticate_error',
-          code: 'INVALID_PAYLOAD',
+          type: WsErrorType.Authenticate,
+          code: WsErrorCode.InvalidPayload,
         },
       };
     }
@@ -38,7 +42,7 @@ export class HandleAuthenticateUseCase {
       if (!result.success) {
         return {
           response: {
-            type: 'authenticate_error',
+            type: WsErrorType.Authenticate,
             code: result.code,
           },
         };
@@ -65,8 +69,8 @@ export class HandleAuthenticateUseCase {
     } catch {
       return {
         response: {
-          type: 'authenticate_error',
-          code: 'UNAUTHORIZED',
+          type: WsErrorType.Authenticate,
+          code: WsErrorCode.Unauthorized,
         },
       };
     }

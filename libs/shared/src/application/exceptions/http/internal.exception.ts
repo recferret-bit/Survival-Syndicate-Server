@@ -1,11 +1,12 @@
 import { HttpStatus } from '@nestjs/common';
 import { BaseHttpException } from './base.exception';
-import { ErrorCode } from '../error-code.enum';
+import { HttpErrorCode, HttpErrorType } from '@lib/shared/http';
 
 export class HttpInternalException extends BaseHttpException {
   constructor(message = 'Internal server problem') {
     super(
-      ErrorCode.InternalServerError,
+      HttpErrorType.InternalServerError,
+      HttpErrorCode.InternalServerError,
       message,
       HttpStatus.INTERNAL_SERVER_ERROR,
     );

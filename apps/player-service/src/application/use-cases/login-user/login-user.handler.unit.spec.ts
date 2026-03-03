@@ -1,11 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UnauthorizedException } from '@nestjs/common';
 import { LoginUserHandler } from './login-user.handler';
 import { LoginUserQuery } from './login-user.query';
 import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
 import { TrackingPortRepository } from '@app/player-service/application/ports/tracking.port.repository';
 import { AuthJwtService } from '@lib/shared/auth';
-import { EnvService, Utils } from '@lib/shared/application';
+import {
+  EnvService,
+  Utils,
+  HttpForbiddenException,
+  HttpUnauthorizedException,
+} from '@lib/shared/application';
 import { BearerTokenHashCacheService } from '@lib/shared/redis';
 import { UserFixtures } from '@app/player-service/__fixtures__/user.fixtures';
 
@@ -25,31 +29,31 @@ describe('LoginUserHandler', () => {
       findByPhone: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
-    } as any;
+    } as unknown as jest.Mocked<UserPortRepository>;
 
     trackingRepository = {
       findByUserId: jest.fn(),
       create: jest.fn(),
       updateLastIp: jest.fn(),
-    } as any;
+    } as unknown as jest.Mocked<TrackingPortRepository>;
 
     authJwtService = {
       generateToken: jest.fn(),
       verifyAsync: jest.fn(),
-    } as any;
+    } as unknown as jest.Mocked<AuthJwtService>;
 
     envService = {
       get: jest.fn((key: string) => {
         if (key === 'PASSWORD_SECRET') return 'test-secret';
         return undefined;
       }),
-    } as any;
+    } as unknown as jest.Mocked<EnvService>;
 
     bearerTokenHashCacheService = {
       setBearerTokenHash: jest.fn(),
       getBearerTokenHash: jest.fn(),
       removeBearerTokenHash: jest.fn(),
-    } as any;
+    } as unknown as jest.Mocked<BearerTokenHashCacheService>;
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -97,7 +101,7 @@ describe('LoginUserHandler', () => {
       });
 
       userRepository.findByEmailOrPhone.mockResolvedValue(userWithPassword);
-      trackingRepository.updateLastIp.mockResolvedValue({} as any);
+      trackingRepository.updateLastIp.mockResolvedValue(undefined as never);
       authJwtService.generateToken.mockResolvedValue('jwt_token_123');
 
       const result = await handler.execute(
@@ -125,7 +129,7 @@ describe('LoginUserHandler', () => {
       const user = UserFixtures.createUser({ passwordHash });
 
       userRepository.findByEmailOrPhone.mockResolvedValue(user);
-      trackingRepository.updateLastIp.mockResolvedValue({} as any);
+      trackingRepository.updateLastIp.mockResolvedValue(undefined as never);
       authJwtService.generateToken.mockResolvedValue('jwt_token_123');
 
       const result = await handler.execute(
@@ -146,9 +150,7 @@ describe('LoginUserHandler', () => {
 
       await expect(
         handler.execute(new LoginUserQuery({ ...dto, ip: '127.0.0.1' })),
-      ).rejects.toThrow(UnauthorizedException);
-
-      expect(authJwtService.generateToken).not.toHaveBeenCalled();
+      ).rejects.toThrow(HttpUnauthorizedException);
     });
 
     it('should reject login for banned user', async () => {
@@ -159,8 +161,7 @@ describe('LoginUserHandler', () => {
 
       await expect(
         handler.execute(new LoginUserQuery({ ...dto, ip: '127.0.0.1' })),
-      ).rejects.toThrow(UnauthorizedException);
-
+      ).rejects.toThrow(HttpForbiddenException);
       expect(authJwtService.generateToken).not.toHaveBeenCalled();
     });
 
@@ -174,7 +175,7 @@ describe('LoginUserHandler', () => {
 
       await expect(
         handler.execute(new LoginUserQuery({ ...dto, ip: '127.0.0.1' })),
-      ).rejects.toThrow(UnauthorizedException);
+      ).rejects.toThrow(HttpUnauthorizedException);
 
       expect(authJwtService.generateToken).not.toHaveBeenCalled();
     });

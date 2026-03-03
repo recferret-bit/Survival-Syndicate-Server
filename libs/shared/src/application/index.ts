@@ -16,9 +16,13 @@ export * from './exceptions/zod-exception.filter';
 export * from './exceptions/validation.exception';
 export * from './exceptions/http/already-exists.exception';
 export * from './exceptions/http/base.exception';
+export * from './exceptions/http/conflict.exception';
+export * from './exceptions/http/forbidden.exception';
 export * from './exceptions/http/internal.exception';
 export * from './exceptions/http/invalid-argument.exception';
 export * from './exceptions/http/not-found.exception';
+export * from './exceptions/http/service-unavailable.exception';
+export * from './exceptions/http/unauthorized.exception';
 // export * from './prisma/prisma.provider'; // Files don't exist
 // export * from './prisma/prisma.service'; // Files don't exist
 export * from './utils/utils';

@@ -263,6 +263,7 @@ npm run test:e2e      # E2E tests
 - Import framework code in domain layer
 - Implement websocket authenticate/reconnect/disconnect/input flow directly inside gateway methods
 - Leave magic strings or magic numbers inline when a constant/enum/config value is available
+- Hardcode HTTP error type/code strings (use enums from libs/shared/http and shared Http*Exception)
 - Skip running `npm run lint` after code changes
 
 **DO:**

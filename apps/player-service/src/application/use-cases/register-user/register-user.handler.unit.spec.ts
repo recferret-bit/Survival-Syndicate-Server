@@ -1,10 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ConflictException, BadRequestException } from '@nestjs/common';
+import {
+  EnvService,
+  HttpAlreadyExistsException,
+  HttpInvalidArgumentException,
+} from '@lib/shared/application';
 import { RegisterUserHandler } from './register-user.handler';
 import { RegisterUserCommand } from './register-user.command';
 import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
 import { AuthJwtService } from '@lib/shared/auth';
-import { EnvService } from '@lib/shared/application';
 import { BuildingPublisher } from '@lib/lib-building';
 import { PlayerPublisher } from '@lib/lib-player';
 import { PrismaService } from '@app/player-service/infrastructure/prisma/prisma.service';
@@ -19,7 +22,7 @@ describe('RegisterUserHandler', () => {
   let usersPublisher: jest.Mocked<PlayerPublisher>;
   let authJwtService: jest.Mocked<AuthJwtService>;
   let envService: jest.Mocked<EnvService>;
-  let prismaService: jest.Mocked<PrismaService>;
+  let prismaService: { $transaction: jest.Mock };
   let bearerTokenHashCacheService: jest.Mocked<BearerTokenHashCacheService>;
 
   beforeEach(async () => {
@@ -30,35 +33,35 @@ describe('RegisterUserHandler', () => {
       findByEmail: jest.fn(),
       findByPhone: jest.fn(),
       update: jest.fn(),
-    } as any;
+    } as unknown as jest.Mocked<UserPortRepository>;
 
     balancePublisher = {
       createUserBalance: jest.fn(),
-    } as any;
+    } as unknown as jest.Mocked<BuildingPublisher>;
     usersPublisher = {
       publishUserRegistered: jest.fn(),
-    } as any;
+    } as unknown as jest.Mocked<PlayerPublisher>;
 
     authJwtService = {
       generateToken: jest.fn(),
       verifyAsync: jest.fn(),
-    } as any;
+    } as unknown as jest.Mocked<AuthJwtService>;
 
     envService = {
       get: jest.fn((key: string) => {
         if (key === 'PASSWORD_SECRET') return 'test-secret';
         return undefined;
       }),
-    } as any;
+    } as unknown as jest.Mocked<EnvService>;
 
     prismaService = {
       $transaction: jest.fn(),
-    } as any;
+    };
     bearerTokenHashCacheService = {
       setBearerTokenHash: jest.fn(),
       getBearerTokenHash: jest.fn(),
       removeBearerTokenHash: jest.fn(),
-    } as any;
+    } as unknown as jest.Mocked<BearerTokenHashCacheService>;
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -132,7 +135,7 @@ describe('RegisterUserHandler', () => {
         },
       };
 
-      prismaService.$transaction.mockImplementation(async (callback: any) => {
+      prismaService.$transaction.mockImplementation((callback) => {
         return callback(mockTx);
       });
 
@@ -170,7 +173,7 @@ describe('RegisterUserHandler', () => {
 
       await expect(
         handler.execute(new RegisterUserCommand({ ...dto, ip: '127.0.0.1' })),
-      ).rejects.toThrow(ConflictException);
+      ).rejects.toThrow(HttpAlreadyExistsException);
 
       expect(userRepository.create).not.toHaveBeenCalled();
     });
@@ -183,7 +186,7 @@ describe('RegisterUserHandler', () => {
 
       await expect(
         handler.execute(new RegisterUserCommand({ ...dto, ip: '127.0.0.1' })),
-      ).rejects.toThrow(ConflictException);
+      ).rejects.toThrow(HttpAlreadyExistsException);
     });
 
     it('should reject invalid currency ISO code', async () => {
@@ -195,7 +198,7 @@ describe('RegisterUserHandler', () => {
 
       await expect(
         handler.execute(new RegisterUserCommand({ ...dto, ip: '127.0.0.1' })),
-      ).rejects.toThrow(BadRequestException);
+      ).rejects.toThrow(HttpInvalidArgumentException);
     });
 
     it('should reject invalid language ISO code', async () => {
@@ -207,7 +210,7 @@ describe('RegisterUserHandler', () => {
 
       await expect(
         handler.execute(new RegisterUserCommand({ ...dto, ip: '127.0.0.1' })),
-      ).rejects.toThrow(BadRequestException);
+      ).rejects.toThrow(HttpInvalidArgumentException);
     });
 
     it('should handle balance creation failure gracefully', async () => {
@@ -240,7 +243,7 @@ describe('RegisterUserHandler', () => {
         },
       };
 
-      prismaService.$transaction.mockImplementation(async (callback: any) => {
+      prismaService.$transaction.mockImplementation((callback) => {
         return callback(mockTx);
       });
 

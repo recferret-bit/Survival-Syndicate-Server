@@ -1,10 +1,10 @@
 import { randomUUID } from 'crypto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { ServiceUnavailableException } from '@nestjs/common';
 import { GameServerPublisher } from '@lib/lib-game-server';
 import { ZoneRegistryPort } from '@app/matchmaking-service/application/ports/zone-registry.port';
 import { JoinSoloCommand } from './join-solo.command';
 import { JoinSoloResponseDto } from './join-solo.dto';
+import { HttpServiceUnavailableException } from '@lib/shared/application';
 
 @CommandHandler(JoinSoloCommand)
 export class JoinSoloHandler implements ICommandHandler<JoinSoloCommand> {
@@ -16,7 +16,7 @@ export class JoinSoloHandler implements ICommandHandler<JoinSoloCommand> {
   async execute(command: JoinSoloCommand): Promise<JoinSoloResponseDto> {
     const zone = await this.zoneRegistry.selectZone();
     if (!zone) {
-      throw new ServiceUnavailableException('No available zones');
+      throw new HttpServiceUnavailableException('No available zones');
     }
 
     const matchId = randomUUID();

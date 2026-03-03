@@ -1,9 +1,9 @@
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
-import { Logger, NotFoundException } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { GetProfileQuery } from './get-profile.query';
 import { GetProfileResponseDto } from './get-profile.dto';
 import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
-import { stringToBigNumber } from '@lib/shared';
+import { stringToBigNumber, HttpNotFoundException } from '@lib/shared';
 
 @QueryHandler(GetProfileQuery)
 export class GetProfileHandler implements IQueryHandler<GetProfileQuery> {
@@ -21,7 +21,7 @@ export class GetProfileHandler implements IQueryHandler<GetProfileQuery> {
 
     const user = await this.userRepository.findById(userIdNumber);
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new HttpNotFoundException('User not found');
     }
 
     return {

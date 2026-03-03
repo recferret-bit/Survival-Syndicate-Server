@@ -3,22 +3,27 @@
 Этот каталог описывает, как AI-агенты (Warp, Cursor и т.п.) должны работать в этом репозитории.
 
 ## Источник правды
+
 Всегда начинайте с чтения:
+
 1. `WARP.md` — расширенный контекст (архитектура, паттерны, команды)
 2. `AGENTS.md` — краткие обязательные правила
 3. `.cursorrules` — правила для Cursor (подмножество)
 4. `docs/index.md` + `docs/architecture/*` + `docs/01_server_development_guide.md` + `docs/mvp_plan.md`
 
 Если документация конфликтует с кодом, приоритет:
+
 - правила/гайдлайны (`AGENTS.md`, `.cursorrules`) → затем
 - существующие реализации в `apps/*` и `libs/*`.
 
 ## Роли
+
 - **Orchestrator (Warp):** собирает контекст, предлагает/фиксирует план, запускает проверки, делает финальное ревью.
 - **Implementer (Cursor/другой агент):** делает точечные правки кода/тестов, следуя паттернам репозитория.
 - **Human:** принимает решения по спорным вопросам и утверждает изменения.
 
 ## Стандартный цикл работы
+
 1. Определить owning-service и слой (presentation/application/domain/infrastructure).
 2. Прочитать релевантные документы из `docs/architecture/`.
 3. Внести минимальные изменения, консистентные с текущими паттернами.
@@ -28,10 +33,12 @@
 7. Подготовить PR с понятным описанием.
 
 ## Ненарушаемые правила проекта (кратко)
+
 - **Clean Architecture:** Domain без NestJS/Prisma; ports = abstract classes; handlers тонкие.
 - **Presentation как оркестратор:** HTTP/NATS/WebSocket контроллеры и gateway только роутят/валидируют/маппят и делегируют в конкретный use-case/service.
 - **WebSocket use-cases:** `authenticate`, `reconnect`, `disconnect`, `input` должны жить в отдельных use-case/service, а не в методах gateway.
 - **Без magic values:** не оставлять захардкоженные строки/числа в прикладном коде; выносить в constants/enums/config/contracts.
+- **HTTP ошибки:** `errorType`/`errorCode` только через enums из `libs/shared/http` и shared `Http*Exception`; не хардкодить строки.
 - **DTO/схемы:** валидация через Zod (`@anatine/zod-nestjs` / `createZodDto`) + Swagger аннотации.
 - **NATS:** никогда не хардкодить subjects; использовать контракты из `libs/lib-*` и Zod schemas.
 - **Деньги/ID:**
@@ -42,6 +49,7 @@
 - **Логи:** не логировать секреты/токены/персональные данные.
 
 ## Команды перед PR
+
 ```bash
 npm run lint
 npm test
@@ -49,6 +57,7 @@ npm run build
 ```
 
 Опционально (для интеграционных изменений):
+
 ```bash
 npm run docker:infra
 npm run test:e2e

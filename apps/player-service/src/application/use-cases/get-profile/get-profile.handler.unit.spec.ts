@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { NotFoundException } from '@nestjs/common';
+import { HttpNotFoundException } from '@lib/shared/application';
 import { GetProfileHandler } from './get-profile.handler';
 import { GetProfileQuery } from './get-profile.query';
 import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
@@ -19,7 +19,7 @@ describe('GetProfileHandler (Unit)', () => {
       create: jest.fn(),
       update: jest.fn(),
       findAllBanned: jest.fn(),
-    } as any;
+    } as unknown as jest.Mocked<UserPortRepository>;
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -89,14 +89,14 @@ describe('GetProfileHandler (Unit)', () => {
       expect(result.birthday).toBeUndefined();
     });
 
-    it('should throw NotFoundException when user not found', async () => {
+    it('should throw HttpNotFoundException when user not found', async () => {
       const userId = '99999';
 
       userRepository.findById.mockResolvedValue(null);
 
       await expect(
         handler.execute(new GetProfileQuery(userId)),
-      ).rejects.toThrow(NotFoundException);
+      ).rejects.toThrow(HttpNotFoundException);
 
       expect(userRepository.findById).toHaveBeenCalledWith(99999);
       expect(userRepository.findById).toHaveBeenCalledTimes(1);

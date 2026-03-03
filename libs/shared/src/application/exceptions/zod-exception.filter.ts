@@ -1,12 +1,7 @@
-import {
-  ArgumentsHost,
-  BadRequestException,
-  Catch,
-  ExceptionFilter,
-  Logger,
-} from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, Logger } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { ZodError } from 'zod';
+import { HttpErrorCode, HttpErrorType } from '@lib/shared/http';
 
 @Catch(ZodError)
 export class ZodExceptionFilter implements ExceptionFilter {
@@ -27,12 +22,13 @@ export class ZodExceptionFilter implements ExceptionFilter {
       `Validation failed: ${errors.map((e) => `${e.field}: ${e.message}`).join(', ')}`,
     );
 
-    // Convert to BadRequestException format
     const errorMessage =
       errors.length === 1 ? errors[0].message : 'Validation failed';
 
     response.status(400).json({
       statusCode: 400,
+      errorType: HttpErrorType.Validation,
+      errorCode: HttpErrorCode.ValidationError,
       message: errorMessage,
       errors,
       timestamp: new Date().toISOString(),

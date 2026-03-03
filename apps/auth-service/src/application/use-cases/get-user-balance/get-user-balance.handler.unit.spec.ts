@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { Test, TestingModule } from '@nestjs/testing';
-import { NotFoundException } from '@nestjs/common';
+import { HttpNotFoundException } from '@lib/shared/application';
 import { GetUserBalanceHandler } from './get-user-balance.handler';
 import { GetUserBalanceQuery } from './get-user-balance.query';
 import { UserBalancePortRepository } from '@app/auth-service/application/ports/user-balance.port.repository';
@@ -17,7 +17,7 @@ describe('GetUserBalanceHandler', () => {
       findByUserId: jest.fn(),
       exists: jest.fn(),
       create: jest.fn(),
-    } as any;
+    } as unknown as jest.Mocked<UserBalancePortRepository>;
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -75,7 +75,7 @@ describe('GetUserBalanceHandler', () => {
       );
     });
 
-    it('should throw NotFoundException if balance not found', async () => {
+    it('should throw HttpNotFoundException if balance not found', async () => {
       const userId = '999';
       const userIdBigNumber = new BigNumber(userId);
 
@@ -83,7 +83,7 @@ describe('GetUserBalanceHandler', () => {
 
       await expect(
         handler.execute(new GetUserBalanceQuery({ userId })),
-      ).rejects.toThrow(NotFoundException);
+      ).rejects.toThrow(HttpNotFoundException);
 
       expect(userBalanceRepository.findByUserId).toHaveBeenCalledWith(
         userIdBigNumber,

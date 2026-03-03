@@ -1,8 +1,8 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { NotFoundException } from '@nestjs/common';
 import { GetPlayerQuery } from './get-player.query';
 import { GetPlayerResponseDto } from './get-player.dto';
 import { PlayerPortRepository } from '@app/player-service/application/ports/player.port.repository';
+import { HttpNotFoundException } from '@lib/shared';
 
 @QueryHandler(GetPlayerQuery)
 export class GetPlayerHandler implements IQueryHandler<GetPlayerQuery> {
@@ -11,7 +11,7 @@ export class GetPlayerHandler implements IQueryHandler<GetPlayerQuery> {
   async execute(query: GetPlayerQuery): Promise<GetPlayerResponseDto> {
     const player = await this.playerRepository.findById(query.playerId);
     if (!player) {
-      throw new NotFoundException('Player not found');
+      throw new HttpNotFoundException('Player not found');
     }
 
     return {

@@ -1,14 +1,14 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import {
-  BadRequestException,
-  ConflictException,
-  Logger,
-  NotFoundException,
-} from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { AttachPhoneCommand } from './attach-phone.command';
 import { AttachPhoneResponseDto } from './attach-phone.dto';
 import { UserPortRepository } from '@app/player-service/application/ports/user.port.repository';
 import { stringToBigNumber } from '@lib/shared';
+import {
+  HttpAlreadyExistsException,
+  HttpInvalidArgumentException,
+  HttpNotFoundException,
+} from '@lib/shared/application';
 
 @CommandHandler(AttachPhoneCommand)
 export class AttachPhoneHandler implements ICommandHandler<AttachPhoneCommand> {
@@ -27,18 +27,20 @@ export class AttachPhoneHandler implements ICommandHandler<AttachPhoneCommand> {
     // Find user
     const user = await this.userRepository.findById(userIdNumber);
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new HttpNotFoundException('User not found');
     }
 
     // Check if user already has phone
     if (user.phone) {
-      throw new BadRequestException('User already has a phone number');
+      throw new HttpInvalidArgumentException('User already has a phone number');
     }
 
     // Check if phone is already taken by another user
     const existingUser = await this.userRepository.findByPhone(request.phone);
     if (existingUser) {
-      throw new ConflictException('Phone is already taken by another user');
+      throw new HttpAlreadyExistsException(
+        'Phone is already taken by another user',
+      );
     }
 
     // Update user with phone

@@ -1,8 +1,13 @@
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
-import { UnauthorizedException, Logger } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { LoginUserQuery } from './login-user.query';
 import { LoginUserResponseDto } from './login-user.dto';
-import { Utils, EnvService } from '@lib/shared/application';
+import {
+  Utils,
+  EnvService,
+  HttpForbiddenException,
+  HttpUnauthorizedException,
+} from '@lib/shared/application';
 import { AuthJwtService, UserSession } from '@lib/shared/auth';
 import { User } from '@app/player-service/domain/entities/user/user';
 import { TrackingPortRepository } from '@app/player-service/application/ports/tracking.port.repository';
@@ -30,12 +35,12 @@ export class LoginUserHandler implements IQueryHandler<LoginUserQuery> {
     // Find user
     const user = await this.userRepository.findByEmailOrPhone(email, phone);
     if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new HttpUnauthorizedException('Invalid credentials');
     }
 
     // Check if user is banned
     if (user.isBanned()) {
-      throw new UnauthorizedException('User account is banned');
+      throw new HttpForbiddenException('User account is banned');
     }
 
     // Verify password
@@ -47,7 +52,7 @@ export class LoginUserHandler implements IQueryHandler<LoginUserQuery> {
     );
 
     if (user.passwordHash !== passwordHash) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new HttpUnauthorizedException('Invalid credentials');
     }
 
     // Update tracking last IP

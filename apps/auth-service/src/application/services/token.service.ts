@@ -1,6 +1,6 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { EnvService } from '@lib/shared/application';
+import { EnvService, HttpUnauthorizedException } from '@lib/shared/application';
 
 export type AuthTokenPair = {
   accessToken: string;
@@ -41,7 +41,7 @@ export class TokenService {
       AuthTokenPayload & { tokenType?: string }
     >(token);
     if (payload.tokenType !== 'refresh') {
-      throw new UnauthorizedException('Invalid refresh token');
+      throw new HttpUnauthorizedException('Invalid refresh token');
     }
     return {
       id: payload.id,

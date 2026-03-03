@@ -1,11 +1,14 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { ConflictException } from '@nestjs/common';
 import { RegisterCommand } from './register.command';
 import { AuthResponseDto } from './register.dto';
 import { AuthUserPortRepository } from '@app/auth-service/application/ports/auth-user.port.repository';
 import { TokenService } from '@app/auth-service/application/services/token.service';
 import { RefreshTokenStoreService } from '@app/auth-service/application/services/refresh-token-store.service';
-import { Utils, EnvService } from '@lib/shared/application';
+import {
+  Utils,
+  EnvService,
+  HttpAlreadyExistsException,
+} from '@lib/shared/application';
 import { BearerTokenHashCacheService } from '@lib/shared/redis';
 import { PlayerPublisher } from '@lib/lib-player';
 
@@ -24,7 +27,9 @@ export class RegisterHandler implements ICommandHandler<RegisterCommand> {
     const { email, username, password } = command.request;
     const existing = await this.authUserRepository.findByEmail(email);
     if (existing) {
-      throw new ConflictException('User with this email already exists');
+      throw new HttpAlreadyExistsException(
+        'User with this email already exists',
+      );
     }
 
     const passwordSecret =

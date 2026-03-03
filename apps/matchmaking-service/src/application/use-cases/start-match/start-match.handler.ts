@@ -1,15 +1,15 @@
 import { randomUUID } from 'crypto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import {
-  ConflictException,
-  NotFoundException,
-  ServiceUnavailableException,
-} from '@nestjs/common';
 import { GameServerPublisher } from '@lib/lib-game-server';
 import { LobbyPortRepository } from '@app/matchmaking-service/application/ports/lobby.port.repository';
 import { ZoneRegistryPort } from '@app/matchmaking-service/application/ports/zone-registry.port';
 import { LobbyResponseDto } from '@app/matchmaking-service/application/use-cases/create-lobby/create-lobby.dto';
 import { StartMatchCommand } from './start-match.command';
+import {
+  HttpConflictException,
+  HttpNotFoundException,
+  HttpServiceUnavailableException,
+} from '@lib/shared/application';
 
 @CommandHandler(StartMatchCommand)
 export class StartMatchHandler implements ICommandHandler<StartMatchCommand> {
@@ -22,15 +22,15 @@ export class StartMatchHandler implements ICommandHandler<StartMatchCommand> {
   async execute(command: StartMatchCommand): Promise<LobbyResponseDto> {
     const lobby = await this.lobbyRepository.findById(command.lobbyId);
     if (!lobby) {
-      throw new NotFoundException('Lobby not found');
+      throw new HttpNotFoundException('Lobby not found');
     }
     if (!lobby.playerIds.includes(command.requestedByPlayerId)) {
-      throw new ConflictException('Player is not in lobby');
+      throw new HttpConflictException('Player is not in lobby');
     }
 
     const zone = await this.zoneRegistry.selectZone();
     if (!zone) {
-      throw new ServiceUnavailableException('No available zones');
+      throw new HttpServiceUnavailableException('No available zones');
     }
 
     const matchId = randomUUID();
