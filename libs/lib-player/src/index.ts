@@ -1,3 +1,3 @@
-export * from './lib-users.module';
-export * from './publishers/users.publisher';
-export * from './schemas/users.schemas';
+export * from './lib-player.module';
+export * from './publishers/player.publisher';
+export * from './schemas/player.schemas';

@@ -199,7 +199,7 @@ npm run prisma:studio:balance
 
 ```typescript
 // ✅ ПРАВИЛЬНО
-import { PlayerPublisher } from '@lib/lib-player';
+import { PlayerPublisher } from '@lib/lib-gameplay';
 const response = await playerPublisher.getCharacter(request);
 
 // ❌ НЕПРАВИЛЬНО

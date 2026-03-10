@@ -13,10 +13,6 @@ export class EnvService<E = {}> {
     return this.configService.get(key as any, { infer: true });
   }
 
-  getAdminPort() {
-    return this.configService.get('ADMIN_PORT', { infer: true });
-  }
-
   isProd() {
     return (
       this.configService.get('NODE_ENV', { infer: true }) === NodeEnv.production

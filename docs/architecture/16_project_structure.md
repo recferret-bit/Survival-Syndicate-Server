@@ -32,7 +32,7 @@ nest generate app swagger-aggregator
 
 ```bash
 # Создаём все приложения
-nest generate app auth-service
+nest generate app users-service
 nest generate app player-service
 nest generate app building-service
 nest generate app combat-progress-service
@@ -248,11 +248,11 @@ survival-syndicate-server/
     },
     "auth-service": {
       "type": "application",
-      "root": "apps/auth-service",
+      "root": "apps/users-service",
       "entryFile": "main",
-      "sourceRoot": "apps/auth-service/src",
+      "sourceRoot": "apps/users-service/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/auth-service/tsconfig.app.json"
+        "tsConfigPath": "apps/users-service/tsconfig.app.json"
       }
     },
     "player-service": {
@@ -405,7 +405,7 @@ survival-syndicate-server/
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "build:all": "npm run build swagger-aggregator && npm run build auth-service && npm run build player-service && npm run build building-service && npm run build combat-progress-service && npm run build scheduler-service && npm run build game-server && npm run build analytics-service",
+    "build:all": "npm run build swagger-aggregator && npm run build users-service && npm run build player-service && npm run build building-service && npm run build combat-progress-service && npm run build scheduler-service && npm run build game-server && npm run build analytics-service",
     
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -414,8 +414,8 @@ survival-syndicate-server/
     
     "start:swagger-aggregator": "nest start swagger-aggregator",
     "start:swagger-aggregator:dev": "nest start swagger-aggregator --watch",
-    "start:auth-service": "nest start auth-service",
-    "start:auth-service:dev": "nest start auth-service --watch",
+    "start:auth-service": "nest start users-service",
+    "start:auth-service:dev": "nest start users-service --watch",
     "start:player-service": "nest start player-service",
     "start:player-service:dev": "nest start player-service --watch",
     "start:building-service": "nest start building-service",
@@ -679,7 +679,7 @@ npm run start:player-service:dev
 
 # Запуск нескольких сервисов (в разных терминалах)
 npm run start:swagger-aggregator:dev
-npm run start:auth-service:dev
+npm run start:users-service:dev
 npm run start:player-service:dev
 
 # Сборка всего

@@ -1,5 +1,4 @@
 export * from './application';
-export * from './admin';
 export * from './auth';
 export * from './currency';
 export * from './guards';

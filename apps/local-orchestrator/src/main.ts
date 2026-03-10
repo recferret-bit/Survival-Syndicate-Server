@@ -21,7 +21,8 @@ class App {
     await appBootstrap.startHttpServer(servicePort, apiPrefix);
     await appBootstrap.setupHealthCheckApp(healthPort);
     await appBootstrap.setupMetricsApp(metricsPort);
-    await appBootstrap.startNatsMicroservice('local-orchestrator');
+    await appBootstrap.startNatsMicroservice();
+    await appBootstrap.startAllMicroservices();
   }
 }
 

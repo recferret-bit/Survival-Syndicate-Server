@@ -11,8 +11,6 @@ export const commonSchema = z.object({
     ])
     .default(NodeEnv.development),
 
-  ADMIN_PORT: z.string().default('3002'),
-
   // Generic ports for K8s deployment (each pod has its own namespace)
   HEALTH_PORT: z.string().default('5000'),
   METRICS_PORT: z.string().default('9090'),
@@ -66,6 +64,7 @@ export const commonSchema = z.object({
   LOCAL_ORCHESTRATOR_APP_HTTP_PREFIX: z.string().default('api/v2'),
   GAMEPLAY_APP_HTTP_PREFIX: z.string().default('api/v2'),
   WEBSOCKET_APP_HTTP_PREFIX: z.string().default('api/v2'),
+  SCHEDULER_APP_HTTP_PREFIX: z.string().default('api/v2'),
 
   USERS_APP_HOST: z.string().default('localhost'),
   USERS_APP_PORT: z.string().default('3000'),

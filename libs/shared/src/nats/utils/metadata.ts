@@ -1,7 +1,7 @@
 import {
   NON_DURABLE_METADATA_KEY,
   isPatternNonDurable,
-} from '../decorators/non-durable.decorator';
+} from '@lib/shared/nats';
 
 /**
  * Check if a handler is marked as non-durable

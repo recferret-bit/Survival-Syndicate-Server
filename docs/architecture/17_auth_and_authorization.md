@@ -311,7 +311,7 @@ export class AuthLibraryModule {}
 ### Token Service
 
 ```typescript
-// apps/auth-service/src/token/token.service.ts
+// apps/users-service/src/token/token.service.ts
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -461,7 +461,7 @@ export class TokenService {
 ### Auth Controller
 
 ```typescript
-// apps/auth-service/src/auth/auth.controller.ts
+// apps/users-service/src/auth/auth.controller.ts
 import { Controller, Post, Body, UseGuards, HttpCode, HttpStatus } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
@@ -518,7 +518,7 @@ export class AuthController {
 ### DTOs
 
 ```typescript
-// apps/auth-service/src/auth/dto/login.dto.ts
+// apps/users-service/src/auth/dto/login.dto.ts
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsString, MinLength } from 'class-validator';
 
@@ -533,7 +533,7 @@ export class LoginDto {
   password: string;
 }
 
-// apps/auth-service/src/auth/dto/register.dto.ts
+// apps/users-service/src/auth/dto/register.dto.ts
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsString, MinLength, MaxLength } from 'class-validator';
 
@@ -554,7 +554,7 @@ export class RegisterDto {
   password: string;
 }
 
-// apps/auth-service/src/auth/dto/token-response.dto.ts
+// apps/users-service/src/auth/dto/token-response.dto.ts
 import { ApiProperty } from '@nestjs/swagger';
 
 export class TokenResponseDto {
@@ -568,7 +568,7 @@ export class TokenResponseDto {
   expiresIn: number;
 }
 
-// apps/auth-service/src/auth/dto/refresh-token.dto.ts
+// apps/users-service/src/auth/dto/refresh-token.dto.ts
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 

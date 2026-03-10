@@ -8,40 +8,13 @@
   "monorepo": true,
   "root": "apps",
   "projects": {
-    "swagger-aggregator": {
+    "gameplay-service": {
       "type": "application",
-      "root": "apps/swagger-aggregator",
+      "root": "apps/gameplay-service",
       "entryFile": "main",
-      "sourceRoot": "apps/swagger-aggregator/src",
+      "sourceRoot": "apps/gameplay-service/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/swagger-aggregator/tsconfig.app.json"
-      }
-    },
-    "auth-service": {
-      "type": "application",
-      "root": "apps/auth-service",
-      "entryFile": "main",
-      "sourceRoot": "apps/auth-service/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/auth-service/tsconfig.app.json"
-      }
-    },
-    "player-service": {
-      "type": "application",
-      "root": "apps/player-service",
-      "entryFile": "main",
-      "sourceRoot": "apps/player-service/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/player-service/tsconfig.app.json"
-      }
-    },
-    "matchmaking-service": {
-      "type": "application",
-      "root": "apps/matchmaking-service",
-      "entryFile": "main",
-      "sourceRoot": "apps/matchmaking-service/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/matchmaking-service/tsconfig.app.json"
+        "tsConfigPath": "apps/gameplay-service/tsconfig.app.json"
       }
     },
     "local-orchestrator": {
@@ -53,13 +26,31 @@
         "tsConfigPath": "apps/local-orchestrator/tsconfig.app.json"
       }
     },
-    "gameplay-service": {
+    "matchmaking-service": {
       "type": "application",
-      "root": "apps/gameplay-service",
+      "root": "apps/matchmaking-service",
       "entryFile": "main",
-      "sourceRoot": "apps/gameplay-service/src",
+      "sourceRoot": "apps/matchmaking-service/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/gameplay-service/tsconfig.app.json"
+        "tsConfigPath": "apps/matchmaking-service/tsconfig.app.json"
+      }
+    },
+    "player-service": {
+      "type": "application",
+      "root": "apps/player-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/player-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/player-service/tsconfig.app.json"
+      }
+    },
+    "users-service": {
+      "type": "application",
+      "root": "apps/users-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/users-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/users-service/tsconfig.app.json"
       }
     },
     "websocket-service": {
@@ -71,42 +62,6 @@
         "tsConfigPath": "apps/websocket-service/tsconfig.app.json"
       }
     },
-    "building-service": {
-      "type": "application",
-      "root": "apps/building-service",
-      "entryFile": "main",
-      "sourceRoot": "apps/building-service/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/building-service/tsconfig.app.json"
-      }
-    },
-    "combat-progress-service": {
-      "type": "application",
-      "root": "apps/combat-progress-service",
-      "entryFile": "main",
-      "sourceRoot": "apps/combat-progress-service/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/combat-progress-service/tsconfig.app.json"
-      }
-    },
-    "scheduler-service": {
-      "type": "application",
-      "root": "apps/scheduler-service",
-      "entryFile": "main",
-      "sourceRoot": "apps/scheduler-service/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/scheduler-service/tsconfig.app.json"
-      }
-    },
-    "analytics-service": {
-      "type": "application",
-      "root": "apps/analytics-service",
-      "entryFile": "main",
-      "sourceRoot": "apps/analytics-service/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/analytics-service/tsconfig.app.json"
-      }
-    },
     "shared": {
       "type": "library",
       "root": "libs/shared",
@@ -114,6 +69,33 @@
       "sourceRoot": "libs/shared/src",
       "compilerOptions": {
         "tsConfigPath": "libs/shared/tsconfig.lib.json"
+      }
+    },
+    "lib-gameplay": {
+      "type": "library",
+      "root": "libs/lib-gameplay",
+      "entryFile": "index",
+      "sourceRoot": "libs/lib-gameplay/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/lib-gameplay/tsconfig.lib.json"
+      }
+    },
+    "lib-local-orchestrator": {
+      "type": "library",
+      "root": "libs/lib-local-orchestrator",
+      "entryFile": "index",
+      "sourceRoot": "libs/lib-local-orchestrator/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/lib-local-orchestrator/tsconfig.lib.json"
+      }
+    },
+    "lib-matchmaking": {
+      "type": "library",
+      "root": "libs/lib-matchmaking",
+      "entryFile": "index",
+      "sourceRoot": "libs/lib-matchmaking/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/lib-matchmaking/tsconfig.lib.json"
       }
     },
     "lib-player": {
@@ -125,40 +107,22 @@
         "tsConfigPath": "libs/lib-player/tsconfig.lib.json"
       }
     },
-    "lib-building": {
+    "lib-users": {
       "type": "library",
-      "root": "libs/lib-building",
+      "root": "libs/lib-users",
       "entryFile": "index",
-      "sourceRoot": "libs/lib-building/src",
+      "sourceRoot": "libs/lib-users/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/lib-building/tsconfig.lib.json"
+        "tsConfigPath": "libs/lib-users/tsconfig.lib.json"
       }
     },
-    "lib-game-server": {
+    "lib-websocket": {
       "type": "library",
-      "root": "libs/lib-game-server",
+      "root": "libs/lib-websocket",
       "entryFile": "index",
-      "sourceRoot": "libs/lib-game-server/src",
+      "sourceRoot": "libs/lib-websocket/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/lib-game-server/tsconfig.lib.json"
-      }
-    },
-    "lib-combat-progress": {
-      "type": "library",
-      "root": "libs/lib-combat-progress",
-      "entryFile": "index",
-      "sourceRoot": "libs/lib-combat-progress/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/lib-combat-progress/tsconfig.lib.json"
-      }
-    },
-    "lib-analytics": {
-      "type": "library",
-      "root": "libs/lib-analytics",
-      "entryFile": "index",
-      "sourceRoot": "libs/lib-analytics/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/lib-analytics/tsconfig.lib.json"
+        "tsConfigPath": "libs/lib-websocket/tsconfig.lib.json"
       }
     }
   }
