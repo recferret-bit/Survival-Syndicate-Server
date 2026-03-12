@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { AuthUserPortRepository } from '@app/users-service/application/ports/auth-user.port.repository';
 import { AuthUser } from '@app/users-service/domain/entities/auth-user/auth-user';
 import { CreateAuthUser } from '@app/users-service/domain/entities/auth-user/auth-user.type';
-import { UsersPrismaService } from '@app/users-service/infrastructure/prisma/users-prisma.service';
 import { AuthUserPrismaMapper } from '@app/users-service/infrastructure/prisma/mapper/auth-user.prisma.mapper';
+import { PrismaService } from '@app/users-service/infrastructure/prisma/prisma.service';
 
 @Injectable()
 export class AuthUserPrismaRepository extends AuthUserPortRepository {
-  constructor(private readonly prisma: UsersPrismaService) {
+  constructor(private readonly prisma: PrismaService) {
     super();
   }
 

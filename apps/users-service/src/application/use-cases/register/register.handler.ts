@@ -10,7 +10,7 @@ import {
   HttpAlreadyExistsException,
 } from '@lib/shared/application';
 import { BearerTokenHashCacheService } from '@lib/shared/redis';
-import { PlayerPublisher } from '@lib/lib-player';
+import { UsersPublisher } from '@lib/lib-users';
 
 @CommandHandler(RegisterCommand)
 export class RegisterHandler implements ICommandHandler<RegisterCommand> {
@@ -19,7 +19,7 @@ export class RegisterHandler implements ICommandHandler<RegisterCommand> {
     private readonly tokenService: TokenService,
     private readonly refreshTokenStore: RefreshTokenStoreService,
     private readonly bearerTokenHashCacheService: BearerTokenHashCacheService,
-    private readonly playerPublisher: PlayerPublisher,
+    private readonly usersPublisher: UsersPublisher,
     private readonly envService: EnvService,
   ) {}
 
@@ -73,7 +73,7 @@ export class RegisterHandler implements ICommandHandler<RegisterCommand> {
     );
     await this.refreshTokenStore.set(user.id.toString(), refreshTokenHash);
 
-    await this.playerPublisher.publishUserRegistered({
+    await this.usersPublisher.publishUserRegistered({
       userId: user.id.toString(),
       currencyIsoCode: user.currencyIsoCode,
     });

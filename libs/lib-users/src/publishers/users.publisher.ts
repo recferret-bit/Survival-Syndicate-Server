@@ -3,10 +3,8 @@ import { ClientProxy } from '@nestjs/microservices';
 import { BasePublisher } from '@lib/shared/nats';
 import {
   UsersSubjects,
-  TestUsersRequest,
-  TestUsersRequestSchema,
-  TestUsersResponse,
-  TestUsersResponseSchema,
+  UserRegisteredEvent,
+  UserRegisteredEventSchema,
 } from '../schemas/users.schemas';
 
 @Injectable()
@@ -19,14 +17,14 @@ export class UsersPublisher extends BasePublisher {
   }
 
   /**
-   * test users
+   * Publish user registered event (fire-and-forget via JetStream)
+   * Subscribers create empty UserStats for the new user
    */
-  async test(dto: TestUsersRequest): Promise<TestUsersResponse> {
-    return this.sendNonDurable(
-      UsersSubjects.TEST,
+  async publishUserRegistered(dto: UserRegisteredEvent): Promise<void> {
+    await this.emitDurable(
+      UsersSubjects.USER_REGISTERED,
       dto,
-      TestUsersRequestSchema,
-      TestUsersResponseSchema,
+      UserRegisteredEventSchema,
     );
   }
 }

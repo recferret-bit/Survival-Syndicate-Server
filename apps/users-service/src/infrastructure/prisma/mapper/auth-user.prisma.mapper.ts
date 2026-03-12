@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/meta';
+import { Prisma } from '@prisma/users';
 import { AuthUser } from '@app/users-service/domain/entities/auth-user/auth-user';
 import { CreateAuthUser } from '@app/users-service/domain/entities/auth-user/auth-user.type';
 
