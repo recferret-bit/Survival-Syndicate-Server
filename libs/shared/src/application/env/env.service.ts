@@ -65,13 +65,13 @@ export class EnvService<E = {}> {
     });
   }
 
-  getPaymentsDatabaseUrl() {
+  getPlayerDatabaseUrl() {
     if (this.isLocal()) {
-      return this.configService.get('TEST_DIRECT_PAYMENTS_DATABASE_URL', {
+      return this.configService.get('TEST_DIRECT_PLAYER_DATABASE_URL', {
         infer: true,
       });
     }
-    return this.configService.get('PGBOUNCER_PAYMENTS_DATABASE_URL', {
+    return this.configService.get('PGBOUNCER_PLAYER_DATABASE_URL', {
       infer: true,
     });
   }
@@ -91,17 +91,6 @@ export class EnvService<E = {}> {
         infer: true,
       },
     );
-  }
-
-  getBalanceDatabaseUrl() {
-    if (this.isLocal()) {
-      return this.configService.get('TEST_DIRECT_BALANCE_DATABASE_URL', {
-        infer: true,
-      });
-    }
-    return this.configService.get('PGBOUNCER_BALANCE_DATABASE_URL', {
-      infer: true,
-    });
   }
 
   getGamesDatabaseUrl() {

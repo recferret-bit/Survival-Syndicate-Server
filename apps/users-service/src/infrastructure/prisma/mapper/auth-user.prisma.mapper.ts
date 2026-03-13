@@ -9,7 +9,7 @@ export class AuthUserPrismaMapper {
     return new AuthUser({
       id: entity.id,
       email: entity.email ?? '',
-      username: entity.name ?? '',
+      username: entity.username ?? '',
       passwordHash: entity.passwordHash,
       bearerTokenHash: entity.bearerTokenHash ?? undefined,
       currencyIsoCode: entity.currencyIsoCode,
@@ -23,7 +23,7 @@ export class AuthUserPrismaMapper {
   static toPrismaCreate(data: CreateAuthUser): Prisma.UserUncheckedCreateInput {
     return {
       email: data.email,
-      name: data.username,
+      username: data.username,
       passwordHash: data.passwordHash,
       currencyIsoCode: data.currencyIsoCode,
       languageIsoCode: data.languageIsoCode,

@@ -7,7 +7,7 @@ describe('AuthUserPrismaMapper', () => {
       email: 'user@example.com',
       passwordHash: 'hash',
       bearerTokenHash: null,
-      name: 'playerOne',
+      username: 'playerOne',
       isTest: false,
       banned: false,
       country: null,
@@ -32,7 +32,7 @@ describe('AuthUserPrismaMapper', () => {
     });
 
     expect(prisma.email).toBe('user@example.com');
-    expect(prisma.name).toBe('playerOne');
+    expect(prisma.username).toBe('playerOne');
     expect(prisma.passwordHash).toBe('hash');
   });
 });

@@ -20,7 +20,6 @@ class App {
     await appBootstrap.setupHealthCheckApp(healthPort);
     await appBootstrap.setupMetricsApp(metricsPort);
     await appBootstrap.startNatsMicroservice();
-    await appBootstrap.startAllMicroservices();
   }
 }
 

@@ -33,7 +33,7 @@ export const commonSchema = z.object({
   REDIS_URL: z.string(),
 
   PGBOUNCER_USERS_DATABASE_URL: z.string(),
-  PGBOUNCER_BALANCE_DATABASE_URL: z.string(),
+  PGBOUNCER_PLAYER_DATABASE_URL: z.string(),
   PGBOUNCER_PAYMENTS_DATABASE_URL: z.string(),
   PGBOUNCER_TEST_PAYMENT_PROVIDER_DATABASE_URL: z.string().optional(),
   PGBOUNCER_TEST_GAME_PROVIDER_DATABASE_URL: z.string().optional(),
@@ -42,7 +42,7 @@ export const commonSchema = z.object({
   PGBOUNCER_CURRENCY_RATE_DATABASE_URL: z.string().optional(),
 
   TEST_DIRECT_USERS_DATABASE_URL: z.string().optional(),
-  TEST_DIRECT_BALANCE_DATABASE_URL: z.string().optional(),
+  TEST_DIRECT_PLAYER_DATABASE_URL: z.string().optional(),
   TEST_DIRECT_PAYMENTS_DATABASE_URL: z.string().optional(),
   TEST_DIRECT_TEST_PAYMENT_PROVIDER_DATABASE_URL: z.string().optional(),
   TEST_DIRECT_TEST_GAME_PROVIDER_DATABASE_URL: z.string().optional(),

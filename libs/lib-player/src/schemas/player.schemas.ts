@@ -4,20 +4,31 @@ import { z } from 'zod';
  * Zod validation schemas for Player service
  */
 
-export const TestPlayerRequestSchema = z.object({});
-
-export const TestPlayerResponseSchema = z.object({
-  success: z.boolean(),
+export const GetPlayerRequestSchema = z.object({
+  playerId: z
+    .string()
+    .regex(/^\d+$/, 'Player ID must be a positive integer string'),
 });
 
-export type TestPlayerRequest = z.infer<typeof TestPlayerRequestSchema>;
-export type TestPlayerResponse = z.infer<typeof TestPlayerResponseSchema>;
+export const GetPlayerResponseSchema = z.object({
+  playerId: z
+    .string()
+    .regex(/^\d+$/, 'Player ID must be a positive integer string'),
+  userId: z
+    .string()
+    .regex(/^\d+$/, 'User ID must be a positive integer string'),
+  username: z.string().min(1),
+  createdAt: z.string(),
+});
+
+export type GetPlayerRequest = z.infer<typeof GetPlayerRequestSchema>;
+export type GetPlayerResponse = z.infer<typeof GetPlayerResponseSchema>;
 
 /**
  * Subject definitions for NATS
  */
 export const PlayerSubjects = {
-  TEST: 'player.test.v1',
+  GET_PLAYER: 'player.get.v1',
 } as const;
 
 export type PlayerSubject =

@@ -10,7 +10,7 @@ generator client {
 model User {
   id              BigInt     @id @default(autoincrement()) @db.BigInt
   email           String?    @unique
-  name            String?
+  username        String?
   passwordHash    String     @map("password_hash")
   bearerTokenHash String?    @map("bearer_token_hash")
   currencyIsoCode String     @map("currency_iso_code")

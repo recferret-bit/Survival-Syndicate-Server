@@ -2,11 +2,11 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { BasePublisher } from '@lib/shared/nats';
 import {
+  GetPlayerRequest,
+  GetPlayerRequestSchema,
+  GetPlayerResponse,
+  GetPlayerResponseSchema,
   PlayerSubjects,
-  TestPlayerRequest,
-  TestPlayerRequestSchema,
-  TestPlayerResponse,
-  TestPlayerResponseSchema,
 } from '../schemas/player.schemas';
 
 @Injectable()
@@ -19,14 +19,14 @@ export class PlayerPublisher extends BasePublisher {
   }
 
   /**
-   * test player
+   * Get player by player ID
    */
-  async test(dto: TestPlayerRequest): Promise<TestPlayerResponse> {
+  async getPlayer(dto: GetPlayerRequest): Promise<GetPlayerResponse> {
     return this.sendNonDurable(
-      PlayerSubjects.TEST,
+      PlayerSubjects.GET_PLAYER,
       dto,
-      TestPlayerRequestSchema,
-      TestPlayerResponseSchema,
+      GetPlayerRequestSchema,
+      GetPlayerResponseSchema,
     );
   }
 }
