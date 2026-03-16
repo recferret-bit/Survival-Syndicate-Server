@@ -6,7 +6,6 @@ import {
 import { Test } from '@nestjs/testing';
 import { CqrsModule } from '@nestjs/cqrs';
 import request from 'supertest';
-import { GameServerPublisher } from '@lib/lib-game-server';
 import { AuthJwtGuard } from '@lib/shared/auth';
 import { MatchmakingHttpController } from './matchmaking.http.controller';
 import { MatchmakingNatsController } from '@app/matchmaking-service/presentation/nats/matchmaking.nats.controller';
@@ -21,6 +20,7 @@ import { LobbyPortRepository } from '@app/matchmaking-service/application/ports/
 import { ZoneRegistryPort } from '@app/matchmaking-service/application/ports/zone-registry.port';
 import { LobbyInMemoryRepository } from '@app/matchmaking-service/infrastructure/repositories/lobby.in-memory.repository';
 import { ZoneRegistryInMemoryRepository } from '@app/matchmaking-service/infrastructure/repositories/zone-registry.in-memory.repository';
+import { MatchmakingPublisher } from '@lib/lib-matchmaking';
 
 class TestAuthGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
@@ -36,7 +36,7 @@ class TestAuthGuard implements CanActivate {
 
 describe('Matchmaking HTTP pipeline (Integration)', () => {
   let app: INestApplication;
-  const gameServerPublisher = {
+  const matchmakingPublisher = {
     publishMatchmakingFoundMatch: jest.fn().mockResolvedValue(undefined),
   };
   let natsController: MatchmakingNatsController;
@@ -62,8 +62,8 @@ describe('Matchmaking HTTP pipeline (Integration)', () => {
           useClass: ZoneRegistryInMemoryRepository,
         },
         {
-          provide: GameServerPublisher,
-          useValue: gameServerPublisher,
+          provide: MatchmakingPublisher,
+          useValue: matchmakingPublisher,
         },
       ],
     })
@@ -111,6 +111,8 @@ describe('Matchmaking HTTP pipeline (Integration)', () => {
       .expect(200);
 
     expect(startResponse.body.status).toBe('started');
-    expect(gameServerPublisher.publishMatchmakingFoundMatch).toHaveBeenCalled();
+    expect(
+      matchmakingPublisher.publishMatchmakingFoundMatch,
+    ).toHaveBeenCalled();
   });
 });

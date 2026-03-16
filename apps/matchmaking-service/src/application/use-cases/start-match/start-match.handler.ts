@@ -1,6 +1,5 @@
 import { randomUUID } from 'crypto';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { GameServerPublisher } from '@lib/lib-game-server';
 import { LobbyPortRepository } from '@app/matchmaking-service/application/ports/lobby.port.repository';
 import { ZoneRegistryPort } from '@app/matchmaking-service/application/ports/zone-registry.port';
 import { LobbyResponseDto } from '@app/matchmaking-service/application/use-cases/create-lobby/create-lobby.dto';
@@ -10,13 +9,14 @@ import {
   HttpNotFoundException,
   HttpServiceUnavailableException,
 } from '@lib/shared/application';
+import { MatchmakingPublisher } from '@lib/lib-matchmaking';
 
 @CommandHandler(StartMatchCommand)
 export class StartMatchHandler implements ICommandHandler<StartMatchCommand> {
   constructor(
     private readonly lobbyRepository: LobbyPortRepository,
     private readonly zoneRegistry: ZoneRegistryPort,
-    private readonly gameServerPublisher: GameServerPublisher,
+    private readonly matchmakingPublisher: MatchmakingPublisher,
   ) {}
 
   async execute(command: StartMatchCommand): Promise<LobbyResponseDto> {
@@ -37,7 +37,7 @@ export class StartMatchHandler implements ICommandHandler<StartMatchCommand> {
     lobby.start(matchId, zone);
     await this.lobbyRepository.save(lobby);
 
-    await this.gameServerPublisher.publishMatchmakingFoundMatch({
+    await this.matchmakingPublisher.publishMatchmakingFoundMatch({
       matchId,
       lobbyId: lobby.id,
       zoneId: zone.zoneId,

@@ -2,12 +2,14 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { BasePublisher } from '@lib/shared/nats';
 import {
+  GameplayRemovePlayerEvent,
+  GameplayRemovePlayerEventSchema,
+  GameplayStartSimulationEvent,
+  GameplayStartSimulationEventSchema,
   LocalOrchestratorSubjects,
-  TestLocalOrchestratorRequest,
-  TestLocalOrchestratorRequestSchema,
-  TestLocalOrchestratorResponse,
-  TestLocalOrchestratorResponseSchema,
-} from '../schemas/local-orchestrator.schemas';
+  OrchestratorZoneHeartbeatEvent,
+  OrchestratorZoneHeartbeatEventSchema,
+} from '@lib/lib-local-orchestrator';
 
 @Injectable()
 export class LocalOrchestratorPublisher extends BasePublisher {
@@ -18,17 +20,33 @@ export class LocalOrchestratorPublisher extends BasePublisher {
     super(durableClient, nonDurableClient, LocalOrchestratorPublisher.name);
   }
 
-  /**
-   * test local orchestrator
-   */
-  async test(
-    dto: TestLocalOrchestratorRequest,
-  ): Promise<TestLocalOrchestratorResponse> {
-    return this.sendNonDurable(
-      LocalOrchestratorSubjects.TEST,
+  async publishOrchestratorZoneHeartbeat(
+    dto: OrchestratorZoneHeartbeatEvent,
+  ): Promise<void> {
+    await this.emitDurable(
+      LocalOrchestratorSubjects.ORCHESTRATOR_ZONE_HEARTBEAT,
       dto,
-      TestLocalOrchestratorRequestSchema,
-      TestLocalOrchestratorResponseSchema,
+      OrchestratorZoneHeartbeatEventSchema,
+    );
+  }
+
+  async publishGameplayStartSimulation(
+    dto: GameplayStartSimulationEvent,
+  ): Promise<void> {
+    await this.emitDurable(
+      LocalOrchestratorSubjects.GAMEPLAY_START_SIMULATION,
+      dto,
+      GameplayStartSimulationEventSchema,
+    );
+  }
+
+  async publishGameplayRemovePlayer(
+    dto: GameplayRemovePlayerEvent,
+  ): Promise<void> {
+    await this.emitDurable(
+      LocalOrchestratorSubjects.GAMEPLAY_REMOVE_PLAYER,
+      dto,
+      GameplayRemovePlayerEventSchema,
     );
   }
 }

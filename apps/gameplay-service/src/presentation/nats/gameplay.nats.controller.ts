@@ -3,17 +3,15 @@ import { CommandBus } from '@nestjs/cqrs';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { NonDurable } from '@lib/shared/nats';
 import { ZodError } from 'zod';
-import {
-  GameServerSubjects,
-  GameplayStartSimulationEventSchema,
-  GameplayRemovePlayerEventSchema,
-} from '@lib/lib-game-server';
-import type {
-  GameplayStartSimulationEvent,
-  GameplayRemovePlayerEvent,
-} from '@lib/lib-game-server';
 import { HandleStartSimulationCommand } from '@app/gameplay-service/application/use-cases/handle-start-simulation/handle-start-simulation.command';
 import { HandleRemovePlayerCommand } from '@app/gameplay-service/application/use-cases/handle-remove-player/handle-remove-player.command';
+import {
+  type GameplayRemovePlayerEvent,
+  GameplayRemovePlayerEventSchema,
+  type GameplayStartSimulationEvent,
+  GameplayStartSimulationEventSchema,
+  LocalOrchestratorSubjects,
+} from '@lib/lib-local-orchestrator';
 
 @Controller()
 export class GameplayNatsController {
@@ -21,7 +19,7 @@ export class GameplayNatsController {
 
   constructor(private readonly commandBus: CommandBus) {}
 
-  @EventPattern(GameServerSubjects.GAMEPLAY_START_SIMULATION)
+  @EventPattern(LocalOrchestratorSubjects.GAMEPLAY_START_SIMULATION)
   @NonDurable()
   async handleStartSimulation(
     @Payload() data: GameplayStartSimulationEvent,
@@ -35,7 +33,7 @@ export class GameplayNatsController {
     }
   }
 
-  @EventPattern(GameServerSubjects.GAMEPLAY_REMOVE_PLAYER)
+  @EventPattern(LocalOrchestratorSubjects.GAMEPLAY_REMOVE_PLAYER)
   @NonDurable()
   async handleRemovePlayer(
     @Payload() data: GameplayRemovePlayerEvent,

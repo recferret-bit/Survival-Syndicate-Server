@@ -4,7 +4,7 @@ import {
   OnModuleDestroy,
   OnModuleInit,
 } from '@nestjs/common';
-import { GameServerPublisher } from '@lib/lib-game-server';
+import { GameplayPublisher } from '@lib/lib-gameplay';
 
 @Injectable()
 export class HeartbeatService implements OnModuleInit, OnModuleDestroy {
@@ -12,7 +12,7 @@ export class HeartbeatService implements OnModuleInit, OnModuleDestroy {
   private timer?: NodeJS.Timeout;
   private readonly serviceId: string;
 
-  constructor(private readonly gameServerPublisher: GameServerPublisher) {
+  constructor(private readonly gameplayPublisher: GameplayPublisher) {
     this.serviceId = `gameplay-${process.pid}`;
   }
 
@@ -31,7 +31,7 @@ export class HeartbeatService implements OnModuleInit, OnModuleDestroy {
 
   async publishHeartbeat(): Promise<void> {
     try {
-      await this.gameServerPublisher.publishGameplayServiceHeartbeat({
+      await this.gameplayPublisher.publishGameplayServiceHeartbeat({
         serviceId: this.serviceId,
         reportedAt: new Date().toISOString(),
       });

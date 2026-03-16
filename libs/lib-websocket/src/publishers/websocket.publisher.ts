@@ -3,10 +3,12 @@ import { ClientProxy } from '@nestjs/microservices';
 import { BasePublisher } from '@lib/shared/nats';
 import {
   WebsocketSubjects,
-  TestWebsocketRequest,
-  TestWebsocketRequestSchema,
-  TestWebsocketResponse,
-  TestWebsocketResponseSchema,
+  OrchestratorPlayerReconnectResponse,
+  OrchestratorPlayerReconnectRequest,
+  OrchestratorPlayerReconnectRequestSchema,
+  OrchestratorPlayerReconnectResponseSchema,
+  PlayerConnectionStatusEvent,
+  PlayerConnectionStatusEventSchema,
 } from '../schemas/websocket.schemas';
 
 @Injectable()
@@ -18,15 +20,24 @@ export class WebsocketPublisher extends BasePublisher {
     super(durableClient, nonDurableClient, WebsocketPublisher.name);
   }
 
-  /**
-   * test websocket
-   */
-  async test(dto: TestWebsocketRequest): Promise<TestWebsocketResponse> {
+  async requestOrchestratorPlayerReconnect(
+    dto: OrchestratorPlayerReconnectRequest,
+  ): Promise<OrchestratorPlayerReconnectResponse> {
     return this.sendNonDurable(
-      WebsocketSubjects.TEST,
+      WebsocketSubjects.ORCHESTRATOR_PLAYER_RECONNECT_REQUEST,
       dto,
-      TestWebsocketRequestSchema,
-      TestWebsocketResponseSchema,
+      OrchestratorPlayerReconnectRequestSchema,
+      OrchestratorPlayerReconnectResponseSchema,
+    );
+  }
+
+  async publishPlayerConnectionStatus(
+    dto: PlayerConnectionStatusEvent,
+  ): Promise<void> {
+    await this.emitDurable(
+      WebsocketSubjects.PLAYER_CONNECTION_STATUS,
+      dto,
+      PlayerConnectionStatusEventSchema,
     );
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConnectionManagerService } from '@app/websocket-service/application/services/connection-manager.service';
-import { GameServerPublisher } from '@lib/lib-game-server';
 import { WsGatewayResult } from './ws-gateway-result.type';
+import { WebsocketPublisher } from '@lib/lib-websocket';
 
 const GRACE_PERIOD_SECONDS = 60;
 
@@ -13,14 +13,14 @@ type HandleDisconnectInput = {
 export class HandleDisconnectUseCase {
   constructor(
     private readonly connectionManager: ConnectionManagerService,
-    private readonly gameServerPublisher: GameServerPublisher,
+    private readonly websocketPublisher: WebsocketPublisher,
   ) {}
 
   execute(input: HandleDisconnectInput): WsGatewayResult {
     const info = this.connectionManager.unregister(input.clientId);
     if (!info) return {};
 
-    void this.gameServerPublisher.publishPlayerConnectionStatus({
+    void this.websocketPublisher.publishPlayerConnectionStatus({
       matchId: info.matchId,
       playerId: info.playerId,
       status: 'disconnected',

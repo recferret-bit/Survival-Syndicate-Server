@@ -11,7 +11,7 @@ export class PrismaService
 {
   declare $transaction: PrismaClient['$transaction'];
   constructor(envService: EnvService) {
-    const connectionString = envService.getUsersDatabaseUrl();
+    const connectionString = envService.getPlayerDatabaseUrl();
     const poolConfig = envService.getPoolConfig(connectionString);
     const pool = new Pool(poolConfig);
     const adapter = new PrismaPg(pool);

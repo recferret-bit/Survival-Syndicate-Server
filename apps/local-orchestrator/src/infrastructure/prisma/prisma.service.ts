@@ -10,7 +10,7 @@ export class PrismaService
   implements OnModuleInit, OnModuleDestroy
 {
   constructor(envService: EnvService) {
-    const connectionString = envService.getMatchmakingDatabaseUrl();
+    const connectionString = envService.getLocalOrchestratorDatabaseUrl();
     const poolConfig = envService.getPoolConfig(connectionString);
     const pool = new Pool(poolConfig);
     const adapter = new PrismaPg(pool);

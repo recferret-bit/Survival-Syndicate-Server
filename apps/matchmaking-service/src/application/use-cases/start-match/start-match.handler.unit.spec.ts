@@ -1,10 +1,10 @@
 import { Test } from '@nestjs/testing';
 import { Lobby } from '@app/matchmaking-service/domain/entities/lobby/lobby';
-import { GameServerPublisher } from '@lib/lib-game-server';
 import { LobbyPortRepository } from '@app/matchmaking-service/application/ports/lobby.port.repository';
 import { ZoneRegistryPort } from '@app/matchmaking-service/application/ports/zone-registry.port';
 import { StartMatchHandler } from './start-match.handler';
 import { StartMatchCommand } from './start-match.command';
+import { MatchmakingPublisher } from '@lib/lib-matchmaking';
 
 describe('StartMatchHandler', () => {
   it('starts lobby and publishes found match', async () => {
@@ -28,7 +28,7 @@ describe('StartMatchHandler', () => {
         websocketUrl: 'ws://zone-a',
       }),
     };
-    const gameServerPublisher = {
+    const matchmakingPublisher = {
       publishMatchmakingFoundMatch: jest.fn().mockResolvedValue(undefined),
     };
 
@@ -37,7 +37,7 @@ describe('StartMatchHandler', () => {
         StartMatchHandler,
         { provide: LobbyPortRepository, useValue: lobbyRepository },
         { provide: ZoneRegistryPort, useValue: zoneRegistry },
-        { provide: GameServerPublisher, useValue: gameServerPublisher },
+        { provide: MatchmakingPublisher, useValue: matchmakingPublisher },
       ],
     }).compile();
 
@@ -45,6 +45,8 @@ describe('StartMatchHandler', () => {
     const result = await handler.execute(new StartMatchCommand('lobby-1', '1'));
 
     expect(result.status).toBe('started');
-    expect(gameServerPublisher.publishMatchmakingFoundMatch).toHaveBeenCalled();
+    expect(
+      matchmakingPublisher.publishMatchmakingFoundMatch,
+    ).toHaveBeenCalled();
   });
 });

@@ -3,17 +3,15 @@ import { CommandBus } from '@nestjs/cqrs';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { ZodError } from 'zod';
 import { NonDurable } from '@lib/shared/nats';
-import {
-  GameServerSubjects,
-  MatchFinishedEventSchema,
-  OrchestratorZoneHeartbeatEventSchema,
-} from '@lib/lib-game-server';
-import type {
-  MatchFinishedEvent,
-  OrchestratorZoneHeartbeatEvent,
-} from '@lib/lib-game-server';
 import { UpsertZoneHeartbeatCommand } from '@app/matchmaking-service/application/use-cases/upsert-zone-heartbeat/upsert-zone-heartbeat.command';
 import { HandleMatchFinishedCommand } from '@app/matchmaking-service/application/use-cases/handle-match-finished/handle-match-finished.command';
+import {
+  GameplaySubjects,
+  type MatchFinishedEvent,
+  MatchFinishedEventSchema,
+  type OrchestratorZoneHeartbeatEvent,
+  OrchestratorZoneHeartbeatEventSchema,
+} from '@lib/lib-gameplay';
 
 @Controller()
 export class MatchmakingNatsController {
@@ -21,7 +19,7 @@ export class MatchmakingNatsController {
 
   constructor(private readonly commandBus: CommandBus) {}
 
-  @EventPattern(GameServerSubjects.ORCHESTRATOR_ZONE_HEARTBEAT)
+  @EventPattern(GameplaySubjects.ORCHESTRATOR_ZONE_HEARTBEAT)
   @NonDurable()
   async handleZoneHeartbeat(
     @Payload() data: OrchestratorZoneHeartbeatEvent,
@@ -44,7 +42,7 @@ export class MatchmakingNatsController {
     }
   }
 
-  @EventPattern(GameServerSubjects.MATCH_FINISHED)
+  @EventPattern(GameplaySubjects.MATCH_FINISHED)
   @NonDurable()
   async handleMatchFinished(
     @Payload() data: MatchFinishedEvent,

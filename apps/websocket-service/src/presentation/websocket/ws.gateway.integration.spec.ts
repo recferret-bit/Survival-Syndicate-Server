@@ -1,20 +1,20 @@
 import { Test } from '@nestjs/testing';
 import { AuthJwtService } from '@lib/shared/auth';
 import { ApplicationModule } from '@app/websocket-service/application/application.module';
-import { GameServerPublisher, LibGameServerModule } from '@lib/lib-game-server';
 import { ConnectionManagerService } from '@app/websocket-service/application/services/connection-manager.service';
 import { ClientMessageType } from '@app/websocket-service/application/schemas/ws-messages.schema';
 import {
   WsErrorCode,
   WsErrorType,
-} from '@app/websocket-service/application/use-cases/websocket/ws-error.enums';
+} from '@lib/lib-websocket/enum/ws-error.enums';
 import { WsGateway } from './ws.gateway';
+import { LibWebsocketModule, WebsocketPublisher } from '@lib/lib-websocket';
 
 describe('WsGateway (Integration)', () => {
   const mockReconnect = jest.fn().mockResolvedValue({ status: 'success' });
   const mockPublish = jest.fn().mockResolvedValue(undefined);
 
-  const mockGameServerPublisher = {
+  const mockWebsocketPublisher = {
     requestOrchestratorPlayerReconnect: mockReconnect,
     publishPlayerConnectionStatus: mockPublish,
   };
@@ -26,11 +26,11 @@ describe('WsGateway (Integration)', () => {
 
   async function createGateway() {
     const moduleRef = await Test.createTestingModule({
-      imports: [ApplicationModule, LibGameServerModule],
+      imports: [ApplicationModule, LibWebsocketModule],
       providers: [WsGateway],
     })
-      .overrideProvider(GameServerPublisher)
-      .useValue(mockGameServerPublisher)
+      .overrideProvider(WebsocketPublisher)
+      .useValue(mockWebsocketPublisher)
       .compile();
 
     const gateway = moduleRef.get(WsGateway);

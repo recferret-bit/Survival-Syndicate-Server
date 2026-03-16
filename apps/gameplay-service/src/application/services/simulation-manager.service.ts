@@ -1,19 +1,19 @@
 import { Injectable, OnModuleDestroy } from '@nestjs/common';
-import { GameServerPublisher } from '@lib/lib-game-server';
 import { GameSimulationStub } from './game-simulation-stub';
+import { GameplayPublisher } from '@lib/lib-gameplay';
 
 @Injectable()
 export class SimulationManagerService implements OnModuleDestroy {
   private readonly simulations = new Map<string, GameSimulationStub>();
 
-  constructor(private readonly gameServerPublisher: GameServerPublisher) {}
+  constructor(private readonly gameplayPublisher: GameplayPublisher) {}
 
   create(matchId: string, playerIds: string[]): GameSimulationStub {
     const stub = new GameSimulationStub(
       matchId,
       playerIds,
       (state) => {
-        void this.gameServerPublisher.publishWorldState(matchId, state);
+        void this.gameplayPublisher.publishWorldState(matchId, state);
       },
       100,
     );

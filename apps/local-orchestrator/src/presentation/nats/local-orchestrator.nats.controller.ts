@@ -3,25 +3,26 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import { NonDurable } from '@lib/shared/nats';
 import { ZodError } from 'zod';
-import {
-  GameServerSubjects,
-  MatchmakingFoundMatchEventSchema,
-  PlayerConnectionStatusEventSchema,
-  OrchestratorPlayerReconnectRequestSchema,
-  OrchestratorPlayerReconnectResponseSchema,
-  GameplayServiceHeartbeatEventSchema,
-} from '@lib/lib-game-server';
-import type {
-  MatchmakingFoundMatchEvent,
-  PlayerConnectionStatusEvent,
-  OrchestratorPlayerReconnectRequest,
-  OrchestratorPlayerReconnectResponse,
-  GameplayServiceHeartbeatEvent,
-} from '@lib/lib-game-server';
 import { HandleFoundMatchCommand } from '@app/local-orchestrator/application/use-cases/handle-found-match/handle-found-match.command';
 import { HandlePlayerConnectionStatusCommand } from '@app/local-orchestrator/application/use-cases/handle-player-connection-status/handle-player-connection-status.command';
 import { ReconnectRequestQuery } from '@app/local-orchestrator/application/use-cases/reconnect-request/reconnect-request.query';
 import { HandleGameplayHeartbeatCommand } from '@app/local-orchestrator/application/use-cases/handle-gameplay-heartbeat/handle-gameplay-heartbeat.command';
+import {
+  type MatchmakingFoundMatchEvent,
+  MatchmakingFoundMatchEventSchema,
+  MatchmakingSubjects,
+} from '@lib/lib-matchmaking';
+import {
+  type GameplayServiceHeartbeatEvent,
+  GameplayServiceHeartbeatEventSchema,
+  GameplaySubjects,
+  type OrchestratorPlayerReconnectRequest,
+  OrchestratorPlayerReconnectRequestSchema,
+  type OrchestratorPlayerReconnectResponse,
+  OrchestratorPlayerReconnectResponseSchema,
+  type PlayerConnectionStatusEvent,
+  PlayerConnectionStatusEventSchema,
+} from '@lib/lib-gameplay';
 
 @Controller()
 export class LocalOrchestratorNatsController {
@@ -32,7 +33,7 @@ export class LocalOrchestratorNatsController {
     private readonly queryBus: QueryBus,
   ) {}
 
-  @EventPattern(GameServerSubjects.MATCHMAKING_FOUND_MATCH)
+  @EventPattern(MatchmakingSubjects.MATCHMAKING_FOUND_MATCH)
   @NonDurable()
   async handleFoundMatch(
     @Payload() data: MatchmakingFoundMatchEvent,
@@ -46,7 +47,7 @@ export class LocalOrchestratorNatsController {
     }
   }
 
-  @EventPattern(GameServerSubjects.PLAYER_CONNECTION_STATUS)
+  @EventPattern(GameplaySubjects.PLAYER_CONNECTION_STATUS)
   @NonDurable()
   async handlePlayerConnectionStatus(
     @Payload() data: PlayerConnectionStatusEvent,
@@ -62,7 +63,7 @@ export class LocalOrchestratorNatsController {
     }
   }
 
-  @EventPattern(GameServerSubjects.GAMEPLAY_SERVICE_HEARTBEAT)
+  @EventPattern(GameplaySubjects.GAMEPLAY_SERVICE_HEARTBEAT)
   @NonDurable()
   async handleGameplayServiceHeartbeat(
     @Payload() data: GameplayServiceHeartbeatEvent,
@@ -76,7 +77,7 @@ export class LocalOrchestratorNatsController {
     }
   }
 
-  @MessagePattern(GameServerSubjects.ORCHESTRATOR_PLAYER_RECONNECT_REQUEST)
+  @MessagePattern(GameplaySubjects.ORCHESTRATOR_PLAYER_RECONNECT_REQUEST)
   @NonDurable()
   async handleReconnectRequest(
     @Payload() data: OrchestratorPlayerReconnectRequest,

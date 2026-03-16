@@ -1,4 +1,4 @@
-import type { WorldStateStub } from '@lib/lib-game-server';
+import type { WorldStateStub } from '@lib/lib-gameplay';
 
 /**
  * Stub game simulation for MVP: no real GameLoop, just tick counter and player set.

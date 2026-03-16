@@ -4,20 +4,38 @@ import { z } from 'zod';
  * Zod validation schemas for Gameplay service
  */
 
-export const TestGameplayRequestSchema = z.object({});
+export const MatchFinishedEventSchema = z.object({
+  matchId: z.string().min(1),
+  lobbyId: z.string().optional(),
+});
+export type MatchFinishedEvent = z.infer<typeof MatchFinishedEventSchema>;
 
-export const TestGameplayResponseSchema = z.object({
-  success: z.boolean(),
+export const GameplayServiceHeartbeatEventSchema = z.object({
+  serviceId: z.string().min(1),
+  reportedAt: z.string().datetime().optional(),
+});
+export type GameplayServiceHeartbeatEvent = z.infer<
+  typeof GameplayServiceHeartbeatEventSchema
+>;
+
+/** Stub WorldState for MVP (no real entities) */
+export const WorldStateStubSchema = z.object({
+  serverTick: z.number().int().nonnegative(),
+  entities_full: z.array(z.unknown()),
+  events: z.array(z.unknown()),
 });
 
-export type TestGameplayRequest = z.infer<typeof TestGameplayRequestSchema>;
-export type TestGameplayResponse = z.infer<typeof TestGameplayResponseSchema>;
+export type WorldStateStub = z.infer<typeof WorldStateStubSchema>;
 
 /**
  * Subject definitions for NATS
  */
 export const GameplaySubjects = {
-  TEST: 'gameplay.test.v1',
+  MATCH_FINISHED: 'match.finished.v1',
+  ORCHESTRATOR_ZONE_HEARTBEAT: 'orchestrator.zone.heartbeat.v1',
+  GAMEPLAY_SERVICE_HEARTBEAT: 'gameplay.service.heartbeat.v1',
+  /** Prefix for per-match world state; full subject: gameplay.world_state.{matchId} */
+  GAMEPLAY_WORLD_STATE_PREFIX: 'gameplay.world_state',
 } as const;
 
 export type GameplaySubject =

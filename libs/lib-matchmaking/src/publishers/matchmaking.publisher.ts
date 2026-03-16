@@ -2,12 +2,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { BasePublisher } from '@lib/shared/nats';
 import {
+  MatchmakingFoundMatchEvent,
+  MatchmakingFoundMatchEventSchema,
   MatchmakingSubjects,
-  TestMatchmakingRequest,
-  TestMatchmakingRequestSchema,
-  TestMatchmakingResponse,
-  TestMatchmakingResponseSchema,
-} from '../schemas/matchmaking.schemas';
+} from '@lib/lib-matchmaking/schemas/matchmaking.schemas';
 
 @Injectable()
 export class MatchmakingPublisher extends BasePublisher {
@@ -18,15 +16,13 @@ export class MatchmakingPublisher extends BasePublisher {
     super(durableClient, nonDurableClient, MatchmakingPublisher.name);
   }
 
-  /**
-   * test matchmaking
-   */
-  async test(dto: TestMatchmakingRequest): Promise<TestMatchmakingResponse> {
-    return this.sendNonDurable(
-      MatchmakingSubjects.TEST,
+  async publishMatchmakingFoundMatch(
+    dto: MatchmakingFoundMatchEvent,
+  ): Promise<void> {
+    await this.emitDurable(
+      MatchmakingSubjects.MATCHMAKING_FOUND_MATCH,
       dto,
-      TestMatchmakingRequestSchema,
-      TestMatchmakingResponseSchema,
+      MatchmakingFoundMatchEventSchema,
     );
   }
 }

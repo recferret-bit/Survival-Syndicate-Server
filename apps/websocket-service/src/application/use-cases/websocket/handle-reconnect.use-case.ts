@@ -3,12 +3,12 @@ import { ReconnectService } from '@app/websocket-service/application/services/re
 import { ConnectionManagerService } from '@app/websocket-service/application/services/connection-manager.service';
 import { LobbyStateSyncService } from '@app/websocket-service/application/services/lobby-state-sync.service';
 import { ClientReconnectSchema } from '@app/websocket-service/application/schemas/ws-messages.schema';
-import { GameServerPublisher } from '@lib/lib-game-server';
 import { WsGatewayResult } from './ws-gateway-result.type';
 import {
   WsErrorCode,
   WsErrorType,
-} from '@app/websocket-service/application/use-cases/websocket/ws-error.enums';
+} from '@lib/lib-websocket/enum/ws-error.enums';
+import { WebsocketPublisher } from '@lib/lib-websocket';
 
 type HandleReconnectInput = {
   clientId: string;
@@ -21,7 +21,7 @@ export class HandleReconnectUseCase {
     private readonly reconnectService: ReconnectService,
     private readonly connectionManager: ConnectionManagerService,
     private readonly lobbyStateSync: LobbyStateSyncService,
-    private readonly gameServerPublisher: GameServerPublisher,
+    private readonly websocketPublisher: WebsocketPublisher,
   ) {}
 
   async execute(input: HandleReconnectInput): Promise<WsGatewayResult> {
@@ -53,7 +53,7 @@ export class HandleReconnectUseCase {
         result.playerId,
         result.matchId,
       );
-      void this.gameServerPublisher.publishPlayerConnectionStatus({
+      void this.websocketPublisher.publishPlayerConnectionStatus({
         matchId: result.matchId,
         playerId: result.playerId,
         status: 'reconnected',
