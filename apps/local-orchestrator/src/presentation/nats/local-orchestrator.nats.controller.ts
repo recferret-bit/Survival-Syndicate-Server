@@ -1,8 +1,7 @@
 import { Controller, Logger } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
-import { NonDurable } from '@lib/shared/nats';
-import { ZodError } from 'zod';
+import { NonDurable, logNatsHandlerError } from '@lib/shared/nats';
 import { HandleFoundMatchCommand } from '@app/local-orchestrator/application/use-cases/handle-found-match/handle-found-match.command';
 import { HandlePlayerConnectionStatusCommand } from '@app/local-orchestrator/application/use-cases/handle-player-connection-status/handle-player-connection-status.command';
 import { ReconnectRequestQuery } from '@app/local-orchestrator/application/use-cases/reconnect-request/reconnect-request.query';
@@ -16,13 +15,16 @@ import {
   type GameplayServiceHeartbeatEvent,
   GameplayServiceHeartbeatEventSchema,
   GameplaySubjects,
+} from '@lib/lib-gameplay';
+import {
   type OrchestratorPlayerReconnectRequest,
   OrchestratorPlayerReconnectRequestSchema,
   type OrchestratorPlayerReconnectResponse,
   OrchestratorPlayerReconnectResponseSchema,
   type PlayerConnectionStatusEvent,
   PlayerConnectionStatusEventSchema,
-} from '@lib/lib-gameplay';
+  WebsocketSubjects,
+} from '@lib/lib-websocket';
 
 @Controller()
 export class LocalOrchestratorNatsController {
@@ -42,12 +44,12 @@ export class LocalOrchestratorNatsController {
       const event = MatchmakingFoundMatchEventSchema.parse(data);
       await this.commandBus.execute(new HandleFoundMatchCommand(event));
     } catch (error) {
-      this.logError('handleFoundMatch', error);
+      logNatsHandlerError(this.logger, 'handleFoundMatch', error);
       throw error;
     }
   }
 
-  @EventPattern(GameplaySubjects.PLAYER_CONNECTION_STATUS)
+  @EventPattern(WebsocketSubjects.PLAYER_CONNECTION_STATUS)
   @NonDurable()
   async handlePlayerConnectionStatus(
     @Payload() data: PlayerConnectionStatusEvent,
@@ -58,7 +60,7 @@ export class LocalOrchestratorNatsController {
         new HandlePlayerConnectionStatusCommand(event),
       );
     } catch (error) {
-      this.logError('handlePlayerConnectionStatus', error);
+      logNatsHandlerError(this.logger, 'handlePlayerConnectionStatus', error);
       throw error;
     }
   }
@@ -72,12 +74,12 @@ export class LocalOrchestratorNatsController {
       const event = GameplayServiceHeartbeatEventSchema.parse(data);
       await this.commandBus.execute(new HandleGameplayHeartbeatCommand(event));
     } catch (error) {
-      this.logError('handleGameplayServiceHeartbeat', error);
+      logNatsHandlerError(this.logger, 'handleGameplayServiceHeartbeat', error);
       throw error;
     }
   }
 
-  @MessagePattern(GameplaySubjects.ORCHESTRATOR_PLAYER_RECONNECT_REQUEST)
+  @MessagePattern(WebsocketSubjects.ORCHESTRATOR_PLAYER_RECONNECT_REQUEST)
   @NonDurable()
   async handleReconnectRequest(
     @Payload() data: OrchestratorPlayerReconnectRequest,
@@ -89,22 +91,8 @@ export class LocalOrchestratorNatsController {
       );
       return OrchestratorPlayerReconnectResponseSchema.parse(response);
     } catch (error) {
-      this.logError('handleReconnectRequest', error);
+      logNatsHandlerError(this.logger, 'handleReconnectRequest', error);
       throw error;
     }
-  }
-
-  private logError(method: string, error: unknown): void {
-    if (error instanceof ZodError) {
-      this.logger.error(
-        `${method} validation error: ${JSON.stringify(error.issues)}`,
-      );
-      return;
-    }
-    if (error instanceof Error) {
-      this.logger.error(`${method} failed: ${error.message}`, error.stack);
-      return;
-    }
-    this.logger.error(`${method} failed: ${String(error)}`);
   }
 }

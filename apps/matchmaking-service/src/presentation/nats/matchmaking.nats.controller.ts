@@ -1,17 +1,19 @@
 import { Controller, Logger } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { EventPattern, Payload } from '@nestjs/microservices';
-import { ZodError } from 'zod';
-import { NonDurable } from '@lib/shared/nats';
+import { logNatsHandlerError, NonDurable } from '@lib/shared/nats';
 import { UpsertZoneHeartbeatCommand } from '@app/matchmaking-service/application/use-cases/upsert-zone-heartbeat/upsert-zone-heartbeat.command';
 import { HandleMatchFinishedCommand } from '@app/matchmaking-service/application/use-cases/handle-match-finished/handle-match-finished.command';
 import {
   GameplaySubjects,
   type MatchFinishedEvent,
   MatchFinishedEventSchema,
+} from '@lib/lib-gameplay';
+import {
+  LocalOrchestratorSubjects,
   type OrchestratorZoneHeartbeatEvent,
   OrchestratorZoneHeartbeatEventSchema,
-} from '@lib/lib-gameplay';
+} from '@lib/lib-local-orchestrator';
 
 @Controller()
 export class MatchmakingNatsController {
@@ -19,7 +21,7 @@ export class MatchmakingNatsController {
 
   constructor(private readonly commandBus: CommandBus) {}
 
-  @EventPattern(GameplaySubjects.ORCHESTRATOR_ZONE_HEARTBEAT)
+  @EventPattern(LocalOrchestratorSubjects.ORCHESTRATOR_ZONE_HEARTBEAT)
   @NonDurable()
   async handleZoneHeartbeat(
     @Payload() data: OrchestratorZoneHeartbeatEvent,
@@ -28,16 +30,7 @@ export class MatchmakingNatsController {
       const event = OrchestratorZoneHeartbeatEventSchema.parse(data);
       await this.commandBus.execute(new UpsertZoneHeartbeatCommand(event));
     } catch (error) {
-      if (error instanceof ZodError) {
-        this.logger.error(
-          `Invalid zone heartbeat payload: ${JSON.stringify(error.issues)}`,
-        );
-      } else {
-        this.logger.error(
-          `Failed to process zone heartbeat: ${error.message}`,
-          error.stack,
-        );
-      }
+      logNatsHandlerError(this.logger, 'handleZoneHeartbeat', error);
       throw error;
     }
   }
@@ -51,16 +44,7 @@ export class MatchmakingNatsController {
       const event = MatchFinishedEventSchema.parse(data);
       await this.commandBus.execute(new HandleMatchFinishedCommand(event));
     } catch (error) {
-      if (error instanceof ZodError) {
-        this.logger.error(
-          `Invalid match finished payload: ${JSON.stringify(error.issues)}`,
-        );
-      } else {
-        this.logger.error(
-          `Failed to process match finished event: ${error.message}`,
-          error.stack,
-        );
-      }
+      logNatsHandlerError(this.logger, 'handleMatchFinished', error);
       throw error;
     }
   }

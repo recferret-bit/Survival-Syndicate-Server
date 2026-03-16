@@ -1,8 +1,7 @@
 import { Controller, Logger } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { EventPattern, Payload } from '@nestjs/microservices';
-import { NonDurable } from '@lib/shared/nats';
-import { ZodError } from 'zod';
+import { NonDurable, logNatsHandlerError } from '@lib/shared/nats';
 import { HandleStartSimulationCommand } from '@app/gameplay-service/application/use-cases/handle-start-simulation/handle-start-simulation.command';
 import { HandleRemovePlayerCommand } from '@app/gameplay-service/application/use-cases/handle-remove-player/handle-remove-player.command';
 import {
@@ -28,7 +27,7 @@ export class GameplayNatsController {
       const event = GameplayStartSimulationEventSchema.parse(data);
       await this.commandBus.execute(new HandleStartSimulationCommand(event));
     } catch (error) {
-      this.logError('handleStartSimulation', error);
+      logNatsHandlerError(this.logger, 'handleStartSimulation', error);
       throw error;
     }
   }
@@ -42,22 +41,8 @@ export class GameplayNatsController {
       const event = GameplayRemovePlayerEventSchema.parse(data);
       await this.commandBus.execute(new HandleRemovePlayerCommand(event));
     } catch (error) {
-      this.logError('handleRemovePlayer', error);
+      logNatsHandlerError(this.logger, 'handleRemovePlayer', error);
       throw error;
     }
-  }
-
-  private logError(method: string, error: unknown): void {
-    if (error instanceof ZodError) {
-      this.logger.error(
-        `${method} validation error: ${JSON.stringify(error.issues)}`,
-      );
-      return;
-    }
-    if (error instanceof Error) {
-      this.logger.error(`${method} failed: ${error.message}`, error.stack);
-      return;
-    }
-    this.logger.error(`${method} failed: ${String(error)}`);
   }
 }

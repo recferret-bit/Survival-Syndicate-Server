@@ -4,3 +4,4 @@ export * from './jetstream-client';
 export * from './nats.config';
 export * from './base-publisher';
 export * from './decorators/non-durable.decorator';
+export * from './utils/error-logger';

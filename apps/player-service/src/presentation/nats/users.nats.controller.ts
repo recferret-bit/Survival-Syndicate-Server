@@ -1,8 +1,7 @@
 import { Controller, Logger } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
-import { NonDurable } from '@lib/shared/nats';
-import { ZodError } from 'zod';
+import { logNatsHandlerError, NonDurable } from '@lib/shared/nats';
 import {
   type GetPlayerRequest,
   GetPlayerRequestSchema,
@@ -39,16 +38,7 @@ export class UsersNatsController {
       );
       return GetPlayerResponseSchema.parse(result);
     } catch (error) {
-      if (error instanceof ZodError) {
-        this.logger.error(
-          `Error handling get player request: ${JSON.stringify(error.issues)}`,
-        );
-      } else {
-        this.logger.error(
-          `Error handling get player request: ${error.message}`,
-          error.stack,
-        );
-      }
+      logNatsHandlerError(this.logger, 'handleGetPlayer', error);
       throw error;
     }
   }
@@ -62,16 +52,7 @@ export class UsersNatsController {
       const event = UserRegisteredEventSchema.parse(data);
       await this.commandBus.execute(new CreateProfileCommand(event));
     } catch (error) {
-      if (error instanceof ZodError) {
-        this.logger.error(
-          `Error handling user registered event: ${JSON.stringify(error.issues)}`,
-        );
-      } else {
-        this.logger.error(
-          `Error handling user registered event: ${error.message}`,
-          error.stack,
-        );
-      }
+      logNatsHandlerError(this.logger, 'handleUserRegistered', error);
       throw error;
     }
   }

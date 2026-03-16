@@ -32,7 +32,6 @@ export type WorldStateStub = z.infer<typeof WorldStateStubSchema>;
  */
 export const GameplaySubjects = {
   MATCH_FINISHED: 'match.finished.v1',
-  ORCHESTRATOR_ZONE_HEARTBEAT: 'orchestrator.zone.heartbeat.v1',
   GAMEPLAY_SERVICE_HEARTBEAT: 'gameplay.service.heartbeat.v1',
   /** Prefix for per-match world state; full subject: gameplay.world_state.{matchId} */
   GAMEPLAY_WORLD_STATE_PREFIX: 'gameplay.world_state',
