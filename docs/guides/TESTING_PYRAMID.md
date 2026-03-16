@@ -41,6 +41,8 @@ npm run test:cov
 npm run test:e2e
 ```
 
+E2E базовый флоу (TASK-3.1): `test/e2e/basic-flow.e2e-spec.ts` — register → JWT → matchmaking → WS connect → echo → disconnect. Требует запущенные сервисы (`npm run start:local`) и инфраструктуру (`npm run docker:infra`).
+
 ## Практические правила
 - Тесты должны быть детерминированными и быстрыми.
 - Не мокать Zod-схемы — валидируем реальные DTO/контракты.
