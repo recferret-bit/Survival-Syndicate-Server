@@ -1,4 +1,4 @@
-import { UserRegisteredEvent } from '@lib/lib-player';
+import { UserRegisteredEvent } from '@lib/lib-users';
 
 export class CreateProfileCommand {
   constructor(public readonly event: UserRegisteredEvent) {}

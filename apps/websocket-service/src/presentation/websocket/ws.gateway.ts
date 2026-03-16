@@ -16,7 +16,7 @@ import { HandleInputUseCase } from '@app/websocket-service/application/use-cases
 import { HandleReconnectUseCase } from '@app/websocket-service/application/use-cases/websocket/handle-reconnect.use-case';
 import { WsGatewayResult } from '@app/websocket-service/application/use-cases/websocket/ws-gateway-result.type';
 import { ClientMessageType } from '@app/websocket-service/application/schemas/ws-messages.schema';
-import { WsErrorType } from '@app/websocket-service/application/use-cases/websocket/ws-error.enums';
+import { WsErrorType } from '@lib/lib-websocket/enum/ws-error.enums';
 
 type WsClient = WebSocket & { id?: string };
 enum WsReadyState {

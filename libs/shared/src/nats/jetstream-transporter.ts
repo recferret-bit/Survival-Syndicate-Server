@@ -1,8 +1,4 @@
-import {
-  CustomTransportStrategy,
-  Server,
-  WritePacket,
-} from '@nestjs/microservices';
+import { CustomTransportStrategy, Server } from '@nestjs/microservices';
 import {
   connect,
   NatsConnection,
@@ -15,7 +11,6 @@ import { isHandlerNonDurable } from './utils/metadata';
 import {
   deleteOldStreamIfOverlapping,
   createStream,
-  StreamConfig,
 } from './utils/stream-manager';
 import { createConsumer, getConsumerName } from './utils/consumer-manager';
 import {

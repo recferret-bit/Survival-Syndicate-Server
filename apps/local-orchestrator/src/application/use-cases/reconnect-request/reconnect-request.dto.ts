@@ -1,3 +1,3 @@
-import { OrchestratorPlayerReconnectResponse } from '@lib/lib-game-server';
+import { OrchestratorPlayerReconnectResponse } from '@lib/lib-gameplay';
 
 export type ReconnectRequestResponseDto = OrchestratorPlayerReconnectResponse;

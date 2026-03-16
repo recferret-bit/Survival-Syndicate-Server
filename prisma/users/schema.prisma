@@ -1,0 +1,25 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../prisma/users/generated"
+}
+
+model User {
+  id              BigInt     @id @default(autoincrement()) @db.BigInt
+  email           String?    @unique
+  username        String?
+  passwordHash    String     @map("password_hash")
+  bearerTokenHash String?    @map("bearer_token_hash")
+  currencyIsoCode String     @map("currency_iso_code")
+  languageIsoCode String     @map("language_iso_code")
+  country         String?
+  isTest          Boolean    @default(false) @map("is_test")
+  banned          Boolean    @default(false)
+  createdAt       DateTime   @default(now()) @map("created_at")
+  updatedAt       DateTime   @updatedAt @map("updated_at")
+
+  @@map("users")
+}

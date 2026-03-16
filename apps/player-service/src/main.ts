@@ -12,12 +12,14 @@ class App {
     const playerPort = appBootstrap.envService.get('PLAYER_APP_PORT');
     const healthPort = appBootstrap.envService.getHealthPort(playerPort);
     const metricsPort = appBootstrap.envService.getMetricsPort(playerPort);
-    const playerApiPrefix = appBootstrap.envService.get('PLAYER_APP_HTTP_PREFIX');
+    const playerApiPrefix = appBootstrap.envService.get(
+      'PLAYER_APP_HTTP_PREFIX',
+    );
 
     await appBootstrap.startHttpServer(playerPort, playerApiPrefix);
     await appBootstrap.setupHealthCheckApp(healthPort);
     await appBootstrap.setupMetricsApp(metricsPort);
-    await appBootstrap.startNatsMicroservice('player');
+    await appBootstrap.startNatsMicroservice();
   }
 }
 

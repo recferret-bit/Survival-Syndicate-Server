@@ -1,8 +1,8 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { GameServerPublisher } from '@lib/lib-game-server';
 import { SlotManagerService } from '@app/local-orchestrator/application/services/slot-manager.service';
 import { GracePeriodService } from '@app/local-orchestrator/application/services/grace-period.service';
 import { HandlePlayerConnectionStatusCommand } from './handle-player-connection-status.command';
+import { LocalOrchestratorPublisher } from '@lib/lib-local-orchestrator';
 
 @CommandHandler(HandlePlayerConnectionStatusCommand)
 export class HandlePlayerConnectionStatusHandler
@@ -11,7 +11,7 @@ export class HandlePlayerConnectionStatusHandler
   constructor(
     private readonly slotManager: SlotManagerService,
     private readonly gracePeriodService: GracePeriodService,
-    private readonly gameServerPublisher: GameServerPublisher,
+    private readonly localOrchestratorPublisher: LocalOrchestratorPublisher,
   ) {}
 
   async execute(command: HandlePlayerConnectionStatusCommand): Promise<void> {
@@ -29,7 +29,7 @@ export class HandlePlayerConnectionStatusHandler
     this.slotManager.markDisconnected(matchId, playerId);
     this.gracePeriodService.start(matchId, playerId, async () => {
       this.slotManager.markGraceExpired(matchId, playerId);
-      await this.gameServerPublisher.publishGameplayRemovePlayer({
+      await this.localOrchestratorPublisher.publishGameplayRemovePlayer({
         matchId,
         playerId,
         reason: 'grace_period_expired',

@@ -8,7 +8,7 @@
 /**
  * Default stream name for client requests
  */
-export const DEFAULT_NATS_CLIENT_STREAM_NAME = 'casino-requests';
+export const DEFAULT_NATS_CLIENT_STREAM_NAME = 'ss-requests';
 
 /**
  * Get the NATS client stream name

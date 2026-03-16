@@ -5,7 +5,7 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { EnvService } from '@lib/shared/application';
-import { GameServerPublisher } from '@lib/lib-game-server';
+import { LocalOrchestratorPublisher } from '@lib/lib-local-orchestrator';
 
 @Injectable()
 export class HeartbeatService implements OnModuleInit, OnModuleDestroy {
@@ -14,7 +14,7 @@ export class HeartbeatService implements OnModuleInit, OnModuleDestroy {
   private readonly gameplayHeartbeats = new Map<string, Date>();
 
   constructor(
-    private readonly gameServerPublisher: GameServerPublisher,
+    private readonly localOrchestratorPublisher: LocalOrchestratorPublisher,
     private readonly envService: EnvService,
   ) {}
 
@@ -35,7 +35,7 @@ export class HeartbeatService implements OnModuleInit, OnModuleDestroy {
     try {
       const port = Number(this.envService.get('LOCAL_ORCHESTRATOR_APP_PORT'));
       const websocketUrl = `ws://localhost:${port + 2000}`;
-      await this.gameServerPublisher.publishOrchestratorZoneHeartbeat({
+      await this.localOrchestratorPublisher.publishOrchestratorZoneHeartbeat({
         zoneId: 'local-zone-1',
         websocketUrl,
         reportedAt: new Date().toISOString(),

@@ -1,5 +1,5 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
-import { PrismaClient } from '@prisma/meta';
+import { PrismaClient } from '@prisma/matchmaking';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 import { EnvService } from '@lib/shared';
@@ -10,7 +10,7 @@ export class PrismaService
   implements OnModuleInit, OnModuleDestroy
 {
   constructor(envService: EnvService) {
-    const connectionString = envService.getUsersDatabaseUrl();
+    const connectionString = envService.getMatchmakingDatabaseUrl();
     const poolConfig = envService.getPoolConfig(connectionString);
     const pool = new Pool(poolConfig);
     const adapter = new PrismaPg(pool);

@@ -1,4 +1,4 @@
-import { MatchmakingFoundMatchEvent } from '@lib/lib-game-server';
+import { MatchmakingFoundMatchEvent } from '@lib/lib-matchmaking';
 
 export class HandleFoundMatchCommand {
   constructor(public readonly event: MatchmakingFoundMatchEvent) {}

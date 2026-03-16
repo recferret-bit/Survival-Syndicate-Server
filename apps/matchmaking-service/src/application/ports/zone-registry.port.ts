@@ -1,5 +1,5 @@
 import { ZoneSelection } from '@app/matchmaking-service/domain/entities/lobby/lobby.type';
-import { OrchestratorZoneHeartbeatEvent } from '@lib/lib-game-server';
+import { OrchestratorZoneHeartbeatEvent } from '@lib/lib-local-orchestrator';
 
 export abstract class ZoneRegistryPort {
   abstract upsertHeartbeat(

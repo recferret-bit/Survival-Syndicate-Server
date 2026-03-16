@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { stringToBigNumber } from '@lib/shared';
 import { PlayerPortRepository } from '@app/player-service/application/ports/player.port.repository';
 import { Player } from '@app/player-service/domain/entities/player/player';
 import { CreatePlayer } from '@app/player-service/domain/entities/player/player.type';

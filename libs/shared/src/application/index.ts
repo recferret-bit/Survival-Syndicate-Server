@@ -1,6 +1,3 @@
-export * from './analytics/analytics.interface';
-export * from './analytics/analytics.module';
-export * from './analytics/analytics.service';
 export * from './application.bootstrap';
 export * from './entities/entity';
 export * from './enum';

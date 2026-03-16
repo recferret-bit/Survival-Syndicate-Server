@@ -5,7 +5,6 @@ import { MicroserviceOptions } from '@nestjs/microservices';
 import { HealthApp } from '@lib/shared/health';
 import { MetricsApp } from '@lib/shared/metrics';
 import { EnvService } from './env/env.service';
-import { AdminApp } from '@lib/shared/admin';
 import { HttpExceptionsFilter } from './exceptions/http-exceptions.filter';
 import { ZodExceptionFilter } from './exceptions/zod-exception.filter';
 import { execSync } from 'node:child_process';
@@ -86,8 +85,8 @@ export class ApplicationBootstrapBuilder {
     this.lastHttpPort = port;
   }
 
-  async startNatsMicroservice(queue: string) {
-    this.natsQueue = queue;
+  async startNatsMicroservice(queue?: string) {
+    this.natsQueue = queue || this.name.split('/')[1];
     try {
       const servers = this.envService.getNatsServers();
       const user = this.envService.getNatsUser();
@@ -130,11 +129,6 @@ export class ApplicationBootstrapBuilder {
       Logger.error('Failed to start NATS microservice', error);
       throw error;
     }
-  }
-
-  async setupAdminApp(adminModule: any) {
-    await AdminApp.CreateAndGetAdminApp(adminModule, this.envService);
-    Logger.log('Admin microservice connected');
   }
 
   async setupHealthCheckApp(port: string) {

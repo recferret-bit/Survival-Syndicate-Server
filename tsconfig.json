@@ -23,114 +23,40 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@app/swagger-aggregator": [
-        "apps/swagger-aggregator/src"
-      ],
-      "@app/swagger-aggregator/*": [
-        "apps/swagger-aggregator/src/*"
-      ],
-      "@app/auth-service": [
-        "apps/auth-service/src"
-      ],
-      "@app/auth-service/*": [
-        "apps/auth-service/src/*"
-      ],
-      "@app/player-service": [
-        "apps/player-service/src"
-      ],
-      "@app/player-service/*": [
-        "apps/player-service/src/*"
-      ],
-      "@app/matchmaking-service": [
-        "apps/matchmaking-service/src"
-      ],
-      "@app/matchmaking-service/*": [
-        "apps/matchmaking-service/src/*"
-      ],
-      "@app/local-orchestrator": [
-        "apps/local-orchestrator/src"
-      ],
-      "@app/local-orchestrator/*": [
-        "apps/local-orchestrator/src/*"
-      ],
-      "@app/gameplay-service": [
-        "apps/gameplay-service/src"
-      ],
-      "@app/gameplay-service/*": [
-        "apps/gameplay-service/src/*"
-      ],
-      "@app/websocket-service": [
-        "apps/websocket-service/src"
-      ],
-      "@app/websocket-service/*": [
-        "apps/websocket-service/src/*"
-      ],
-      "@app/building-service": [
-        "apps/building-service/src"
-      ],
-      "@app/building-service/*": [
-        "apps/building-service/src/*"
-      ],
-      "@app/combat-progress-service": [
-        "apps/combat-progress-service/src"
-      ],
-      "@app/combat-progress-service/*": [
-        "apps/combat-progress-service/src/*"
-      ],
-      "@app/scheduler-service": [
-        "apps/scheduler-service/src"
-      ],
-      "@app/scheduler-service/*": [
-        "apps/scheduler-service/src/*"
-      ],
-      "@app/analytics-service": [
-        "apps/analytics-service/src"
-      ],
-      "@app/analytics-service/*": [
-        "apps/analytics-service/src/*"
-      ],
-      "@lib/shared": [
-        "libs/shared/src"
-      ],
-      "@lib/shared/*": [
-        "libs/shared/src/*"
-      ],
-      "@lib/lib-player": [
-        "libs/lib-player/src"
-      ],
-      "@lib/lib-player/*": [
-        "libs/lib-player/src/*"
-      ],
-      "@lib/lib-building": [
-        "libs/lib-building/src"
-      ],
-      "@lib/lib-building/*": [
-        "libs/lib-building/src/*"
-      ],
-      "@lib/lib-game-server": [
-        "libs/lib-game-server/src"
-      ],
-      "@lib/lib-game-server/*": [
-        "libs/lib-game-server/src/*"
-      ],
-      "@lib/lib-combat-progress": [
-        "libs/lib-combat-progress/src"
-      ],
-      "@lib/lib-combat-progress/*": [
-        "libs/lib-combat-progress/src/*"
-      ],
-      "@lib/lib-analytics": [
-        "libs/lib-analytics/src"
-      ],
-      "@lib/lib-analytics/*": [
-        "libs/lib-analytics/src/*"
-      ],
-      "@prisma/meta": [
-        "prisma/users/generated"
-      ],
-      "@prisma/catalog": [
-        "prisma/balance/generated"
-      ]
+      "@app/gameplay-service": ["apps/gameplay-service/src"],
+      "@app/gameplay-service/*": ["apps/gameplay-service/src/*"],
+      "@app/local-orchestrator": ["apps/local-orchestrator/src"],
+      "@app/local-orchestrator/*": ["apps/local-orchestrator/src/*"],
+      "@app/matchmaking-service": ["apps/matchmaking-service/src"],
+      "@app/matchmaking-service/*": ["apps/matchmaking-service/src/*"],
+      "@app/player-service": ["apps/player-service/src"],
+      "@app/player-service/*": ["apps/player-service/src/*"],
+      "@app/users-service": ["apps/users-service/src"],
+      "@app/users-service/*": ["apps/users-service/src/*"],
+      "@app/websocket-service": ["apps/websocket-service/src"],
+      "@app/websocket-service/*": ["apps/websocket-service/src/*"],
+
+      "@lib/lib-gameplay": ["libs/lib-gameplay/src"],
+      "@lib/lib-gameplay/*": ["libs/lib-gameplay/src/*"],
+      "@lib/lib-local-orchestrator": ["libs/lib-local-orchestrator/src"],
+      "@lib/lib-local-orchestrator/*": ["libs/lib-local-orchestrator/src/*"],
+      "@lib/lib-matchmaking": ["libs/lib-matchmaking/src"],
+      "@lib/lib-matchmaking/*": ["libs/lib-matchmaking/src/*"],
+      "@lib/lib-player": ["libs/lib-player/src"],
+      "@lib/lib-player/*": ["libs/lib-player/src/*"],
+      "@lib/lib-users": ["libs/lib-users/src"],
+      "@lib/lib-users/*": ["libs/lib-users/src/*"],
+      "@lib/lib-websocket": ["libs/lib-websocket/src"],
+      "@lib/lib-websocket/*": ["libs/lib-websocket/src/*"],
+      "@lib/shared": ["libs/shared/src"],
+      "@lib/shared/*": ["libs/shared/src/*"],
+
+      "@prisma/gameplay": ["prisma/gameplay/generated"],
+      "@prisma/local-orchestrator": ["prisma/local-orchestrator/generated"],
+      "@prisma/matchmaking": ["prisma/matchmaking/generated"],
+      "@prisma/player": ["prisma/player/generated"],
+      "@prisma/users": ["prisma/users/generated"],
+      "@prisma/websocket": ["prisma/websocket/generated"]
     }
   }
 }

@@ -49,7 +49,7 @@ Before modifying an app, read its feature documentation for context:
 ```bash
 # Start specific service in watch mode
 npm run start:swagger-aggregator:dev
-npm run start:auth-service:dev
+npm run start:users-service:dev
 npm run start:player-service:dev
 npm run start:building-service:dev
 npm run start:combat-progress-service:dev
@@ -197,7 +197,7 @@ The `game-server` service is unique — it runs real-time gameplay simulations:
 
 ```typescript
 // ✅ CORRECT: Import from library
-import { PlayerPublisher } from '@lib/lib-player';
+import { PlayerPublisher } from '@lib/lib-gameplay';
 const response = await playerPublisher.getCharacter(request);
 
 // ❌ WRONG: Hardcoded subject
@@ -229,7 +229,7 @@ Two shared PostgreSQL databases:
 ```typescript
 // Applications
 @app/swagger-aggregator/*
-@app/auth-service/*
+@app/users-service/*
 @app/player-service/*
 @app/building-service/*
 @app/combat-progress-service/*
@@ -239,7 +239,7 @@ Two shared PostgreSQL databases:
 
 // Libraries
 @lib/shared/*
-@lib/lib-player/*
+@lib/lib-gameplay/*
 @lib/lib-building/*
 @lib/lib-game-server/*
 @lib/lib-combat-progress/*

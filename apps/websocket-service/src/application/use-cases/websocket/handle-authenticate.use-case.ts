@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { AuthenticateService } from '@app/websocket-service/application/services/authenticate.service';
 import { ConnectionManagerService } from '@app/websocket-service/application/services/connection-manager.service';
 import { ClientAuthenticateSchema } from '@app/websocket-service/application/schemas/ws-messages.schema';
-import { GameServerPublisher } from '@lib/lib-game-server';
 import { WsGatewayResult } from './ws-gateway-result.type';
 import {
   WsErrorCode,
   WsErrorType,
-} from '@app/websocket-service/application/use-cases/websocket/ws-error.enums';
+} from '@lib/lib-websocket/enum/ws-error.enums';
+import { WebsocketPublisher } from '@lib/lib-websocket';
 
 type HandleAuthenticateInput = {
   clientId: string;
@@ -19,7 +19,7 @@ export class HandleAuthenticateUseCase {
   constructor(
     private readonly authenticateService: AuthenticateService,
     private readonly connectionManager: ConnectionManagerService,
-    private readonly gameServerPublisher: GameServerPublisher,
+    private readonly websocketPublisher: WebsocketPublisher,
   ) {}
 
   async execute(input: HandleAuthenticateInput): Promise<WsGatewayResult> {
@@ -53,7 +53,7 @@ export class HandleAuthenticateUseCase {
         result.playerId,
         result.matchId,
       );
-      void this.gameServerPublisher.publishPlayerConnectionStatus({
+      void this.websocketPublisher.publishPlayerConnectionStatus({
         matchId: result.matchId,
         playerId: result.playerId,
         status: 'connected',

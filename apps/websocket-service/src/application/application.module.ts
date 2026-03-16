@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { AuthJwtModule } from '@lib/shared/auth';
-import { LibGameServerModule } from '@lib/lib-game-server';
 import { InfrastructureModule } from '@app/websocket-service/infrastructure/infrastructure.module';
 import { ConnectionManagerService } from './services/connection-manager.service';
 import { AuthenticateService } from './services/authenticate.service';
@@ -10,9 +9,10 @@ import { HandleAuthenticateUseCase } from './use-cases/websocket/handle-authenti
 import { HandleReconnectUseCase } from './use-cases/websocket/handle-reconnect.use-case';
 import { HandleDisconnectUseCase } from './use-cases/websocket/handle-disconnect.use-case';
 import { HandleInputUseCase } from './use-cases/websocket/handle-input.use-case';
+import { LibWebsocketModule } from '@lib/lib-websocket';
 
 @Module({
-  imports: [InfrastructureModule, AuthJwtModule, LibGameServerModule],
+  imports: [InfrastructureModule, AuthJwtModule, LibWebsocketModule],
   providers: [
     ConnectionManagerService,
     AuthenticateService,

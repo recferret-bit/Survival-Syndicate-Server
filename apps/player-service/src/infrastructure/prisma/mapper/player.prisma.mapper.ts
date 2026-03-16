@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/meta';
+import { Prisma } from '@prisma/player';
 import { bigIntToBigNumber } from '@lib/shared';
 import { Player } from '@app/player-service/domain/entities/player/player';
 import { CreatePlayer } from '@app/player-service/domain/entities/player/player.type';

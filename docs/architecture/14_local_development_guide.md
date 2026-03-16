@@ -216,7 +216,7 @@ cd services/swagger-aggregator
 npm run dev
 
 # Терминал 2: Auth Service
-cd services/auth-service
+cd services/users-service
 npm run dev
 
 # ... и т.д.
@@ -374,9 +374,9 @@ services:
 
   auth-service:
     build:
-      context: ../services/auth-service
+      context: ../services/users-service
       dockerfile: Dockerfile
-    container_name: ss-auth-service
+    container_name: ss-users-service
     environment:
       NODE_ENV: ${NODE_ENV:-development}
       APP_PORT: 3001
@@ -727,9 +727,9 @@ scrape_configs:
     static_configs:
       - targets: ['swagger-aggregator:9000']
 
-  - job_name: 'auth-service'
+  - job_name: 'users-service'
     static_configs:
-      - targets: ['auth-service:9001']
+      - targets: ['users-service:9001']
 
   - job_name: 'player-service'
     static_configs:

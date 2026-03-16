@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { LibGameServerModule } from '@lib/lib-game-server';
+import { LibGameplayModule } from '@lib/lib-gameplay';
 import { InfrastructureModule } from '@app/gameplay-service/infrastructure/infrastructure.module';
 import { SimulationManagerService } from './services/simulation-manager.service';
 import { HeartbeatService } from './services/heartbeat.service';
@@ -7,7 +7,7 @@ import { HandleStartSimulationHandler } from './use-cases/handle-start-simulatio
 import { HandleRemovePlayerHandler } from './use-cases/handle-remove-player/handle-remove-player.handler';
 
 @Module({
-  imports: [InfrastructureModule, LibGameServerModule],
+  imports: [InfrastructureModule, LibGameplayModule],
   providers: [
     SimulationManagerService,
     HeartbeatService,

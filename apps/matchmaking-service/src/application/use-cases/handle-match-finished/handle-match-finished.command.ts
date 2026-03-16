@@ -1,4 +1,4 @@
-import { MatchFinishedEvent } from '@lib/lib-game-server';
+import { MatchFinishedEvent } from '@lib/lib-gameplay';
 
 export class HandleMatchFinishedCommand {
   constructor(public readonly event: MatchFinishedEvent) {}

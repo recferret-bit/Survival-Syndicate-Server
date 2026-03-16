@@ -13,10 +13,6 @@ export class EnvService<E = {}> {
     return this.configService.get(key as any, { infer: true });
   }
 
-  getAdminPort() {
-    return this.configService.get('ADMIN_PORT', { infer: true });
-  }
-
   isProd() {
     return (
       this.configService.get('NODE_ENV', { infer: true }) === NodeEnv.production
@@ -36,26 +32,23 @@ export class EnvService<E = {}> {
     );
   }
 
-  /**
-   * Get health port. For local: appPort + 80. For dev/prod: HEALTH_PORT from env.
-   */
-  getHealthPort(appPort?: string): string {
-    if (this.isLocal() && appPort !== undefined && appPort !== '') {
-      return String(Number(appPort) + 80);
-    }
-    const port = this.configService.get<string>('HEALTH_PORT');
-    return String(port ?? '5080');
+  getBoolean<T extends keyof (E & Env)>(key: T) {
+    // @ts-expect-error - ConfigService.get overload resolution with generic key
+    return this.configService.get(key, { infer: true }) === 'true';
   }
 
   /**
-   * Get metrics port. For local: appPort + 90. For dev/prod: METRICS_PORT from env.
+   * Get health port. appPort + 80.
    */
-  getMetricsPort(appPort?: string): string {
-    if (this.isLocal() && appPort !== undefined && appPort !== '') {
-      return String(Number(appPort) + 90);
-    }
-    const port = this.configService.get<string>('METRICS_PORT');
-    return String(port ?? '3080');
+  getHealthPort(appPort: string): string {
+    return String(Number(appPort) + 80);
+  }
+
+  /**
+   * Get metrics port. appPort + 90.
+   */
+  getMetricsPort(appPort: string): string {
+    return String(Number(appPort) + 90);
   }
 
   getUsersDatabaseUrl() {
@@ -69,88 +62,60 @@ export class EnvService<E = {}> {
     });
   }
 
-  getPaymentsDatabaseUrl() {
+  getPlayerDatabaseUrl() {
     if (this.isLocal()) {
-      return this.configService.get('TEST_DIRECT_PAYMENTS_DATABASE_URL', {
+      return this.configService.get('TEST_DIRECT_PLAYER_DATABASE_URL', {
         infer: true,
       });
     }
-    return this.configService.get('PGBOUNCER_PAYMENTS_DATABASE_URL', {
+    return this.configService.get('PGBOUNCER_PLAYER_DATABASE_URL', {
       infer: true,
     });
   }
 
-  getTestPaymentProviderDatabaseUrl() {
+  getMatchmakingDatabaseUrl() {
+    if (this.isLocal()) {
+      return this.configService.get('TEST_DIRECT_MATCHMAKING_DATABASE_URL', {
+        infer: true,
+      });
+    }
+    return this.configService.get('PGBOUNCER_MATCHMAKING_DATABASE_URL', {
+      infer: true,
+    });
+  }
+
+  getGameplayDatabaseUrl() {
+    if (this.isLocal()) {
+      return this.configService.get('TEST_DIRECT_GAMEPLAY_DATABASE_URL', {
+        infer: true,
+      });
+    }
+    return this.configService.get('PGBOUNCER_GAMEPLAY_DATABASE_URL', {
+      infer: true,
+    });
+  }
+
+  getLocalOrchestratorDatabaseUrl() {
     if (this.isLocal()) {
       return this.configService.get(
-        'TEST_DIRECT_TEST_PAYMENT_PROVIDER_DATABASE_URL',
+        'TEST_DIRECT_LOCAL_ORCHESTRATOR_DATABASE_URL',
         {
           infer: true,
         },
       );
     }
-    return this.configService.get(
-      'PGBOUNCER_TEST_PAYMENT_PROVIDER_DATABASE_URL',
-      {
-        infer: true,
-      },
-    );
-  }
-
-  getBalanceDatabaseUrl() {
-    if (this.isLocal()) {
-      return this.configService.get('TEST_DIRECT_BALANCE_DATABASE_URL', {
-        infer: true,
-      });
-    }
-    return this.configService.get('PGBOUNCER_BALANCE_DATABASE_URL', {
+    return this.configService.get('PGBOUNCER_LOCAL_ORCHESTRATOR_DATABASE_URL', {
       infer: true,
     });
   }
 
-  getGamesDatabaseUrl() {
+  getWebsocketDatabaseUrl() {
     if (this.isLocal()) {
-      return this.configService.get('TEST_DIRECT_GAMES_DATABASE_URL', {
+      return this.configService.get('TEST_DIRECT_WEBSOCKET_DATABASE_URL', {
         infer: true,
       });
     }
-    return this.configService.get('PGBOUNCER_GAMES_DATABASE_URL', {
-      infer: true,
-    });
-  }
-
-  getTestGameProviderDatabaseUrl() {
-    if (this.isLocal()) {
-      return this.configService.get(
-        'TEST_DIRECT_TEST_GAME_PROVIDER_DATABASE_URL',
-        {
-          infer: true,
-        },
-      );
-    }
-    return this.configService.get('PGBOUNCER_TEST_GAME_PROVIDER_DATABASE_URL', {
-      infer: true,
-    });
-  }
-
-  getBonusDatabaseUrl() {
-    if (this.isLocal()) {
-      return this.configService.get('TEST_DIRECT_BONUS_DATABASE_URL', {
-        infer: true,
-      });
-    }
-    return this.configService.get('PGBOUNCER_BONUS_DATABASE_URL', {
-      infer: true,
-    });
-  }
-
-  getCurrencyRateDatabaseUrl() {
-    if (this.isLocal()) {
-      return this.configService.get('TEST_DIRECT_CURRENCY_RATE_DATABASE_URL', {
-        infer: true,
-      });
-    }
-    return this.configService.get('PGBOUNCER_CURRENCY_RATE_DATABASE_URL', {
+    return this.configService.get('PGBOUNCER_WEBSOCKET_DATABASE_URL', {
       infer: true,
     });
   }
@@ -176,46 +141,6 @@ export class EnvService<E = {}> {
 
   getNatsStreamName() {
     return this.configService.get('NATS_STREAM_NAME', { infer: true });
-  }
-
-  getBoolean<T extends keyof (E & Env)>(key: T) {
-    // @ts-expect-error - ConfigService.get overload resolution with generic key
-    return this.configService.get(key, { infer: true }) === 'true';
-  }
-
-  getAppHttpUrlByName(
-    name:
-      | 'Users'
-      | 'Balance'
-      | 'Payments'
-      | 'Test-Payment-Provider'
-      | 'Games'
-      | 'Test-Game-Provider'
-      | 'Bonus',
-  ) {
-    Logger.log(`Getting app HTTP URL by name: ${name}`);
-    switch (name) {
-      case 'Users':
-        return this.configService.get('USERS_APP_HOST', { infer: true });
-      case 'Balance':
-        return this.configService.get('BALANCE_APP_HOST', { infer: true });
-      case 'Payments':
-        return this.configService.get('PAYMENTS_APP_HOST', { infer: true });
-      case 'Test-Payment-Provider':
-        return this.configService.get('TEST_PAYMENT_PROVIDER_APP_HOST', {
-          infer: true,
-        });
-      case 'Games':
-        return this.configService.get('GAMES_APP_HOST', { infer: true });
-      case 'Test-Game-Provider':
-        return this.configService.get('TEST_GAME_PROVIDER_APP_HOST', {
-          infer: true,
-        });
-      case 'Bonus':
-        return this.configService.get('BONUS_APP_HOST', { infer: true });
-      default:
-        return 'localhost';
-    }
   }
 
   /**

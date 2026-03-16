@@ -1,10 +1,10 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthJwtService } from '@lib/shared/auth';
+import { WsErrorCode } from '@lib/lib-websocket/enum/ws-error.enums';
 import {
-  GameServerPublisher,
-  OrchestratorPlayerReconnectResponse,
-} from '@lib/lib-game-server';
-import { WsErrorCode } from '@app/websocket-service/application/use-cases/websocket/ws-error.enums';
+  mapReconnectStatusToErrorCode,
+  WebsocketPublisher,
+} from '@lib/lib-websocket';
 
 export type AuthenticateInput = {
   token: string;
@@ -15,25 +15,11 @@ export type AuthenticateResult =
   | { success: true; playerId: string; matchId: string }
   | { success: false; code: WsErrorCode };
 
-type OrchestratorReconnectErrorStatus = Exclude<
-  OrchestratorPlayerReconnectResponse['status'],
-  'success'
->;
-
-const ORCHESTRATOR_RECONNECT_ERROR_CODE_MAP: Record<
-  OrchestratorReconnectErrorStatus,
-  WsErrorCode
-> = {
-  [WsErrorCode.SlotNotAvailable]: WsErrorCode.SlotNotAvailable,
-  [WsErrorCode.GraceExpired]: WsErrorCode.GraceExpired,
-  [WsErrorCode.MatchNotFound]: WsErrorCode.MatchNotFound,
-};
-
 @Injectable()
 export class AuthenticateService {
   constructor(
     private readonly authJwtService: AuthJwtService,
-    private readonly gameServerPublisher: GameServerPublisher,
+    private readonly websocketPublisher: WebsocketPublisher,
   ) {}
 
   async authenticate(input: AuthenticateInput): Promise<AuthenticateResult> {
@@ -45,14 +31,14 @@ export class AuthenticateService {
     }
     const playerId = session.id;
     const response =
-      await this.gameServerPublisher.requestOrchestratorPlayerReconnect({
+      await this.websocketPublisher.requestOrchestratorPlayerReconnect({
         matchId: input.matchId,
         playerId,
       });
     if (response.status !== 'success') {
       return {
         success: false,
-        code: this.mapReconnectStatusToErrorCode(response.status),
+        code: mapReconnectStatusToErrorCode(response.status),
       };
     }
     return {
@@ -60,11 +46,5 @@ export class AuthenticateService {
       playerId,
       matchId: input.matchId,
     };
-  }
-
-  private mapReconnectStatusToErrorCode(
-    status: OrchestratorReconnectErrorStatus,
-  ): WsErrorCode {
-    return ORCHESTRATOR_RECONNECT_ERROR_CODE_MAP[status];
   }
 }

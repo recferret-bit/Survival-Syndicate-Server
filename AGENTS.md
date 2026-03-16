@@ -138,7 +138,7 @@ The `game-server` service runs real-time gameplay simulations:
 ```typescript
 // Applications
 @app/swagger-aggregator/*
-@app/auth-service/*
+@app/users-service/*
 @app/player-service/*
 @app/building-service/*
 @app/combat-progress-service/*
@@ -148,7 +148,7 @@ The `game-server` service runs real-time gameplay simulations:
 
 // Libraries
 @lib/shared/*
-@lib/lib-player/*
+@lib/lib-gameplay/*
 @lib/lib-building/*
 @lib/lib-game-server/*
 @lib/lib-combat-progress/*
@@ -165,7 +165,7 @@ The `game-server` service runs real-time gameplay simulations:
 
 ```typescript
 // ✅ CORRECT: Import from library
-import { PlayerPublisher } from '@lib/lib-player';
+import { PlayerPublisher } from '@lib/lib-gameplay';
 const response = await playerPublisher.getCharacter(request);
 
 // ❌ WRONG: Hardcoded subject
