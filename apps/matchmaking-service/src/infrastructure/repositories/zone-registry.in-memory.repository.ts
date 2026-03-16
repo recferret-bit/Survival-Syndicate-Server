@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ZoneRegistryPort } from '@app/matchmaking-service/application/ports/zone-registry.port';
 import { ZoneSelection } from '@app/matchmaking-service/domain/entities/lobby/lobby.type';
-import { OrchestratorZoneHeartbeatEvent } from '@lib/lib-gameplay';
+import { OrchestratorZoneHeartbeatEvent } from '@lib/lib-local-orchestrator';
 
 @Injectable()
 export class ZoneRegistryInMemoryRepository extends ZoneRegistryPort {

@@ -74,3 +74,47 @@ if (!process.env.TEST_DIRECT_BONUS_DATABASE_URL) {
   process.env.TEST_DIRECT_BONUS_DATABASE_URL = 'postgresql://postgres:postgres@localhost:5434/bonus_test';
 }
 
+// Survival Syndicate specific databases (PGBOUNCER + direct test URLs)
+if (!process.env.PGBOUNCER_PLAYER_DATABASE_URL) {
+  process.env.PGBOUNCER_PLAYER_DATABASE_URL =
+    'postgresql://postgres:postgres@localhost:6432/player_db';
+}
+if (!process.env.PGBOUNCER_MATCHMAKING_DATABASE_URL) {
+  process.env.PGBOUNCER_MATCHMAKING_DATABASE_URL =
+    'postgresql://postgres:postgres@localhost:6432/matchmaking_db';
+}
+if (!process.env.PGBOUNCER_GAMEPLAY_DATABASE_URL) {
+  process.env.PGBOUNCER_GAMEPLAY_DATABASE_URL =
+    'postgresql://postgres:postgres@localhost:6432/gameplay_db';
+}
+if (!process.env.PGBOUNCER_LOCAL_ORCHESTRATOR_DATABASE_URL) {
+  process.env.PGBOUNCER_LOCAL_ORCHESTRATOR_DATABASE_URL =
+    'postgresql://postgres:postgres@localhost:6432/local_orchestrator_db';
+}
+if (!process.env.PGBOUNCER_WEBSOCKET_DATABASE_URL) {
+  process.env.PGBOUNCER_WEBSOCKET_DATABASE_URL =
+    'postgresql://postgres:postgres@localhost:6432/websocket_db';
+}
+
+if (!process.env.TEST_DIRECT_PLAYER_DATABASE_URL) {
+  process.env.TEST_DIRECT_PLAYER_DATABASE_URL =
+    'postgresql://postgres:postgres@localhost:5432/player_test';
+}
+if (!process.env.TEST_DIRECT_MATCHMAKING_DATABASE_URL) {
+  process.env.TEST_DIRECT_MATCHMAKING_DATABASE_URL =
+    'postgresql://postgres:postgres@localhost:5432/matchmaking_test';
+}
+if (!process.env.TEST_DIRECT_GAMEPLAY_DATABASE_URL) {
+  process.env.TEST_DIRECT_GAMEPLAY_DATABASE_URL =
+    'postgresql://postgres:postgres@localhost:5432/gameplay_test';
+}
+if (!process.env.TEST_DIRECT_LOCAL_ORCHESTRATOR_DATABASE_URL) {
+  process.env.TEST_DIRECT_LOCAL_ORCHESTRATOR_DATABASE_URL =
+    'postgresql://postgres:postgres@localhost:5432/local_orchestrator_test';
+}
+if (!process.env.TEST_DIRECT_WEBSOCKET_DATABASE_URL) {
+  process.env.TEST_DIRECT_WEBSOCKET_DATABASE_URL =
+    'postgresql://postgres:postgres@localhost:5432/websocket_test';
+}
+
+

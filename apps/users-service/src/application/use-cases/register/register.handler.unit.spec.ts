@@ -4,7 +4,7 @@ import { AuthUserPortRepository } from '@app/users-service/application/ports/aut
 import { TokenService } from '@app/users-service/application/services/token.service';
 import { RefreshTokenStoreService } from '@app/users-service/application/services/refresh-token-store.service';
 import { BearerTokenHashCacheService } from '@lib/shared/redis';
-import { PlayerPublisher } from '@lib/lib-player';
+import { UsersPublisher } from '@lib/lib-users';
 import { EnvService } from '@lib/shared/application';
 import { RegisterCommand } from './register.command';
 
@@ -30,7 +30,7 @@ describe('RegisterHandler', () => {
     const mockBearerCache = {
       setBearerTokenHash: jest.fn().mockResolvedValue(undefined),
     };
-    const mockPlayerPublisher = {
+    const mockUsersPublisher = {
       publishUserRegistered: jest.fn().mockResolvedValue(undefined),
     };
     const mockEnv = {
@@ -44,7 +44,7 @@ describe('RegisterHandler', () => {
         { provide: TokenService, useValue: mockTokenService },
         { provide: RefreshTokenStoreService, useValue: mockRefreshStore },
         { provide: BearerTokenHashCacheService, useValue: mockBearerCache },
-        { provide: PlayerPublisher, useValue: mockPlayerPublisher },
+        { provide: UsersPublisher, useValue: mockUsersPublisher },
         { provide: EnvService, useValue: mockEnv },
       ],
     }).compile();
