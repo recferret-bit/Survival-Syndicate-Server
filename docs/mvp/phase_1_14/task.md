@@ -1,6 +1,6 @@
 # TASK-3.3: E2E: защита слота
 
-## Статус: `NOT STARTED`
+## Статус: `PREPARING`
 
 **Epic:** Epic 3: Интеграционное тестирование
 **Ветка:** `phase_1_14/test/e2e/slot-protection`
@@ -49,3 +49,4 @@ E2E slot protection scenarios
 | Дата | Событие | Агент |
 |------|---------|-------|
 | — | Задача создана | System |
+| 2026-03-17 | Подготовка начата | Cursor AI |
