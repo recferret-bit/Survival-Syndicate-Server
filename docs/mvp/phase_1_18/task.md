@@ -1,6 +1,6 @@
 # TASK-4.4: scheduler-service (шаблон)
 
-## Статус: `NOT STARTED`
+## Статус: `DONE`
 
 **Epic:** Epic 4: Пустые шаблоны
 **Ветка:** `phase_1_18/chore/scaffold/scheduler-service`
@@ -44,3 +44,4 @@ docs/architecture/12_scheduler_service.md
 | Дата | Событие | Агент |
 |------|---------|-------|
 | — | Задача создана | System |
+| 2025-03-17 | Шаблон завершён: ScheduledJobEntity, Bull queues, HTTP/NATS controllers | Cursor |
