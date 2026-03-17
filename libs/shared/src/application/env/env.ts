@@ -22,6 +22,11 @@ export const commonSchema = z.object({
 
   REDIS_URL: z.string(),
 
+  // swagger-aggregator
+  SWAGGER_APP_HOST: z.string().default('localhost'),
+  SWAGGER_APP_PORT: z.string().default('3000'),
+  SWAGGER_APP_HTTP_PREFIX: z.string().default('api/v1'),
+
   // users-service
   USERS_APP_HOST: z.string().default('localhost'),
   USERS_APP_PORT: z.string().default('3001'),

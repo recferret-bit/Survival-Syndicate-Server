@@ -1,6 +1,6 @@
 # TASK-4.1: swagger-aggregator (шаблон)
 
-## Статус: `NOT STARTED`
+## Статус: `DONE`
 
 **Epic:** Epic 4: Пустые шаблоны
 **Ветка:** `phase_1_15/chore/scaffold/swagger-aggregator`
@@ -44,3 +44,5 @@ docs/architecture/16_project_structure.md
 | Дата | Событие | Агент |
 |------|---------|-------|
 | — | Задача создана | System |
+| 2025-03-17 | Подготовка начата | Cursor |
+| 2025-03-17 | Реализован stub GET /openapi.json, сервис компилируется | Cursor |

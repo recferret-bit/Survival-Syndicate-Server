@@ -53,7 +53,7 @@
 
 | # | ID | Задача | Статус | Зависимости | Каталог |
 |---|-----|--------|--------|-------------|---------|
-| 15 | TASK-4.1 | swagger-aggregator (шаблон) | 🔲 NOT STARTED | 1, 3 | [phase_1_15](phase_1_15/task.md) |
+| 15 | TASK-4.1 | swagger-aggregator (шаблон) | ✅ DONE | 1, 3 | [phase_1_15](phase_1_15/task.md) |
 | 16 | TASK-4.2 | building-service (шаблон) | 🔲 NOT STARTED | 1, 3 | [phase_1_16](phase_1_16/task.md) |
 | 17 | TASK-4.3 | combat-progress-service (шаблон) | 🔲 NOT STARTED | 1, 3 | [phase_1_17](phase_1_17/task.md) |
 | 18 | TASK-4.4 | scheduler-service (шаблон) | 🔲 NOT STARTED | 1, 3 | [phase_1_18](phase_1_18/task.md) |
