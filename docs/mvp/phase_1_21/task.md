@@ -1,6 +1,6 @@
 # TASK-4.7: history-service (шаблон)
 
-## Статус: `NOT STARTED`
+## Статус: `DONE`
 
 **Epic:** Epic 4: Пустые шаблоны
 **Ветка:** `phase_1_21/chore/scaffold/history-service`
@@ -44,3 +44,4 @@ docs/architecture/29_match_history_system.md
 | Дата | Событие | Агент |
 |------|---------|-------|
 | — | Задача создана | System |
+| 2025-03-17 | Шаблон завершён: MatchHistory, Replay, HTTP/NATS, match.finished | Cursor |

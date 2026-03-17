@@ -25,6 +25,8 @@
     "paths": {
       "@app/swagger-aggregator": ["apps/swagger-aggregator/src"],
       "@app/swagger-aggregator/*": ["apps/swagger-aggregator/src/*"],
+      "@app/history-service": ["apps/history-service/src"],
+      "@app/history-service/*": ["apps/history-service/src/*"],
       "@app/payment-service": ["apps/payment-service/src"],
       "@app/payment-service/*": ["apps/payment-service/src/*"],
       "@app/collector-service": ["apps/collector-service/src"],

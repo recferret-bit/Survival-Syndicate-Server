@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "declaration": false,
+    "outDir": "../../dist/apps/history-service"
+  },
+  "include": ["src/**/*", "../../prisma/history/generated/**/*"],
+  "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
+}
