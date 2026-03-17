@@ -5,9 +5,8 @@ if (!process.env.NATS_SERVERS) {
   process.env.NATS_SERVERS = 'nats://localhost:4222';
 }
 
-// Set additional required env vars that might be missing
 if (!process.env.PROJECT) {
-  process.env.PROJECT = 'slotz';
+  process.env.PROJECT = 'survival-syndicate';
 }
 if (!process.env.DO_CA) {
   process.env.DO_CA = '';
@@ -31,50 +30,17 @@ if (!process.env.PASSWORD_SECRET) {
   process.env.PASSWORD_SECRET = 'test-password-secret';
 }
 
-if (!process.env.PGBOUNCER_USERS_DATABASE_URL) {
-  process.env.PGBOUNCER_USERS_DATABASE_URL = 'postgresql://postgres:postgres@localhost:6432/users_db';
-}
-if (!process.env.PGBOUNCER_BALANCE_DATABASE_URL) {
-  process.env.PGBOUNCER_BALANCE_DATABASE_URL = 'postgresql://postgres:postgres@localhost:6432/balance_db';
-}
-if (!process.env.PGBOUNCER_PAYMENTS_DATABASE_URL) {
-  process.env.PGBOUNCER_PAYMENTS_DATABASE_URL = 'postgresql://postgres:postgres@localhost:6432/payments_db';
-}
-if (!process.env.PGBOUNCER_TEST_PAYMENT_PROVIDER_DATABASE_URL) {
-  process.env.PGBOUNCER_TEST_PAYMENT_PROVIDER_DATABASE_URL = 'postgresql://postgres:postgres@localhost:6432/test_payment_provider_db';
-}
-if (!process.env.PGBOUNCER_GAMES_DATABASE_URL) {
-  process.env.PGBOUNCER_GAMES_DATABASE_URL = 'postgresql://postgres:postgres@localhost:6432/games_db';
-}
-if (!process.env.PGBOUNCER_TEST_GAME_PROVIDER_DATABASE_URL) {
-  process.env.PGBOUNCER_TEST_GAME_PROVIDER_DATABASE_URL = 'postgresql://postgres:postgres@localhost:6432/test_game_provider_db';
-}
-if (!process.env.PGBOUNCER_BONUS_DATABASE_URL) {
-  process.env.PGBOUNCER_BONUS_DATABASE_URL = 'postgresql://postgres:postgres@localhost:6432/bonus_db';
-}
-if (!process.env.TEST_DIRECT_USERS_DATABASE_URL) {
-  process.env.TEST_DIRECT_USERS_DATABASE_URL = 'postgresql://postgres:postgres@localhost:5432/users_test';
-}
-if (!process.env.TEST_DIRECT_BALANCE_DATABASE_URL) {
-  process.env.TEST_DIRECT_BALANCE_DATABASE_URL = 'postgresql://postgres:postgres@localhost:5432/balance_test';
-}
-if (!process.env.TEST_DIRECT_PAYMENTS_DATABASE_URL) {
-  process.env.TEST_DIRECT_PAYMENTS_DATABASE_URL = 'postgresql://postgres:postgres@localhost:5433/payments_test';
-}
-if (!process.env.TEST_DIRECT_TEST_PAYMENT_PROVIDER_DATABASE_URL) {
-  process.env.TEST_DIRECT_TEST_PAYMENT_PROVIDER_DATABASE_URL = 'postgresql://postgres:postgres@localhost:5433/test_payment_provider_test';
-}
-if (!process.env.TEST_DIRECT_GAMES_DATABASE_URL) {
-  process.env.TEST_DIRECT_GAMES_DATABASE_URL = 'postgresql://postgres:postgres@localhost:5434/games_test';
-}
-if (!process.env.TEST_DIRECT_TEST_GAME_PROVIDER_DATABASE_URL) {
-  process.env.TEST_DIRECT_TEST_GAME_PROVIDER_DATABASE_URL = 'postgresql://postgres:postgres@localhost:5434/test_game_provider_test';
-}
-if (!process.env.TEST_DIRECT_BONUS_DATABASE_URL) {
-  process.env.TEST_DIRECT_BONUS_DATABASE_URL = 'postgresql://postgres:postgres@localhost:5434/bonus_test';
+// Base URL for DB creation (ensure-dev-databases) — default for local dev
+if (!process.env.POSTGRES_BASE_URL) {
+  process.env.POSTGRES_BASE_URL =
+    'postgresql://postgres:postgres@localhost:5432/postgres';
 }
 
-// Survival Syndicate specific databases (PGBOUNCER + direct test URLs)
+// Survival Syndicate — PgBouncer URLs (when running with full stack)
+if (!process.env.PGBOUNCER_USERS_DATABASE_URL) {
+  process.env.PGBOUNCER_USERS_DATABASE_URL =
+    'postgresql://postgres:postgres@localhost:6432/users_db';
+}
 if (!process.env.PGBOUNCER_PLAYER_DATABASE_URL) {
   process.env.PGBOUNCER_PLAYER_DATABASE_URL =
     'postgresql://postgres:postgres@localhost:6432/player_db';
@@ -96,6 +62,11 @@ if (!process.env.PGBOUNCER_WEBSOCKET_DATABASE_URL) {
     'postgresql://postgres:postgres@localhost:6432/websocket_db';
 }
 
+// Survival Syndicate — direct test URLs (unit/integration/E2E)
+if (!process.env.TEST_DIRECT_USERS_DATABASE_URL) {
+  process.env.TEST_DIRECT_USERS_DATABASE_URL =
+    'postgresql://postgres:postgres@localhost:5432/users_test';
+}
 if (!process.env.TEST_DIRECT_PLAYER_DATABASE_URL) {
   process.env.TEST_DIRECT_PLAYER_DATABASE_URL =
     'postgresql://postgres:postgres@localhost:5432/player_test';
@@ -116,5 +87,3 @@ if (!process.env.TEST_DIRECT_WEBSOCKET_DATABASE_URL) {
   process.env.TEST_DIRECT_WEBSOCKET_DATABASE_URL =
     'postgresql://postgres:postgres@localhost:5432/websocket_test';
 }
-
-
