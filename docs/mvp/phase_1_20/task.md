@@ -1,6 +1,6 @@
 # TASK-4.6: payment-service (шаблон)
 
-## Статус: `NOT STARTED`
+## Статус: `DONE`
 
 **Epic:** Epic 4: Пустые шаблоны
 **Ветка:** `phase_1_20/chore/scaffold/payment-service`
@@ -44,3 +44,4 @@ docs/architecture/06_payment_validation_service.md
 | Дата | Событие | Агент |
 |------|---------|-------|
 | — | Задача создана | System |
+| 2025-03-17 | Шаблон завершён: PurchaseEntity, AppleIAPPort, GooglePlayIAPPort, POST /payment/validate | Cursor |

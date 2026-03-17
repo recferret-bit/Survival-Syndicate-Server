@@ -58,7 +58,7 @@
 | 17 | TASK-4.3 | combat-progress-service (шаблон) | ✅ DONE | 1, 3 | [phase_1_17](phase_1_17/task.md) |
 | 18 | TASK-4.4 | scheduler-service (шаблон) | ✅ DONE | 1, 3 | [phase_1_18](phase_1_18/task.md) |
 | 19 | TASK-4.5 | collector-service (шаблон) | ✅ DONE | 1, 3 | [phase_1_19](phase_1_19/task.md) |
-| 20 | TASK-4.6 | payment-service (шаблон) | 🔲 NOT STARTED | 1, 3 | [phase_1_20](phase_1_20/task.md) |
+| 20 | TASK-4.6 | payment-service (шаблон) | ✅ DONE | 1, 3 | [phase_1_20](phase_1_20/task.md) |
 | 21 | TASK-4.7 | history-service (шаблон) | 🔲 NOT STARTED | 1, 3 | [phase_1_21](phase_1_21/task.md) |
 
 ---
