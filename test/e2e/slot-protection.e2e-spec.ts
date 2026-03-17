@@ -66,7 +66,7 @@ describe('E2E: защита слота (SLOT_NOT_AVAILABLE / reconnect success)'
 
     // Создаём лобби от лица игрока A
     const matchmakingA = createMatchmakingClient(playerA.accessToken);
-    const createLobbyRes = await matchmakingA.post('/matchmaking/lobbies/create', {
+    const createLobbyRes = await matchmakingA.post('/lobbies/create', {
       maxPlayers: 2,
     });
     expect(createLobbyRes.status).toBe(200);
@@ -80,14 +80,14 @@ describe('E2E: защита слота (SLOT_NOT_AVAILABLE / reconnect success)'
     // Игрок B вступает в лобби
     const matchmakingB = createMatchmakingClient(playerB.accessToken);
     const joinLobbyRes = await matchmakingB.post(
-      `/matchmaking/lobbies/${lobbyId}/join`,
+      `/lobbies/${lobbyId}/join`,
       {},
     );
     expect(joinLobbyRes.status).toBe(200);
 
     // Игрок A стартует матч
     const startRes = await matchmakingA.post(
-      `/matchmaking/lobbies/${lobbyId}/start`,
+      `/lobbies/${lobbyId}/start`,
       {},
     );
     expect(startRes.status).toBe(200);
