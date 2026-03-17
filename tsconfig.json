@@ -23,6 +23,8 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
+      "@app/swagger-aggregator": ["apps/swagger-aggregator/src"],
+      "@app/swagger-aggregator/*": ["apps/swagger-aggregator/src/*"],
       "@app/gameplay-service": ["apps/gameplay-service/src"],
       "@app/gameplay-service/*": ["apps/gameplay-service/src/*"],
       "@app/local-orchestrator": ["apps/local-orchestrator/src"],
