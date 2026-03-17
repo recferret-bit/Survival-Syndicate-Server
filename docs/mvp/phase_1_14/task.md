@@ -1,6 +1,6 @@
 # TASK-3.3: E2E: защита слота
 
-## Статус: `IN PROGRESS`
+## Статус: `IN REVIEW`
 
 **Epic:** Epic 3: Интеграционное тестирование
 **Ветка:** `phase_1_14/test/e2e/slot-protection`
