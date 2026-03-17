@@ -25,6 +25,8 @@
     "paths": {
       "@app/swagger-aggregator": ["apps/swagger-aggregator/src"],
       "@app/swagger-aggregator/*": ["apps/swagger-aggregator/src/*"],
+      "@app/collector-service": ["apps/collector-service/src"],
+      "@app/collector-service/*": ["apps/collector-service/src/*"],
       "@app/scheduler-service": ["apps/scheduler-service/src"],
       "@app/scheduler-service/*": ["apps/scheduler-service/src/*"],
       "@app/combat-progress-service": ["apps/combat-progress-service/src"],
