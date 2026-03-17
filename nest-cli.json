@@ -17,6 +17,15 @@
         "tsConfigPath": "apps/swagger-aggregator/tsconfig.app.json"
       }
     },
+    "history-service": {
+      "type": "application",
+      "root": "apps/history-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/history-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/history-service/tsconfig.app.json"
+      }
+    },
     "payment-service": {
       "type": "application",
       "root": "apps/payment-service",
