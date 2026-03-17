@@ -69,6 +69,11 @@ export const commonSchema = z.object({
   PGBOUNCER_WEBSOCKET_DATABASE_URL: z.string(),
   TEST_DIRECT_WEBSOCKET_DATABASE_URL: z.string().optional(),
 
+  // building-service
+  BUILDING_APP_HOST: z.string().default('localhost'),
+  BUILDING_APP_PORT: z.string().default('3007'),
+  BUILDING_APP_HTTP_PREFIX: z.string().default('api/v1'),
+
   DATABASE_CA_CERT: z.string().optional(),
 });
 

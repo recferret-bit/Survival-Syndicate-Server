@@ -17,6 +17,15 @@
         "tsConfigPath": "apps/swagger-aggregator/tsconfig.app.json"
       }
     },
+    "building-service": {
+      "type": "application",
+      "root": "apps/building-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/building-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/building-service/tsconfig.app.json"
+      }
+    },
     "gameplay-service": {
       "type": "application",
       "root": "apps/gameplay-service",
