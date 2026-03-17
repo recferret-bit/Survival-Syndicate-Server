@@ -10,6 +10,7 @@ Microservice for IAP (In-App Purchase) validation: Apple App Store, Google Play 
 - Entity: Purchase (extends Entity<Props>)
 - Ports: AppleIAPPort, GooglePlayIAPPort (abstract classes)
 - Stub adapters for Apple and Google Play
+- PrismaModule, PrismaService (payment DB)
 - Use-case: ValidatePaymentCommand + handler
 - HTTP: POST /payment/validate (receipt, productId, platform, characterId)
 
