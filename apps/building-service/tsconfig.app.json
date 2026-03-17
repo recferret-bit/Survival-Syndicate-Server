@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "declaration": false,
+    "outDir": "../../dist/apps/building-service"
+  },
+  "include": ["src/**/*", "../../prisma/building/generated/**/*"],
+  "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
+}

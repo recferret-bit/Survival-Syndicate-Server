@@ -1,0 +1,15 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../prisma/history/generated"
+}
+
+// Placeholder for history-service (phase_1_21)
+model HistoryStub {
+  id String @id @default(uuid())
+
+  @@map("history_stub")
+}

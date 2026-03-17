@@ -1,6 +1,6 @@
 # TASK-4.2: building-service (шаблон)
 
-## Статус: `NOT STARTED`
+## Статус: `DONE`
 
 **Epic:** Epic 4: Пустые шаблоны
 **Ветка:** `phase_1_16/chore/scaffold/building-service`
@@ -45,3 +45,6 @@ docs/architecture/09_building_service.md
 | Дата | Событие | Агент |
 |------|---------|-------|
 | — | Задача создана | System |
+| 2025-03-17 | Разработка начата | Cursor |
+| 2025-03-17 | Clean Architecture scaffold реализован | Cursor |
+| 2025-03-17 | PrismaModule, PrismaService, prisma/repositories, libs, env | Cursor |

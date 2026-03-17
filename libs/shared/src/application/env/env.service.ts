@@ -120,6 +120,73 @@ export class EnvService<E = {}> {
     });
   }
 
+  getBuildingDatabaseUrl() {
+    if (this.isLocal()) {
+      return this.configService.get('TEST_DIRECT_BUILDING_DATABASE_URL', {
+        infer: true,
+      });
+    }
+    return this.configService.get('PGBOUNCER_BUILDING_DATABASE_URL', {
+      infer: true,
+    });
+  }
+
+  getCombatProgressDatabaseUrl() {
+    if (this.isLocal()) {
+      return this.configService.get(
+        'TEST_DIRECT_COMBAT_PROGRESS_DATABASE_URL',
+        { infer: true },
+      );
+    }
+    return this.configService.get('PGBOUNCER_COMBAT_PROGRESS_DATABASE_URL', {
+      infer: true,
+    });
+  }
+
+  getSchedulerDatabaseUrl() {
+    if (this.isLocal()) {
+      return this.configService.get('TEST_DIRECT_SCHEDULER_DATABASE_URL', {
+        infer: true,
+      });
+    }
+    return this.configService.get('PGBOUNCER_SCHEDULER_DATABASE_URL', {
+      infer: true,
+    });
+  }
+
+  getCollectorDatabaseUrl() {
+    if (this.isLocal()) {
+      return this.configService.get('TEST_DIRECT_COLLECTOR_DATABASE_URL', {
+        infer: true,
+      });
+    }
+    return this.configService.get('PGBOUNCER_COLLECTOR_DATABASE_URL', {
+      infer: true,
+    });
+  }
+
+  getPaymentDatabaseUrl() {
+    if (this.isLocal()) {
+      return this.configService.get('TEST_DIRECT_PAYMENT_DATABASE_URL', {
+        infer: true,
+      });
+    }
+    return this.configService.get('PGBOUNCER_PAYMENT_DATABASE_URL', {
+      infer: true,
+    });
+  }
+
+  getHistoryDatabaseUrl() {
+    if (this.isLocal()) {
+      return this.configService.get('TEST_DIRECT_HISTORY_DATABASE_URL', {
+        infer: true,
+      });
+    }
+    return this.configService.get('PGBOUNCER_HISTORY_DATABASE_URL', {
+      infer: true,
+    });
+  }
+
   getNatsServers(): string[] {
     const servers = this.configService.get('NATS_SERVERS', { infer: true });
     return servers

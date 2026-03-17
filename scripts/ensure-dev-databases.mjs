@@ -14,6 +14,12 @@ const DEV_DATABASES = [
   'gameplay_db',
   'local_orchestrator_db',
   'websocket_db',
+  'building_db',
+  'combat_progress_db',
+  'scheduler_db',
+  'collector_db',
+  'payment_db',
+  'history_db',
 ];
 
 const TEST_DATABASES = [
@@ -23,6 +29,12 @@ const TEST_DATABASES = [
   'gameplay_test',
   'local_orchestrator_test',
   'websocket_test',
+  'building_test',
+  'combat_progress_test',
+  'scheduler_test',
+  'collector_test',
+  'payment_test',
+  'history_test',
 ];
 
 function getBaseUrl() {

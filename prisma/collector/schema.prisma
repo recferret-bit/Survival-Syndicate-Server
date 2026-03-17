@@ -1,0 +1,15 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../prisma/collector/generated"
+}
+
+// Placeholder for collector-service (phase_1_19)
+model CollectorStub {
+  id String @id @default(uuid())
+
+  @@map("collector_stub")
+}
