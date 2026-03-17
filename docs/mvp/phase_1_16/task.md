@@ -47,3 +47,4 @@ docs/architecture/09_building_service.md
 | — | Задача создана | System |
 | 2025-03-17 | Разработка начата | Cursor |
 | 2025-03-17 | Clean Architecture scaffold реализован | Cursor |
+| 2025-03-17 | PrismaModule, PrismaService, prisma/repositories, libs, env | Cursor |

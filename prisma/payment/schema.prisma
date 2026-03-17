@@ -1,0 +1,15 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../prisma/payment/generated"
+}
+
+// Placeholder for payment-service (phase_1_20)
+model PaymentStub {
+  id String @id @default(uuid())
+
+  @@map("payment_stub")
+}

@@ -73,6 +73,43 @@ export const commonSchema = z.object({
   BUILDING_APP_HOST: z.string().default('localhost'),
   BUILDING_APP_PORT: z.string().default('3007'),
   BUILDING_APP_HTTP_PREFIX: z.string().default('api/v1'),
+  PGBOUNCER_BUILDING_DATABASE_URL: z.string().optional(),
+  TEST_DIRECT_BUILDING_DATABASE_URL: z.string().optional(),
+
+  // combat-progress-service
+  COMBAT_PROGRESS_APP_HOST: z.string().default('localhost'),
+  COMBAT_PROGRESS_APP_PORT: z.string().default('3008'),
+  COMBAT_PROGRESS_APP_HTTP_PREFIX: z.string().default('api/v1'),
+  PGBOUNCER_COMBAT_PROGRESS_DATABASE_URL: z.string().optional(),
+  TEST_DIRECT_COMBAT_PROGRESS_DATABASE_URL: z.string().optional(),
+
+  // scheduler-service
+  SCHEDULER_APP_HOST: z.string().default('localhost'),
+  SCHEDULER_APP_PORT: z.string().default('3009'),
+  SCHEDULER_APP_HTTP_PREFIX: z.string().default('api/v1'),
+  PGBOUNCER_SCHEDULER_DATABASE_URL: z.string().optional(),
+  TEST_DIRECT_SCHEDULER_DATABASE_URL: z.string().optional(),
+
+  // collector-service
+  COLLECTOR_APP_HOST: z.string().default('localhost'),
+  COLLECTOR_APP_PORT: z.string().default('3010'),
+  COLLECTOR_APP_HTTP_PREFIX: z.string().default('api/v1'),
+  PGBOUNCER_COLLECTOR_DATABASE_URL: z.string().optional(),
+  TEST_DIRECT_COLLECTOR_DATABASE_URL: z.string().optional(),
+
+  // payment-service
+  PAYMENT_APP_HOST: z.string().default('localhost'),
+  PAYMENT_APP_PORT: z.string().default('3011'),
+  PAYMENT_APP_HTTP_PREFIX: z.string().default('api/v1'),
+  PGBOUNCER_PAYMENT_DATABASE_URL: z.string().optional(),
+  TEST_DIRECT_PAYMENT_DATABASE_URL: z.string().optional(),
+
+  // history-service
+  HISTORY_APP_HOST: z.string().default('localhost'),
+  HISTORY_APP_PORT: z.string().default('3012'),
+  HISTORY_APP_HTTP_PREFIX: z.string().default('api/v1'),
+  PGBOUNCER_HISTORY_DATABASE_URL: z.string().optional(),
+  TEST_DIRECT_HISTORY_DATABASE_URL: z.string().optional(),
 
   DATABASE_CA_CERT: z.string().optional(),
 });

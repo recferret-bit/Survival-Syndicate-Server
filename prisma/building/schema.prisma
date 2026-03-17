@@ -1,0 +1,32 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../prisma/building/generated"
+}
+
+model Building {
+  id          String   @id @default(uuid())
+  characterId String   @map("character_id")
+  buildingId  String   @map("building_id")
+  level       Int
+  slot        Int
+  upgradedAt  DateTime @default(now()) @map("upgraded_at")
+
+  @@unique([characterId, buildingId])
+  @@map("buildings")
+}
+
+model Upgrade {
+  id          String   @id @default(uuid())
+  buildingId  String   @map("building_id")
+  characterId String   @map("character_id")
+  fromLevel   Int      @map("from_level")
+  toLevel     Int      @map("to_level")
+  status      String   @default("pending")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("upgrades")
+}

@@ -1,0 +1,15 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../prisma/scheduler/generated"
+}
+
+// Placeholder for scheduler-service (phase_1_18)
+model SchedulerStub {
+  id String @id @default(uuid())
+
+  @@map("scheduler_stub")
+}

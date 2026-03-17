@@ -7,7 +7,13 @@ type Database =
   | 'local-orchestrator'
   | 'matchmaking'
   | 'player'
-  | 'websocket';
+  | 'websocket'
+  | 'building'
+  | 'combat-progress'
+  | 'scheduler'
+  | 'collector'
+  | 'payment'
+  | 'history';
 
 /**
  * Add PgBouncer connection parameter if connecting via PgBouncer
@@ -35,6 +41,12 @@ const DATABASE_NAME_MAP: Record<Database, string> = {
   gameplay: 'gameplay_db',
   'local-orchestrator': 'local_orchestrator_db',
   websocket: 'websocket_db',
+  building: 'building_db',
+  'combat-progress': 'combat_progress_db',
+  scheduler: 'scheduler_db',
+  collector: 'collector_db',
+  payment: 'payment_db',
+  history: 'history_db',
 };
 
 function getDatabaseUrl(
@@ -110,6 +122,12 @@ const validDb: Database[] = [
   'matchmaking',
   'player',
   'websocket',
+  'building',
+  'combat-progress',
+  'scheduler',
+  'collector',
+  'payment',
+  'history',
 ];
 export default database && validDb.includes(database)
   ? getPrismaConfig(database)

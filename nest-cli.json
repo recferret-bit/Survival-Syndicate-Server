@@ -142,6 +142,60 @@
       "compilerOptions": {
         "tsConfigPath": "libs/lib-websocket/tsconfig.lib.json"
       }
+    },
+    "lib-building": {
+      "type": "library",
+      "root": "libs/lib-building",
+      "entryFile": "index",
+      "sourceRoot": "libs/lib-building/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/lib-building/tsconfig.lib.json"
+      }
+    },
+    "lib-combat-progress": {
+      "type": "library",
+      "root": "libs/lib-combat-progress",
+      "entryFile": "index",
+      "sourceRoot": "libs/lib-combat-progress/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/lib-combat-progress/tsconfig.lib.json"
+      }
+    },
+    "lib-scheduler": {
+      "type": "library",
+      "root": "libs/lib-scheduler",
+      "entryFile": "index",
+      "sourceRoot": "libs/lib-scheduler/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/lib-scheduler/tsconfig.lib.json"
+      }
+    },
+    "lib-collector": {
+      "type": "library",
+      "root": "libs/lib-collector",
+      "entryFile": "index",
+      "sourceRoot": "libs/lib-collector/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/lib-collector/tsconfig.lib.json"
+      }
+    },
+    "lib-payment": {
+      "type": "library",
+      "root": "libs/lib-payment",
+      "entryFile": "index",
+      "sourceRoot": "libs/lib-payment/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/lib-payment/tsconfig.lib.json"
+      }
+    },
+    "lib-history": {
+      "type": "library",
+      "root": "libs/lib-history",
+      "entryFile": "index",
+      "sourceRoot": "libs/lib-history/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/lib-history/tsconfig.lib.json"
+      }
     }
   }
 }

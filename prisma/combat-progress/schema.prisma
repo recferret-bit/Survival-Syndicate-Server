@@ -1,0 +1,15 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../prisma/combat-progress/generated"
+}
+
+// Placeholder for combat-progress-service (phase_1_17)
+model CombatProgressStub {
+  id String @id @default(uuid())
+
+  @@map("combat_progress_stub")
+}
