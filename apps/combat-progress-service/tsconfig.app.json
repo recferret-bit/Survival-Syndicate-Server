@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "declaration": false,
+    "outDir": "../../dist/apps/combat-progress-service"
+  },
+  "include": ["src/**/*", "../../prisma/combat-progress/generated/**/*"],
+  "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
+}
