@@ -1,6 +1,6 @@
 # TASK-4.5: collector-service (шаблон)
 
-## Статус: `NOT STARTED`
+## Статус: `DONE`
 
 **Epic:** Epic 4: Пустые шаблоны
 **Ветка:** `phase_1_19/chore/scaffold/collector-service`
@@ -44,3 +44,4 @@ docs/architecture/03_analytics_and_events.md
 | Дата | Событие | Агент |
 |------|---------|-------|
 | — | Задача создана | System |
+| 2025-03-17 | Шаблон завершён: ClickHousePortRepository, analytics.nats.controller | Cursor |
