@@ -1,6 +1,6 @@
 # TASK-3.2: E2E: реконнект
 
-## Статус: `IN PROGRESS`
+## Статус: `IN REVIEW`
 
 **Epic:** Epic 3: Интеграционное тестирование
 **Ветка:** `phase_1_13/test/e2e/reconnect-flow`
