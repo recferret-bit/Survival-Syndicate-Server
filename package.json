@@ -31,7 +31,7 @@
     "start:websocket-service": "nest start websocket-service",
     "start:websocket-service:dev": "nest start websocket-service --watch",
     "start:websocket-service:debug": "nest start websocket-service --debug --watch",
-    "start:local": "concurrently -n users,player,match,orch,gameplay,ws \"npx dotenv-cli -e .env -- nest start users-service\" \"npx dotenv-cli -e .env -- nest start player-service\" \"npx dotenv-cli -e .env -- nest start matchmaking-service\" \"npx dotenv-cli -e .env -- nest start local-orchestrator\" \"npx dotenv-cli -e .env -- nest start gameplay-service\" \"npx dotenv-cli -e .env -- nest start websocket-service\"",
+    "start:local": "concurrently -n swagger,users,player,match,orch,gameplay,ws \"npx dotenv-cli -e .env -- nest start swagger-aggregator\" \"npx dotenv-cli -e .env -- nest start users-service\" \"npx dotenv-cli -e .env -- nest start player-service\" \"npx dotenv-cli -e .env -- nest start matchmaking-service\" \"npx dotenv-cli -e .env -- nest start local-orchestrator\" \"npx dotenv-cli -e .env -- nest start gameplay-service\" \"npx dotenv-cli -e .env -- nest start websocket-service\"",
     "start:prod": "node dist/apps/users-service/main",
     "prisma:generate": "npm run prisma:generate:users && npm run prisma:generate:player && npm run prisma:generate:matchmaking && npm run prisma:generate:gameplay && npm run prisma:generate:local-orchestrator && npm run prisma:generate:websocket",
     "prisma:generate:users": "PRISMA_DB=users prisma generate --schema=prisma/users/schema.prisma",
