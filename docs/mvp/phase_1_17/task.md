@@ -1,6 +1,6 @@
 # TASK-4.3: combat-progress-service (шаблон)
 
-## Статус: `NOT STARTED`
+## Статус: `DONE`
 
 **Epic:** Epic 4: Пустые шаблоны
 **Ветка:** `phase_1_17/chore/scaffold/combat-progress-service`
@@ -44,3 +44,5 @@ docs/architecture/10_combat_progress_service.md
 | Дата | Событие | Агент |
 |------|---------|-------|
 | — | Задача создана | System |
+| 2025-03-17 | Разработка начата | Cursor |
+| 2025-03-17 | Шаблон завершён: entities, ports, use-cases, HTTP/NATS controllers | Cursor |

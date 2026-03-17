@@ -17,6 +17,15 @@
         "tsConfigPath": "apps/swagger-aggregator/tsconfig.app.json"
       }
     },
+    "combat-progress-service": {
+      "type": "application",
+      "root": "apps/combat-progress-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/combat-progress-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/combat-progress-service/tsconfig.app.json"
+      }
+    },
     "building-service": {
       "type": "application",
       "root": "apps/building-service",
